@@ -34,6 +34,28 @@ if (process.env.NODE_ENV === 'development') {
     Server = app
 }
 
+// Routes
+
+const branches = require("./routes/api/branches");
+const businesses = require("./routes/api/businesses");
+const comments = require("./routes/api/comments");
+const dishes = require("./routes/api/dishes");
+const lists = require("./routes/api/lists");
+const listVersions = require("./routes/api/listVersions");
+const reviews = require("./routes/api/reviews");
+const texts = require("./routes/api/texts");
+
+app.use("/api/branches", branches);
+app.use("/api/businesses", businesses);
+app.use("/api/comments", comments);
+app.use("/api/dishes", dishes);
+app.use("/api/lists", lists);
+app.use("/api/listVersions", listVersions);
+app.use("/api/reviews", reviews);
+app.use("/api/texts", texts);
+
+
+
 const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => res.send("Hello World"));
