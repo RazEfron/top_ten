@@ -17,13 +17,13 @@ dotenv.config({path: './config.env'});
 const db = require("./config/keys").MongoURI;
 
 // Connect Port to mongo DB online
-mongoose.connect(db, {
-    useFindAndModify: false, 
+mongoose
+  .connect(db, {
+    useUnifiedTopology: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB is connected'))
-.catch(err => console.log(err))
+  })
+  .then(() => console.log("Connected to MongoDB successfully"))
+  .catch((err) => console.log(err));
 
 //  Server Ports
 let Server
