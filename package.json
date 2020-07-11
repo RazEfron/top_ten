@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "https": "^1.0.0",
     "mongoose": "^5.9.22",
+    "mongoose-async": "^1.0.1",
     "validator": "^13.1.1"
   },
   "devDependencies": {

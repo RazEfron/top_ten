@@ -2,29 +2,20 @@ const express = require("express");
 const router = express.Router();
 
 const Business = require("../../models/Business");
-const textify = require("../../models/setters").textify;
 
 
 router.post("/", (req, res) => {
-    // console.log(req.body.displayName.hebrew);
+    // console.log(JSON.stringify(req.body.displayName));
 
-    let displayName = req.body.displayName;
-    let description = req.body.description;
-
-    async () => {
-        let diName = await textify(displayName)
-        let deName = await textify(description)
-        
-        const newBusiness = new Business({
-          displayName: diName,
-          description: deName,
-        });
+   const newBusiness = new Business({
+     displayName: JSON.stringify(req.body.displayName),
+     description: JSON.stringify(req.body.description),
+   });
+        // console.log(newBusiness)
         newBusiness
           .save()
           .then((business) => res.json(business))
           .catch((err) => res.json(err));
-    }
-  
-});
+    });
 
 module.exports = router;
