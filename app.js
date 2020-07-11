@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const https = require("https");
 const fs = require("fs");
 const mongoose = require("mongoose")
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -34,8 +35,17 @@ if (process.env.NODE_ENV === 'development') {
     Server = app
 }
 
-// Routes
+// Body Parser
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(bodyParser.json());
+
+// Routes
 const branches = require("./routes/api/branches");
 const businesses = require("./routes/api/businesses");
 const comments = require("./routes/api/comments");
