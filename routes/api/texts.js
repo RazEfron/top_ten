@@ -10,7 +10,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const newText = new TextString({
       hebrew: req.body.hebrew,
       english: req.body.english,
