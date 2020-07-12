@@ -16,9 +16,10 @@ router.post("/", (req, res) => {
       english: req.body.english,
     });
 
-    newText.save()
-    .then((text) => res.json(text))
-    .catch((err) => res.json(err))
+    newText
+      .save()
+      .then((text) => res.json(text))
+      .catch((err) => res.status(404).json(err));
   }
 );
 
