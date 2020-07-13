@@ -3,6 +3,7 @@ const { text } = require("express");
 
 module.exports = {
   textify: async (textField) => {
+      console.log(textField)
         let obj = JSON.parse(textField);
         const newText = new TextString({
           hebrew: obj.hebrew,

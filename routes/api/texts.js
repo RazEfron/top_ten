@@ -9,6 +9,12 @@ router.get("/:id", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
+router.get("/", (req, res) => {
+  TextString.find({})
+    .then((text) => res.json(text))
+    .catch((err) => res.status(404).json(err));
+});
+
 router.post("/", (req, res) => {
     // console.log(req.body)
     const newText = new TextString({
