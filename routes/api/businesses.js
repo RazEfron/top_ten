@@ -34,35 +34,14 @@ router.get("/", (req, res) => {
 });
 
 // Create
-router.post("/", async (req, res) => {
-  let description = req.body.description
-  let displayName = req.body.displayName;
-try {
-      let desc = await TextString.create({
-        hebrew: description.hebrew,
-        english: description.english,
-      });
 
-      let disp = await TextString.create({
-        hebrew: displayName.hebrew,
-        english: displayName.english,
-      });
-      Business.create({
-        displayName: desc._id,
-        description: disp._id,
-      }).then((business) => res.json(business))
-        .catch((err) => res.json(err));
-    }
-catch(err) {
-  throw err
-}
-// router.post("/", async (req, res) => {
-//     let business = new Business({
-//       displayName: JSON.stringify(req.body.displayName),
-//       description: JSON.stringify(req.body.description),
-//     })
-//       .then((business) => res.json(business))
-//       .catch((err) => res.json(err));
+router.post("/", async (req, res) => {
+    Business.create({
+      displayName: JSON.stringify(req.body.displayName),
+      description: JSON.stringify(req.body.description),
+    })
+      .then((business) => res.json(business))
+      .catch((err) => res.json(err));
 });
 
 // Update
