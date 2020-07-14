@@ -1,22 +1,18 @@
 const TextString = require("./TextString");
 
 module.exports = {
-  preSaveHook: async function (object, next) {
-    let array = [];
+  preSaveHook: function (next) {
+    let object = this._doc;
     let keys = Object.keys(object);
-
     for (let i = 0; i < keys.length; i++) {
-      if (typeof object[keys[i]] === "string") {
-        let val = JSON.parse(object[keys[i]]);
-        array.push({ [keys[i]]: val });
+      if (object[keys[i]].hebrew) {
+        let val = keys[i];
+        TextString.create(this[val], function (err, res) {
+          if (err) throw err;
+        });
       }
     }
-
-    for (let i = 0; i < array.length; i++) {
-      let obj = array[i];
-      let key = Object.keys(obj)[0];
-      this[key] = await TextString.create(obj[key]).then((field) => field._id);
-    }
     next();
-  }
+  },
+  
 };
