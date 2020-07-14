@@ -10,7 +10,6 @@ router.get("/:id", (req, res) => {
     .populate("displayName")
     .populate("description")
     .then((business) => {
-      console.log(business.displayName)
       if (business) {
         res.json(business);
       } else {

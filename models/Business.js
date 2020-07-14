@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const hooks = require('./hooks');
-const TextString = require("./TextString");
-
 
 const BusinessSchema = new Schema(
   {
