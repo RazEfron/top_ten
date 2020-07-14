@@ -54,7 +54,6 @@ const lists = require("./routes/api/lists");
 const listVersions = require("./routes/api/listVersions");
 const reviews = require("./routes/api/reviews");
 const texts = require("./routes/api/texts");
-const google = require("./routes/api/google")
 
 app.use("/api/branches", branches);
 app.use("/api/businesses", businesses);
@@ -64,7 +63,6 @@ app.use("/api/lists", lists);
 app.use("/api/listVersions", listVersions);
 app.use("/api/reviews", reviews);
 app.use("/api/texts", texts);
-app.use("/api/google", google);
 
 
 

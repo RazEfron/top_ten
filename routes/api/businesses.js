@@ -46,35 +46,32 @@ router.post("/", async (req, res) => {
 });
 
 // Update
-<<<<<<< HEAD
-router.put("/:id", function (req, res) {
-    Business.findOneAndUpdate(
-      { _id: req.params.id },
-      JSON.stringify(req.body),
-      {
-        new: true,
-        useFindAndModify: false,
-      }
-    )
-=======
 router.put("/:id", async function (req, res) {
-  let { visible, displayName, description } = req.body
+  let {  displayName, description } = req.body
   await Business.findOne({ _id: req.params.id }, async (err, business) => {
     if (err) throw err
+    
+    if (displayName) {
+      await TextString.findOneAndUpdate({ _id: business.displayName }, displayName, {new: true, useFindAndModify: false})
+        .then(() => delete req.body.displayName)
+        .catch((err) => {throw err});
+      
+  }
 
-    if (displayName) await TextString.findOneAndUpdate({ _id: business.displayName }, displayName, {new: true, useFindAndModify: false})
-    .catch((err) => {throw err});
-
-    if (description) await TextString.findOneAndUpdate({ _id: business.description }, description, {new: true, useFindAndModify: false})
-    .catch((err) => {throw err});
-
-  })
-  if (visible) {
-    Business.findOneAndUpdate({ _id: req.params.id }, { visible }, { new: true, useFindAndModify: false })
->>>>>>> master
+    if (description) {
+      await TextString.findOneAndUpdate({ _id: business.description }, description, {new: true, useFindAndModify: false})
+        .then(() => delete req.body.description)
+        .catch((err) => {throw err});
+    }
+    console.log(req.body)
+    await Business.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+      useFindAndModify: false,
+    })
       .then((business) => res.json(business))
       .catch((err) => res.json(err));
-  }
+  })
+   
 });
 
 
