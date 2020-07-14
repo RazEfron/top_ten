@@ -28,7 +28,6 @@ router.get("/", (req, res) => {
 
 // Create
 router.post("/", async (req, res) => {
-  console.log(req.body)
   Branch.create(req.body)
       .then((branch) => res.json(branch))
       .catch((err) => res.json(err));
@@ -57,7 +56,7 @@ router.delete("/:id", function (req, res) {
 
 // !! DELETE ALL !!
 // router.delete("/", function (req, res) {
-//   Business.deleteMany({}, (err) => {
+//   Branch.deleteMany({}, (err) => {
 //     if (err) console.log(err);
 //     console.log("Successful deletion");
 //   })
