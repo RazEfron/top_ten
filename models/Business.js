@@ -15,26 +15,4 @@ const BusinessSchema = new Schema(
   }
 );
 
-BusinessSchema.pre("save", function (next) {
-  hooks.preSaveHook.call(this, next)
-});
-
-// BusinessSchema.pre("findOneAndUpdate", function (next) {
-//   let update = this._update;
-//   let ids = this.schema.paths
-//   let keys = Object.keys(ids);
-//   // console.log(ids);
-
-//   for (let i = 0; i < keys.length; i++) {
-//     let key = keys[i];
-//     if (update[keys[i]].hebrew) {
-//       TextString.create(this[val], function (err, res) {
-//         if (err) throw err;
-//       });
-//     }
-//   }
-//   next();
-//   next()
-// });
-
 module.exports = Business = mongoose.model("Business", BusinessSchema);

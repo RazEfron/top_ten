@@ -34,8 +34,8 @@ router.get("/", (req, res) => {
 // Create
 router.post("/", async (req, res) => {
   let {displayName, description} = req.body;
-  displayName = new TextString(displayName);
-  description = new TextString(description);
+  displayName = await TextString.create(displayName);
+  description = await TextString.create(description);
     let business = new Business({
       displayName,
       description
