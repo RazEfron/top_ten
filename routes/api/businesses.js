@@ -45,10 +45,6 @@ router.post("/", async (req, res) => {
 });
 
 // Update
-// .findOneAndUpdate(filter, update, {
-//   new: true
-// });
-
 router.put("/:id", function (req, res) {
     Business.findOneAndUpdate(
       { _id: req.params.id },
