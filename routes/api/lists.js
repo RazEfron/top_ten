@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const fs = require('fs')
 
 const List = require("../../models/List");
 const TextString = require("../../models/TextString");
@@ -16,7 +15,7 @@ router.get("/:id", (req, res) => {
       if (list) {
         res.json(list);
       } else {
-        res.status(404).json("No Such Business");
+        res.status(404).json("No Such List");
       }
     })
     .catch((err) => res.status(404).json(err));
@@ -42,14 +41,15 @@ router.post("/", async (req, res) => {
   description = await TextString.create(description);
   currentVersionId = await ListVersion.create(currentVersionId);
 
-  let list = new Business({
+  let list = new List({
     name,
     description,
-    currentVersionId
+    currentVersionId,
+    image
   });
 
   if (image) {
-    list.image.data = fs.readFileSync(image);
+    list.image.data = image;
     list.image.contentType = "image/png";
   }
 
@@ -60,17 +60,17 @@ router.post("/", async (req, res) => {
 
 // Update
 router.put("/:id", async function (req, res) {
-  let { displayName, description } = req.body;
-  await Business.findOne({ _id: req.params.id }, async (err, business) => {
+  let { name, description, currentVersionId, image } = req.body;
+  await List.findOne({ _id: req.params.id }, async (err, list) => {
     if (err) throw err;
 
-    if (displayName) {
+    if (name) {
       await TextString.findOneAndUpdate(
-        { _id: business.displayName },
-        displayName,
+        { _id: list.name },
+        name,
         { new: true, useFindAndModify: false }
       )
-        .then(() => delete req.body.displayName)
+        .then(() => delete req.body.name)
         .catch((err) => {
           throw err;
         });
@@ -78,7 +78,7 @@ router.put("/:id", async function (req, res) {
 
     if (description) {
       await TextString.findOneAndUpdate(
-        { _id: business.description },
+        { _id: list.description },
         description,
         { new: true, useFindAndModify: false }
       )
@@ -87,33 +87,51 @@ router.put("/:id", async function (req, res) {
           throw err;
         });
     }
-    console.log(req.body);
-    await Business.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      useFindAndModify: false,
+
+    if (currentVersionId) delete req.body.currentVersionId;
+    delete req.body.image;
+
+    await List.findOneAndUpdate({ _id: req.params.id }, req.body, {new: true, useFindAndModify: false}, async (err, list) => {
+        if (image) {
+            console.log(list.image)
+            list.image.data = image;
+            list.image.contentType = "image/png";
+            console.log(list.image)
+            await list.save()
+        }
     })
-      .then((business) => res.json(business))
+      .then((list) => res.json(list))
       .catch((err) => res.json(err));
   });
 });
 
+// Change Version
+router.put("/:id/version", async function (req, res) {
+    List.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+      useFindAndModify: false,
+    })
+      .then((list) => res.json(list))
+      .catch((err) => res.json(err));
+})
+
 // Delete
 router.delete("/:id", function (req, res) {
-  Business.deleteOne({ _id: req.params.id }, (err) => {
+  List.deleteOne({ _id: req.params.id }, (err) => {
     if (err) console.log(err);
     console.log("Successful deletion");
   })
-    .then(() => res.json("Business Deleted successfully"))
+    .then(() => res.json("List Deleted successfully"))
     .catch((err) => res.status(404).json(err));
 });
 
 // !! DELETE ALL !!
 // router.delete("/", function (req, res) {
-//   Business.deleteMany({}, (err) => {
+//   List.deleteMany({}, (err) => {
 //     if (err) console.log(err);
 //     console.log("Successful deletion");
 //   })
-//     .then(() => res.json("All businesses deleted!!!"))
+//     .then(() => res.json("All lists deleted!!!"))
 //     .catch((err) => res.status(404).json(err));
 // });
 
