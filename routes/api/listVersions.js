@@ -3,12 +3,13 @@ const router = express.Router();
 
 const ListVersion = require("../../models/ListVersion");
 const TextString = require("../../models/TextString");
+const Review = require("../../models/Review");
 
 // Show
 router.get("/:id", (req, res) => {
   ListVersion.findById(req.params.id)
     .populate("text")
-    // .populate("reviews")
+    .populate("reviews")
     .populate({
       path: "listId",
       populate: {
@@ -30,7 +31,7 @@ router.get("/:id", (req, res) => {
 router.get("/", (req, res) => {
   ListVersion.find({})
     .populate("text")
-    // .populate("reviews")
+    .populate("reviews")
     .populate({
       path: "listId",
       populate: {
@@ -44,6 +45,27 @@ router.get("/", (req, res) => {
     .catch((err) => {
       console.log(err)
       res.status(404).json(err)});
+});
+
+// All Versions of List
+router.get("/:listId", (req, res) => {
+  ListVersion.find({ listId: req.params.listId})
+    .populate("text")
+    .populate("reviews")
+    .populate({
+      path: "listId",
+      populate: {
+        path: "name",
+        path: "description",
+      },
+    })
+    .then((ListVersions) => {
+      res.json(ListVersions);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json(err);
+    });
 });
 
 // Create
@@ -66,20 +88,55 @@ router.post("/", async (req, res) => {
 
 // Create New Version
 router.post("/:id", async (req, res) => {
-  let { listId, text, month, year, reviews } = req.body;
 
-  text = await TextString.create(text);
+  await ListVersion.findById(req.params.id)
+    .populate("text")
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "description",
+      },
+    })
+    .exec(async function (err, listVersion) {
+      if (err) console.log(err);
 
-  let listVersion = new ListVersion({
-    listId,
-    text,
-    month,
-    year,
-  });
+      listVersion._id = undefined;
+      listVersion.isNew = true;
 
-  ListVersion.create(listVersion)
-    .then((listVersion) => res.json(listVersion))
-    .catch((err) => res.json(err));
+      let oldText = await TextString.findById(listVersion.text._id)
+
+      listVersion.text = await TextString.create({
+        hebrew: oldText.hebrew,
+        english: oldText.english
+      })
+
+      let newReviews = [];
+      for (let i = 0; i < listVersion.reviews.length; i++) {
+        const review = listVersion.reviews[i];
+        let { overratedCount, underratedCount, visible, versionId, description, rating, businessId, dishId } = review;
+        description = await TextString.create({
+          hebrew: oldText.hebrew,
+          english: oldText.english,
+        });
+        let reviewObject = await Review.create({
+          overratedCount,
+          underratedCount,
+          visible,
+          versionId,
+          rating,
+          businessId,
+          dishId,
+          description,
+        });
+        console.log(reviewObject)
+        newReviews.push(reviewObject)
+      }
+      listVersion.reviews = newReviews
+      listVersion
+        .save()
+        .then((listVersion) => res.json(listVersion))
+        .catch((err) => res.json(err));
+    });
 });
 
 // Update

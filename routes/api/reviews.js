@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Review = require("../../models/Review");
+const ListVersion = require("../../models/ListVersion");
 const TextString = require("../../models/TextString");
 
 // Show
@@ -79,7 +80,6 @@ router.get("/", (req, res) => {
 // Create
 router.post("/", async (req, res) => {
   let { versionId, description, rating, businessId, dishId } = req.body;
-  console.log(description)
   description = await TextString.create(description)
   .catch(err => console.log(err))
 
@@ -92,7 +92,13 @@ router.post("/", async (req, res) => {
   });
 
   Review.create(review)
-    .then((review) => res.json(review))
+    .then(async (review) => {
+      let listVersion = await ListVersion.findOne({ _id: review.versionId })
+      listVersion.reviews.push(review);
+      listVersion.save()
+        .catch(err => console.log(err))
+      res.json(review)
+    })
     .catch((err) => res.json(err));
 });
 
