@@ -7,8 +7,10 @@ const ListVersionSchema = new Schema(
     text: { type: Schema.Types.ObjectId, ref: "TextString" },
     month: Number,
     year: Number,
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
     visible: { type: Boolean, default: true },
   },
+
   {
     timestamps: true,
   }

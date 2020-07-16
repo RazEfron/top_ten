@@ -14,12 +14,4 @@ const ListSchema = new Schema(
   }
 );
 
-// ID  (L518284581)
-// Name (Text ID)
-// Description (Text ID)
-// Image
-// Visible (boolean, default True)
-// Current Version ID
-
-
 module.exports = List = mongoose.model("List", ListSchema);

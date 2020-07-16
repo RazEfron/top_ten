@@ -39,6 +39,8 @@ router.post("/", async (req, res) => {
 
   name = await TextString.create(name);
   description = await TextString.create(description);
+
+  console.log(currentVersionId)
   currentVersionId = await ListVersion.create(currentVersionId);
 
   let list = new List({
@@ -47,6 +49,8 @@ router.post("/", async (req, res) => {
     currentVersionId,
     image
   });
+
+  list.currentVersionId.listId = list.id; 
 
   if (image) {
     list.image.data = image;
