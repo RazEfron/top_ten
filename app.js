@@ -4,6 +4,7 @@ const https = require("https");
 const fs = require("fs");
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser");
+const passport = require("passport");
 
 const app = express();
 
@@ -54,6 +55,11 @@ const lists = require("./routes/api/lists");
 const listVersions = require("./routes/api/listVersions");
 const reviews = require("./routes/api/reviews");
 const texts = require("./routes/api/texts");
+const users = require("./routes/api/users");
+
+app.use(passport.initialize());
+require("./config/passport")(passport);
+
 
 app.use("/api/branches", branches);
 app.use("/api/businesses", businesses);
@@ -63,6 +69,7 @@ app.use("/api/lists", lists);
 app.use("/api/listVersions", listVersions);
 app.use("/api/reviews", reviews);
 app.use("/api/texts", texts);
+app.use("/api/users", users);
 
 
 
