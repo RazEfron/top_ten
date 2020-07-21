@@ -38,43 +38,36 @@ if (process.env.NODE_ENV === 'development') {
 
 // Body Parser
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Routes
-const branches = require("./routes/api/branches");
-const businesses = require("./routes/api/businesses");
-const comments = require("./routes/api/comments");
-const dishes = require("./routes/api/dishes");
-const lists = require("./routes/api/lists");
-const listVersions = require("./routes/api/listVersions");
-const reviews = require("./routes/api/reviews");
-const texts = require("./routes/api/texts");
-const users = require("./routes/api/users");
+const branches = require("./routes/branch");
+const businesses = require("./routes/business");
+const comments = require("./routes/comment");
+const dishes = require("./routes/dish");
+const lists = require("./routes/list");
+const listVersions = require("./routes/listVersion");
+const reviews = require("./routes/review");
+const texts = require("./routes/textString");
+const users = require("./routes/user");
 
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
-
-app.use("/api/branches", branches);
-app.use("/api/businesses", businesses);
-app.use("/api/comments", comments);
-app.use("/api/dishes", dishes);
-app.use("/api/lists", lists);
-app.use("/api/listVersions", listVersions);
-app.use("/api/reviews", reviews);
-app.use("/api/texts", texts);
-app.use("/api/users", users);
+app.use("/branches", branches);
+app.use("/businesses", businesses);
+app.use("/comments", comments);
+app.use("/dishes", dishes);
+app.use("/lists", lists);
+app.use("/listVersions", listVersions);
+app.use("/reviews", reviews);
+app.use("/texts", texts);
+app.use("/users", users);
 
 
 
 const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => res.send("Hello World"));
-
-Server.listen(port, () => console.log(`Server is running on port ${port}`));
+Server.listen(port, () => console.log(`Server is running on port ${port}`))

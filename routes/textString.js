@@ -1,50 +1,60 @@
 const express = require("express");
 const router = express.Router();
 
-const TextString = require('../../models/TextString');
+const textAPI = require("../api/textString");
 
-// Show
 router.get("/:id", (req, res) => {
-  TextString.findById(req.params.id)
-    .then((text) => res.json(text))
+  textAPI.get(req.params.id)
+    .then((text) => {
+      if (text) {
+        res.json(text);
+      } else {
+        res.status(404).json("No Such Text");
+      }
+    })
     .catch((err) => res.status(404).json(err));
 });
 
-// Index
 router.get("/", (req, res) => {
-  TextString.find({})
-    .then((text) => res.json(text))
+  textAPI.getMany()
+    .then((text) => {
+      if (text) {
+        res.json(text);
+      } else {
+        res.status(404).json("No Such Text");
+      }
+    })
     .catch((err) => res.status(404).json(err));
 });
 
-// Create
 router.post("/", (req, res) => {
-    // console.log(req.body)
-    const newText = new TextString({
-      hebrew: req.body.hebrew,
-      english: req.body.english,
-    });
-
-    newText
-      .save()
-      .then((text) => res.json(text))
+    textAPI.create(req.body)
+      .then((text) => {
+        if (text) {
+          res.json(text);
+        } else {
+          res.status(404).json("No Such Text");
+        }
+      })
       .catch((err) => res.status(404).json(err));
   }
 );
 
-// Update
 router.put("/:id", function (req, res) {
-  TextString.findOneAndUpdate({ _id: req.params.id }, req.body, {new: true})
-    .then((text) => res.json(text))
+  textAPI
+    .update(req.params.id, req.body)
+    .then((text) => {
+      if (text) {
+        res.json(text);
+      } else {
+        res.status(404).json("No Such Text");
+      }
+    })
     .catch((err) => res.status(404).json(err));
 })
 
-// Delete
 router.delete("/:id", function (req, res) {
-    TextString.deleteOne({ _id: req.params.id }, err => {
-        if(err) console.log(err);
-        console.log("Successful deletion");
-    })
+    textAPI.delete(req.params.id)
       .then(() => res.json("Business Deleted successfully"))
       .catch((err) => res.status(404).json(err));
 });

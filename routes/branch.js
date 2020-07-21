@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const Branch = require("../models/Branch");
-const TextString = require('../models/TextString');
+const branchAPI = require("../api/branch");
 
-// Show
 router.get("/:id", (req, res) => {
-  Branch.findById(req.params.id)
+  branchAPI.get(req.params.id)
     .then((branch) => {
       if (branch) {
         res.json(branch);
@@ -17,51 +15,36 @@ router.get("/:id", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
-// Index
 router.get("/", (req, res) => {
-  Branch.find({})
+  branchAPI.getMany()
     .then((branch) => {
       res.json(branch);
     })
     .catch((err) => res.status(404).json(err));
 });
 
-// Create
-router.post("/", async (req, res) => {
-  Branch.create(req.body)
+router.post("/", (req, res) => {
+  branchAPI.create(req.body)
       .then((branch) => res.json(branch))
       .catch((err) => res.json(err));
 });
 
-// Update
-router.put("/:id", async function (req, res) {
- Branch.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      useFindAndModify: false,
+router.put("/:id", (req, res) => {
+  branchAPI.update(req.params.id, req.body)
+    .then((branch) => {
+      if (branch) {
+        res.json(branch);
+      } else {
+        res.status(404).json("No Such Branch");
+      }
     })
-      .then((branch) => res.json(branch))
-      .catch((err) => res.json(err));
+    .catch((err) => res.status(404).json(err));
 });
 
-
-// Delete
 router.delete("/:id", function (req, res) {
-    Branch.deleteOne({ _id: req.params.id }, err => {
-        if(err) console.log(err);
-        console.log("Successful deletion");
-    })
+  branchAPI.delete(req.params.id)
       .then(() => res.json("Branch Deleted successfully"))
       .catch((err) => res.status(404).json(err));
 });
-
-// !! DELETE ALL !!
-// router.delete("/", function (req, res) {
-//   Branch.deleteMany({}, (err) => {
-//     if (err) console.log(err);
-//     console.log("Successful deletion");
-//   })
-//     .then(() => res.json("All businesses deleted!!!"))
-//     .catch((err) => res.status(404).json(err));
-// });
 
 module.exports = router;

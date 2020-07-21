@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const List = require("../../models/List");
-const TextString = require("../../models/TextString");
-const ListVersion = require("../../models/ListVersion");
+const List = require("../models/List");
+const TextString = require("../models/TextString");
+const ListVersion = require("../models/ListVersion");
 
 // Show
 router.get("/:id", (req, res) => {

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const Dish = require("../../models/Dish");
-const TextString = require("../../models/TextString");
+const Dish = require("../models/Dish");
+const TextString = require("../models/TextString");
 
 // Show
 router.get("/:id", (req, res) => {
