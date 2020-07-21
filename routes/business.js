@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const textAPI = require("../api/textString");
 const businessAPI = require("../api/business");
 
 router.get("/:id", (req, res) => {
@@ -24,13 +23,13 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
-router.post("/", async (req, res) => {
+router.post("/", (req, res) => {
   businessAPI.create(req.body)
       .then((business) => res.json(business))
       .catch((err) => res.json(err));
 });
 
-router.put("/:id", async function (req, res) {
+router.put("/:id", function (req, res) {
     businessAPI.update(req.params.id, req.body)
       .then((business) => res.json(business))
       .catch((err) => res.json(err));
