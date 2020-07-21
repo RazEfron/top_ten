@@ -84,7 +84,7 @@ async function updateDish(id, body) {
 
   return Dish.findOneAndUpdate(
       { _id: id },
-      { name, description, businessId, image, price, isHidden },
+      { businessId, image, price, isHidden },
       { new: true, useFindAndModify: false },
       async (err, dish) => {
         if (err) { throw err }
