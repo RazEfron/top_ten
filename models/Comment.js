@@ -9,7 +9,7 @@ const CommentSchema = new Schema(
     userName: String,
     title: String,
     content: String,
-    visible: { type: Boolean, default: false },
+    isHidden: { type: Boolean, default: true },
   },
   {
     timestamps: true,

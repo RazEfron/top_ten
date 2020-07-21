@@ -7,7 +7,7 @@ const ListSchema = new Schema(
     description: { type: Schema.Types.ObjectId, ref: "TextString" },
     currentVersionId: { type: Schema.Types.ObjectId, ref: "ListVersion" },
     image: { data: Buffer, contentType: String },
-    visible: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
   },
   {
     timestamps: true,

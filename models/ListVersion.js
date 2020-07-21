@@ -5,10 +5,9 @@ const ListVersionSchema = new Schema(
   {
     listId: { type: Schema.Types.ObjectId, ref: "List" },
     text: { type: Schema.Types.ObjectId, ref: "TextString" },
-    month: Number,
-    year: Number,
+    date: { type: Date, default: Date.now },
     reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
-    visible: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
   },
 
   {

@@ -3,13 +3,8 @@ const Schema = mongoose.Schema;
 
 const TextStringSchema = new Schema(
   {
-    hebrew: {
-      type: String,
-      required: true,
-    },
-    english: {
-      type: String,
-    }
+    hebrew: { type: String, required: true },
+    english: { type: String }
   },
   {
     timestamps: true,

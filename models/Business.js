@@ -5,7 +5,7 @@ const BusinessSchema = new Schema(
   {
     displayName: { type: Schema.Types.ObjectId, ref: "TextString" },
     description: { type: Schema.Types.ObjectId, ref: "TextString" },
-    visible: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
   },
   {
     timestamps: true,

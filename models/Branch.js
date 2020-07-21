@@ -6,7 +6,7 @@ const BranchSchema = new Schema(
     businessId: { type: Schema.Types.ObjectId, ref: "Business", required: true },
     googlePlaceId: String,
     additionalInfo: Map,
-    visible: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
   },
   {
     timestamps: true,

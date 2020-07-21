@@ -8,7 +8,7 @@ const DishSchema = new Schema(
     businessId: { type: Schema.Types.ObjectId, ref: "Business" },
     image: { data: Buffer, contentType: String },
     price: Number,
-    visible: { type: Boolean, default: true },
+    isHidden: { type: Boolean, default: false },
   },
   {
     timestamps: true,
