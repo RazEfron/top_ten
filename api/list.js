@@ -71,7 +71,7 @@ async function updateList(id, body) {
 
   return List.findOneAndUpdate(
     { _id: id },
-    { name, description, currentVersionId, image, isHidden },
+    { currentVersionId, image, isHidden },
     { new: true, useFindAndModify: false },
     async (err, list) => {
       if (err) {
