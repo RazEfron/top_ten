@@ -1,5 +1,6 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
+const imageUtil = require("../utils/image")
 
 function getDish(id) {
   return Dish.findById(id)
@@ -47,8 +48,7 @@ async function createDish(body) {
   });
 
   if (image) {
-    dish.image.data = image;
-    dish.image.contentType = "image/png";
+    dish.image = imageUtil.getImageObject(image);
   }
   return Dish.create(dish)
 }
@@ -90,8 +90,7 @@ async function updateDish(id, body) {
         if (err) { throw err }
 
         if (image) {
-          dish.image.data = image;
-          dish.image.contentType = "image/png";
+          dish.image = imageUtil.getImageObject(image);
           await dish.save();
         }
       }

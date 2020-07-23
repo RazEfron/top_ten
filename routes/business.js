@@ -41,15 +41,5 @@ router.delete("/:id", function (req, res) {
       .catch((err) => res.status(404).json(err));
 });
 
-// !! DELETE ALL !!
-// router.delete("/", function (req, res) {
-//   Business.deleteMany({}, (err) => {
-//     if (err) console.log(err);
-//     console.log("Successful deletion");
-//   })
-//     .then(() => res.json("All businesses deleted!!!"))
-//     .catch((err) => res.status(404).json(err));
-// });
-
 module.exports = router;
 

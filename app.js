@@ -55,15 +55,15 @@ const users = require("./routes/user");
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
-app.use("/branches", branches);
-app.use("/businesses", businesses);
-app.use("/comments", comments);
-app.use("/dishes", dishes);
-app.use("/lists", lists);
-app.use("/listVersions", listVersions);
-app.use("/reviews", reviews);
-app.use("/texts", texts);
-app.use("/users", users);
+app.use("/branch", branches);
+app.use("/business", businesses);
+app.use("/comment", comments);
+app.use("/dish", dishes);
+app.use("/list", lists);
+app.use("/listVersion", listVersions);
+app.use("/review", reviews);
+app.use("/text", texts);
+app.use("/user", users);
 
 
 

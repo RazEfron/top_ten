@@ -1,5 +1,6 @@
 const ListVersion = require("../models/ListVersion");
 const textAPI = require("./textString");
+const reviewAPI = require("./review");
 
 function getListVersion(id) {
   return ListVersion.findById(id)
@@ -30,9 +31,12 @@ function getManyListVersions(condition = {}) {
 async function createListVersion(body) {
   let { listId, text, date, reviews, isHidden } = body;
 
-  text = await textAPI.create(text).catch((err) => {
-    throw err;
-  });
+  if (text) {
+
+    text = await textAPI.create(text).catch((err) => {
+      throw err;
+    });
+  }
 
   return ListVersion.create({
       listId, text, date, reviews, isHidden
@@ -43,6 +47,10 @@ async function deleteListVersion(id) {
   let list = await List.findById(id);
 
   textAPI.delete(list.text).catch((err) => {
+    throw err;
+  });
+
+  reviewAPI.deleteMany(list.reviews).catch((err) => {
     throw err;
   });
 
@@ -72,10 +80,19 @@ async function updateListVersion(id, body) {
     });
 }
 
+function deleteVersions(listId) {
+  return ListVersion.deleteMany({ listId }, function(err, result) {
+    if (err) {
+      throw err
+    } 
+  });
+}
+
 module.exports = {
   get: getListVersion,
   getMany: getManyListVersions,
   create: createListVersion,
   update: updateListVersion,
   delete: deleteListVersion,
+  deleteMany: deleteVersions
 };

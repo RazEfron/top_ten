@@ -21,7 +21,6 @@ function deleteTextString(id) {
 }
 
 function updateTextString(id, body) {
-    console.log(body.hebrew)
     return TextString.findOneAndUpdate({ _id: id }, body, { new: true, useFindAndModify: false });
 }
 

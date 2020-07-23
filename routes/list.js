@@ -9,7 +9,7 @@ router.get("/:id", (req, res) => {
       if (dish) {
         res.json(dish);
       } else {
-        res.status(404).json("No Such Dish");
+        res.status(404).json("No Such List");
       }
     })
     .catch((err) => res.status(404).json(err));

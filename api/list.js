@@ -1,5 +1,7 @@
 const List = require("../models/List");
 const textAPI = require("./textString");
+const versionAPI = require("./listVersion");
+
 
 function getList(id) {
   return List.findById(id)
@@ -17,13 +19,18 @@ function getManyLists(condition = {}) {
 
 async function createList(body) {
   let { name, description, currentVersionId, image, isHidden } = body;
-
+  
   name = await textAPI.create(name).catch((err) => {
     throw err;
   });
   description = await textAPI.create(description).catch((err) => {
     throw err;
   });
+
+  
+  currentVersionId = await versionAPI.create(currentVersionId).catch(err => {
+    throw err;
+  })
 
   let list = new List({
     name,
@@ -33,9 +40,14 @@ async function createList(body) {
     isHidden
   });
 
+  currentVersionId.listId = list._id
+  currentVersionId.save().catch(err => {
+    throw err;
+  })
+
   if (image) {
-    list.image.data = image;
-    list.image.contentType = "image/png";
+        dish.image = imageUtil.getImageObject(image);
+
   }
   return List.create(list);
 }
@@ -47,7 +59,10 @@ async function deleteList(id) {
     throw err;
   });
 
-//   add deletion of versions
+  versionAPI.deleteMany(id).catch((err) => {
+    console.log(err);
+    throw err;
+  });
 
   return List.deleteOne({ _id: id });
 }
@@ -74,9 +89,7 @@ async function updateList(id, body) {
     { currentVersionId, image, isHidden },
     { new: true, useFindAndModify: false },
     async (err, list) => {
-      if (err) {
-        throw err;
-      }
+      if (err) { throw err }
 
       if (image) {
         list.image.data = image;
