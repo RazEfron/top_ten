@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Navbar from './components/navbar'
+import userContext from './contexts/userContext';
+
+const jwt_decode = require('jwt-decode')
 
 function App() {
+  
+  const [user, setUser] = useState({});
+  const [auth, setAuth] = useState({ isAuthenticated: false });
+
+  if (localStorage.jwtToken) {
+    const decodedUser = jwt_decode(localStorage.jwtToken);
+    setUser(decodedUser);
+    setAuth({ isAuthenticated: true })
+    // const currentTime = Date.now() / 1000;
+    // if (decodedUser.exp < currentTime) {
+    //   // Logout the user and redirect to the login page
+    //   // window.location.href = "/login";
+    // }
+  } 
+  
+  debugger
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <userContext.Provider value={{ user, auth }}>
+      <Navbar/>
+    </userContext.Provider>
   );
 }
 

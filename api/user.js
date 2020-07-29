@@ -33,9 +33,10 @@ function loginUser(user, body) {
 
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
-        const payload = { id: user.id, name: user.name };
+        const { id, email, isAdmin } = user;
+        const payload = { id, email, isAdmin };
         jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-          resolve( {
+          resolve({
             success: true,
             token: "Bearer " + token,
           });
@@ -48,16 +49,12 @@ function loginUser(user, body) {
   })
 }
   
-function updateTextString(id, body) {
-  return TextString.findOneAndUpdate({ _id: id }, body, {
-    new: true,
-    useFindAndModify: false,
-  });
-}
-
-function deleteManyTextString(array) {
-  return TextString.deleteMany({ _id: { $in: array } });
-}
+// function authCurrent(id, body) {
+//   return TextString.findOneAndUpdate({ _id: id }, body, {
+//     new: true,
+//     useFindAndModify: false,
+//   });
+// }
 
 module.exports = {
   get: getUser,
