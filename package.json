@@ -4,7 +4,6 @@
   "description": "food listings app",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "server": "nodemon app.js",
     "server:debug": "nodemon --inspect app.js",
@@ -20,7 +19,7 @@
     "bcrypt": "5.0.0",
     "bcryptjs": "2.4.3",
     "body-parser": "1.19.0",
-    "concurrently": "^5.2.0",
+    "concurrently": "5.2.0",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "fs": "0.0.1-security",

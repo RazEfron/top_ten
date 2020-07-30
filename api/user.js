@@ -5,6 +5,7 @@ const keys = require("../config/keys");
 const passport = require("passport");
 
 function getUser(email) {
+  debugger
   return User.findOne({ email });
 }
 
@@ -12,30 +13,36 @@ function getManyUsers(condition = {}) {
   return User.find(condition);
 }
 
-function createUser(body) {
+async function createUser(body) {
+  debugger
     const newUser = new User({
       name: body.name,
       email: body.email,
       password: body.password,
     });
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(newUser.password, salt);
+    const salt = await bcrypt.genSaltSync(10);
+    const hash = await bcrypt.hashSync(newUser.password, salt);
 
     newUser.password = hash;
 
     return User.create(newUser)
 }
 
-function loginUser(user, body) {
+async function loginUser(body) {
+  debugger
+
+  let user = await User.findOne({ email: body.email })
+
   const { password } = body;
   return new Promise((resolve, reject) => {
-
+    debugger
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         const { id, email, isAdmin } = user;
         const payload = { id, email, isAdmin };
         jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+          debugger
           resolve({
             success: true,
             token: "Bearer " + token,

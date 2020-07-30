@@ -37,7 +37,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Body Parser
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -64,8 +63,6 @@ app.use("/listVersion", listVersions);
 app.use("/review", reviews);
 app.use("/text", texts);
 app.use("/user", users);
-
-
 
 const port = process.env.PORT || 5000;
 

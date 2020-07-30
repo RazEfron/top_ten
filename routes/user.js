@@ -2,9 +2,16 @@ const express = require("express");
 const router = express.Router();
 const userAPI = require("../api/user");
 
-const User = require('../models/User');
+router.get("/", async (req, res) => {
+  userAPI
+    .get(req.body.email)
+    .then((user) => res.json(user))
+    .catch((err) => res.json(err));
+})
+
 
 router.post("/register", async (req, res) => {
+  debugger
   let user = await userAPI.get(req.body.email)
     .catch(err => {
       if (err) { throw err }
@@ -22,15 +29,25 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  debugger
+
   let user = await userAPI.get(req.body.email)
 
   if (!user) {
     return res.status(400).json("This user does not exist");
   }
 
-  await userAPI.loginUser(user, req.body)
-    .then(token => res.json(token))
-    .catch(err => console.log(err))
+  userAPI.loginUser(req.body)
+    .then(token => {
+      debugger
+      res.json({
+        success: token.success,
+        token: token.token
+      })
+    })
+    .catch(err => {
+      debugger
+      console.log(err)})
 });
 
 // router.get(
