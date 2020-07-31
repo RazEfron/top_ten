@@ -42,7 +42,7 @@ function Login(props) {
         </label>
         <label>Password
         <input
-          type="text"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
