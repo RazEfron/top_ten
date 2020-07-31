@@ -1,12 +1,14 @@
 function setHeaders(headers) {
   
   if (localStorage.jwtToken) {
-    return {
+    let bla =  {
       ...headers,
       Authorization: `Bearer ${localStorage.jwtToken}`,
     };
+    debugger
+    return bla
   } else {
-    return {};
+    return headers;
   }
 }
 
@@ -14,19 +16,20 @@ function genericRequest(type, endpoint, data = {}, onSuccess, onError) {
     debugger
     fetch(endpoint, {
       method: type,
-      headers: {
+      headers: setHeaders({
         Accept: "application/json",
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify(data),
     })
       .then((res) => {
-        debugger
+        debugger;
         res.json().then((data) => onSuccess(data));
-        })
+      })
       .catch((err) => {
-        debugger
-        onError(err)});
+        debugger;
+        onError(err);
+      });
 }
 
 

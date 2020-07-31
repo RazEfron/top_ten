@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userAPI = require("../api/user");
+const passport = require("passport");
 
 router.get("/", async (req, res) => {
   userAPI
@@ -50,18 +51,18 @@ router.post("/login", async (req, res) => {
       console.log(err)})
 });
 
-// router.get(
-//   "/current",
-//   passport.authenticate("jwt", { session: false }),
-//   (req, res) => {
-//     res.json({
-//       id: req.user.id,
-//       name: req.user.name,
-//       email: req.user.email,
-//       admin: req.user.admin
-//     });
-//   }
-// );
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      admin: req.user.admin
+    });
+  }
+);
 
 module.exports = router;
 

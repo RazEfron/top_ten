@@ -16,25 +16,19 @@ function Login(props) {
         password
     }
     debugger
-    // fetch("user/register", {
-    //   method: "POST",
-    //   body: JSON.stringify(user),
-    // })
-    //   .then((user) => console.log(user))
-    //   .catch((err) => console.log(err));
     apiUtil.post('/user/login', user, handleSucces, handleError)
   }
 
   function handleSucces(token) {
-    debugger
     localStorage.setItem("jwtToken", token.token);
+    props.value.setContext();
   }
 
   function handleError(err) {
       debugger
       console.log(err)
   }
-
+  debugger
   return (
     <>
       <form>
