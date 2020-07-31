@@ -1,7 +1,7 @@
 import React from 'react'
 import userContext from '../contexts/userContext';
 
-import Login from './loginForm'
+import Login from './LoginForm'
 
 function Navbar() {
     

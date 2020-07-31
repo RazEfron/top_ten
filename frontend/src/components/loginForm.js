@@ -10,7 +10,7 @@ function Login(props) {
   function handleSubmit(e) {
     debugger
     e.preventDefault();
-    // localStorage.removeItem("jwtToken");
+    localStorage.removeItem("jwtToken");
     const user = {
         email,
         password
