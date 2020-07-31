@@ -3,7 +3,7 @@ function setHeaders(headers) {
   if (localStorage.jwtToken) {
     let bla =  {
       ...headers,
-      Authorization: `Bearer ${localStorage.jwtToken}`,
+      Authorization: localStorage.jwtToken,
     };
     debugger
     return bla

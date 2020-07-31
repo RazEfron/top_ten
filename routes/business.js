@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
 
 const businessAPI = require("../api/business");
 
@@ -23,8 +24,9 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
-router.post("/", (req, res) => {
-  businessAPI.create(req.body)
+router.post("/", passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    businessAPI.create(req.body)
       .then((business) => res.json(business))
       .catch((err) => res.json(err));
 });

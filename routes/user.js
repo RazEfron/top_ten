@@ -29,10 +29,9 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
-  debugger
-
-  let user = await userAPI.get(req.body.email)
+router.post("/login", passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let user = await userAPI.get(req.body.email)
 
   if (!user) {
     return res.status(400).json("This user does not exist");
@@ -49,7 +48,7 @@ router.post("/login", async (req, res) => {
     .catch(err => {
       debugger
       console.log(err)})
-});
+  })
 
 router.get(
   "/current",
