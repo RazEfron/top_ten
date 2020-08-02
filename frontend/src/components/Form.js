@@ -4,30 +4,42 @@ const _ = require('lodash');
 
 function Form(props) {
     
-    const [formState, setFormField] = useState({});
+    const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
 
-    useEffect(() => {
+    function setInitialState(newState, fields) {
         debugger
-        _.forEach(fields, createState);
-        setFormField(() => newState);
-    }, []);
+        _.forEach(fields, (field) => {
+            if (field.type === "TextString") {
+            newState[field.name] = {
+              hebrew: field.info.hebrew,
+              english: field.info.english,
+            };
+          } else {
+            newState[field.name] = field.info;
+          }
+        });
+        return newState
+    }
 
     function createForm() {
+        debugger
         if (Object.keys(formState).length > 0) {
-            return _.map(fields, inputMaker);
+            return _.map(props.fields, inputMaker);
         } else {
             return [];
         }
     }
 
-    let { fields, formType } = props;
     function update(field) {
+        debugger
         if (field === "hebrew" || field === "english") {
+            debugger
             return (e) => {
+                debugger
                 setFormField(oldState => {
                     oldState[e.currentTarget.id][field] = e.currentTarget.value;
-                    
-                    return oldState
+                    let newState = Object.assign({}, oldState)
+                    return newState;
                 })
             }
         } else if (field === "image") {
@@ -39,6 +51,7 @@ function Form(props) {
             };
         } else {
             return (e) => {
+                debugger
               if (e.currentTarget.type === "checkbox") {
                 setFormField((oldState) => ({
                 ...oldState,
@@ -55,6 +68,7 @@ function Form(props) {
     }
 
     function inputMaker(field) {
+        debugger
         switch (field.type) {
           case "TextString":
             debugger
@@ -65,6 +79,7 @@ function Form(props) {
                   value={formState[field.name]["hebrew"]}
                   name={field.type}
                   id={field.name}
+                //   key={}
                   onChange={update("hebrew")}
                   placeholder={field.name}
                 />
@@ -73,6 +88,7 @@ function Form(props) {
                   value={formState[field.name]["english"]}
                   name={field.type}
                   id={field.name}
+                //   key={}
                   onChange={update("english")}
                   placeholder={field.name}
                 />
@@ -83,6 +99,7 @@ function Form(props) {
               <input
                 type="text"
                 value={formState.name}
+                // key={}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
@@ -92,6 +109,7 @@ function Form(props) {
               <input
                 type="date"
                 value={formState.name}
+                // key={}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
@@ -102,6 +120,7 @@ function Form(props) {
                 type="checkbox"
                 checked={formState.name}
                 name={field.type}
+                // key={}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
@@ -111,6 +130,7 @@ function Form(props) {
               <input
                 type="number"
                 value={formState.name}
+                // key={}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
@@ -121,6 +141,7 @@ function Form(props) {
               <input
                 type="file"
                 value={formState.name}
+                // key={}
                 onChange={update(field.name)}
                 accept="image/*"
               />
@@ -129,18 +150,6 @@ function Form(props) {
             );
           default:
             break;
-        }
-    }
-
-    let newState = {};
-    function createState(field) {
-        if (field.type === "TextString") {
-            newState[field.name] = {
-              hebrew: field.info.hebrew,
-              english: field.info.english,
-            };
-        } else {
-            newState[field.name] = field.info
         }
     }
 
