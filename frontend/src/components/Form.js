@@ -35,15 +35,18 @@ function Form(props) {
         if (field === "hebrew" || field === "english") {
             debugger
             return (e) => {
+              e.persist();
                 debugger
                 setFormField(oldState => {
-                    oldState[e.currentTarget.id][field] = e.currentTarget.value;
+                  debugger
+                    oldState[e.target.id][field] = e.target.value;
                     let newState = Object.assign({}, oldState)
                     return newState;
                 })
             }
         } else if (field === "image") {
             return (e) => {
+              e.persist()
               setFormField((oldState) => ({
                 ...oldState,
                 [field]: URL.createObjectURL(e.target.files[0]),
@@ -52,7 +55,8 @@ function Form(props) {
         } else {
             return (e) => {
                 debugger
-              if (e.currentTarget.type === "checkbox") {
+                e.persist()
+              if (e.target.type === "checkbox") {
                 setFormField((oldState) => ({
                 ...oldState,
                 [field]: e.target.checked,
@@ -60,7 +64,7 @@ function Form(props) {
               } else {
                 setFormField((oldState) => ({
                     ...oldState,
-                    [field]: e.currentTarget.value
+                    [field]: e.target.value
                     }));
                 };
             }
