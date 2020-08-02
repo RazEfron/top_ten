@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 
 const _ = require('lodash');
 
-
 function Form(props) {
     
     const [formState, setFormField] = useState({});
 
     useEffect(() => {
         debugger
-    });
-
-    function createForm() {
         _.forEach(fields, createState);
         setFormField(() => newState);
-        return _.map(fields, inputMaker);
+    }, []);
+
+    function createForm() {
+        if (Object.keys(formState).length > 0) {
+            return _.map(fields, inputMaker);
+        } else {
+            return [];
+        }
     }
 
     let { fields, formType } = props;
@@ -67,7 +70,7 @@ function Form(props) {
                 />
                 <input
                   type="text"
-                  value={formState.name["english"]}
+                  value={formState[field.name]["english"]}
                   name={field.type}
                   id={field.name}
                   onChange={update("english")}
