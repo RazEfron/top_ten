@@ -1,72 +1,65 @@
-import React, { useState } from 'react';
-import e from 'express';
+import React, { useState, useEffect } from "react";
 
 const _ = require('lodash');
 
 
 function Form(props) {
+    
     const [formState, setFormField] = useState({});
 
-    let { fields, formType } = props;
-
-    // {
-    //     type: "TextString",
-    //     name: "someName",
-    //     info: {
-    //         hebrew: "",
-    //         english: ""
-    //     }
-    // }
-    // {
-    //     name: {
-    //         hebrew: "",
-    //         english: ""
-    //     }
-    // }
-
-    function update(field) {
+    useEffect(() => {
         debugger
+    });
+
+    function createForm() {
+        _.forEach(fields, createState);
+        setFormField(() => newState);
+        return _.map(fields, inputMaker);
+    }
+
+    let { fields, formType } = props;
+    function update(field) {
         if (field === "hebrew" || field === "english") {
             return (e) => {
-                debugger
                 setFormField(oldState => {
                     oldState[e.currentTarget.id][field] = e.currentTarget.value;
-                    debugger
+                    
                     return oldState
                 })
             }
-        } else if () {
-
-        } else {
+        } else if (field === "image") {
             return (e) => {
-              debugger;
               setFormField((oldState) => ({
                 ...oldState,
-                [field]: e.currentTarget.value
+                [field]: URL.createObjectURL(e.target.files[0]),
               }));
             };
+        } else {
+            return (e) => {
+              if (e.currentTarget.type === "checkbox") {
+                setFormField((oldState) => ({
+                ...oldState,
+                [field]: e.target.checked,
+                    }));
+              } else {
+                setFormField((oldState) => ({
+                    ...oldState,
+                    [field]: e.currentTarget.value
+                    }));
+                };
+            }
         }
-
-
-      
     }
 
     function inputMaker(field) {
         switch (field.type) {
           case "TextString":
-            setFormField(oldState => ({
-                ...oldState,
-                [field.name]: {
-                    hebrew: field.info.hebrew,
-                    english: field.info.english
-                }
-            }))
-
+            debugger
             return (
               <>
                 <input
                   type="text"
-                  value={formState[name][hebrew]}
+                  value={formState[field.name]["hebrew"]}
                   name={field.type}
                   id={field.name}
                   onChange={update("hebrew")}
@@ -74,7 +67,7 @@ function Form(props) {
                 />
                 <input
                   type="text"
-                  value={formState[name][english]}
+                  value={formState.name["english"]}
                   name={field.type}
                   id={field.name}
                   onChange={update("english")}
@@ -83,73 +76,49 @@ function Form(props) {
               </>
             );
           case "String":
-            setFormField(oldState => ({
-            ...oldState,
-            [field.name]: field.info
-            }))
-
             return (
               <input
                 type="text"
-                value={formState[name]}
+                value={formState.name}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
             );
           case "Date":
-            setFormField(oldState => ({
-            ...oldState,
-            [field.name]: field.info
-            }))
-
             return (
               <input
                 type="date"
-                value={formState[name]}
+                value={formState.name}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
             );
           case "Boolean":
-            setFormField(oldState => ({
-            ...oldState,
-            [field.name]: field.info
-            }))
             return (
               <input
                 type="checkbox"
-                value={formState[name]}
+                checked={formState.name}
                 name={field.type}
                 onChange={update(field.name)}
                 placeholder={field.name}
               />
             );
           case "Number":
-            setFormField(oldState => ({
-            ...oldState,
-            [field.name]: field.info
-            }))
-
             return (
               <input
                 type="number"
-                value={formState[name]}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formState.name}
+                onChange={update(field.name)}
                 placeholder={field.name}
               />
             );
           case "Image":
-            setFormField(oldState => ({
-            ...oldState,
-            [field.name]: field.info
-            }))
-
             return (
             <>
               <input
                 type="file"
-                value={formState[name]}
-                onChange={(e) => setEmail(e.target.value)} // URL.createObjectURL(event.target.files[0])
+                value={formState.name}
+                onChange={update(field.name)}
                 accept="image/*"
               />
               <img src={formState.image}/>
@@ -160,30 +129,23 @@ function Form(props) {
         }
     }
 
-    // {
-    //   name: {
-    //     hebrew: "",
-    //     english: ""
-    //   },
-    //   description: {
-    //     hebrew: "",
-    //     english: ""
-    //   },
-    //   image: "",
-    //   isHidden: Boolean
-    // }
+    let newState = {};
+    function createState(field) {
+        if (field.type === "TextString") {
+            newState[field.name] = {
+              hebrew: field.info.hebrew,
+              english: field.info.english,
+            };
+        } else {
+            newState[field.name] = field.info
+        }
+    }
 
-
-    let form = _.map(fields, inputMaker)
-    // props.fields = array of objects with two keys type and name. type coresponds to what input type will be rendered and name is the name of that input field
-    // <input
-    //   type="text"
-    //   value={email}
-    //   onChange={(e) => setEmail(e.target.value)}
-    //   placeholder="Email"
-    // />;
-
-    
+    return (
+        <form>
+            {createForm()}
+        </form>
+    )
 }
 
 export default Form
