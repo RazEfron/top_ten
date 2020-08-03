@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom"
 import Page from "./components/Page";
 import userContext from "./contexts/context";
 
 const jwt_decode = require("jwt-decode");
 
-function Console() {
+function Console(props) {
+  debugger
     const [user, setUser] = useState({});
     const [auth, setAuth] = useState(false);
     const [admin, setAdmin] = useState(false);
-    const [currentUrl, setUrlState] = useState('/');
+    const [currentUrl, setUrlState] = useState(() => '/');
 
     function setUserAndAuth() {
       const decodedUser = jwt_decode(localStorage.jwtToken);
@@ -23,28 +25,35 @@ function Console() {
         setAdmin(false);
       }
     }
+    debugger
+    
+  //   useEffect(() => {
+  //     history.push(currentUrl)
+  //   },[])
 
     function setUrl(url) {
-      setUrlState(url);
-    }
+      setUrlState(url)
+  }
 
     if (!auth && localStorage.jwtToken) {
       setUserAndAuth()
     };
     return (
       <>
-      <userContext.Provider
-        value={{
-          user,
-          auth,
-          admin,
-          currentUrl,
-          setUrl,
-          setAuthContext: setUserAndAuth,
-        }}
-      >
-      <Page />        
-      </userContext.Provider>
+        <BrowserRouter>
+          <userContext.Provider
+            value={{
+              user,
+              auth,
+              admin,
+              currentUrl,
+              setUrl,
+              setAuthContext: setUserAndAuth,
+            }}
+          >
+            <Page />
+          </userContext.Provider>
+        </BrowserRouter>
       </>
     );
 }

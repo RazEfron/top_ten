@@ -29,7 +29,7 @@ function Navbar() {
         info: true,
       },
     ];
-    debugger
+    
     if (user.admin) {
       return(
         <>
