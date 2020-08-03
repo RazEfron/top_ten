@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
 function getUser(email) {
-  debugger
+  
   return User.findOne({ email });
 }
 
@@ -13,7 +13,7 @@ function getManyUsers(condition = {}) {
 }
 
 async function createUser(body) {
-  debugger
+  
     const newUser = new User({
       name: body.name,
       email: body.email,
@@ -29,19 +29,19 @@ async function createUser(body) {
 }
 
 async function loginUser(body) {
-  debugger
+  
 
   let user = await User.findOne({ email: body.email })
 
   const { password } = body;
   return new Promise((resolve, reject) => {
-    debugger
+    
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         const { id, email, isAdmin } = user;
         const payload = { id, email, isAdmin };
         jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-          debugger
+          
           resolve({
             success: true,
             token: "Bearer " + token,

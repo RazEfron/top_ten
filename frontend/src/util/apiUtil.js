@@ -5,7 +5,7 @@ function setHeaders(headers) {
       ...headers,
       Authorization: localStorage.jwtToken,
     };
-    debugger
+    
     return bla
   } else {
     return headers;
@@ -13,7 +13,7 @@ function setHeaders(headers) {
 }
 
 function genericRequest(type, endpoint, data = {}, onSuccess, onError) {
-    debugger
+    
     fetch(endpoint, {
       method: type,
       headers: setHeaders({
@@ -23,11 +23,11 @@ function genericRequest(type, endpoint, data = {}, onSuccess, onError) {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        debugger;
+        ;
         res.json().then((data) => onSuccess(data));
       })
       .catch((err) => {
-        debugger;
+        ;
         onError(err);
       });
 }

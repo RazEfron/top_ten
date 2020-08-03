@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const _ = require('lodash');
 
@@ -7,7 +7,7 @@ function Form(props) {
     const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
 
     function setInitialState(newState, fields) {
-        debugger
+        
         _.forEach(fields, (field) => {
             if (field.type === "TextString") {
             newState[field.name] = {
@@ -22,7 +22,7 @@ function Form(props) {
     }
 
     function createForm() {
-        debugger
+        
         if (Object.keys(formState).length > 0) {
             return _.map(props.fields, inputMaker);
         } else {
@@ -31,14 +31,14 @@ function Form(props) {
     }
 
     function update(field) {
-        debugger
+        
         if (field === "hebrew" || field === "english") {
-            debugger
+            
             return (e) => {
               e.persist();
-                debugger
+                
                 setFormField(oldState => {
-                  debugger
+                  
                     oldState[e.target.id][field] = e.target.value;
                     let newState = Object.assign({}, oldState)
                     return newState;
@@ -54,7 +54,7 @@ function Form(props) {
             };
         } else {
             return (e) => {
-                debugger
+                
                 e.persist()
               if (e.target.type === "checkbox") {
                 setFormField((oldState) => ({
@@ -72,10 +72,10 @@ function Form(props) {
     }
 
     function inputMaker(field) {
-        debugger
+        
         switch (field.type) {
           case "TextString":
-            debugger
+            
             return (
               <>
                 <input
@@ -149,7 +149,7 @@ function Form(props) {
                 onChange={update(field.name)}
                 accept="image/*"
               />
-              <img src={formState.image}/>
+              <img src={formState.image} alt=""/>
             </>
             );
           default:

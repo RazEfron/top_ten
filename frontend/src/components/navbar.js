@@ -1,11 +1,11 @@
-import React from 'react'
-import userContext from '../contexts/userContext';
+import React, { useContext } from 'react'
 
 import Login from './LoginForm'
 import Form from './Form'
+import userContext from '../contexts/userContext'
 
 function Navbar() {
-
+  let user = useContext(userContext)
     let fields = [
       {
         type: "TextString",
@@ -29,15 +29,22 @@ function Navbar() {
         info: true,
       },
     ];
-    
-    return(
+    debugger
+    if (user.admin) {
+      return(
         <>
-        <userContext.Consumer>
-            {value => <Login value={value}/>}
-        </userContext.Consumer>
+          <Login/>
+          <div>Youre The admin</div>
+          <Form fields={fields} formType="edit" />
+        </>
+      )} else {
+      return(
+        <>
+        <Login/>
         <Form fields={fields} formType="edit" />
         </>
-    )
+        )
+      }
 }
 
 export default Navbar

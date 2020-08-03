@@ -7,7 +7,7 @@ const TextStringSchema = new Schema(
     english: { type: String }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 

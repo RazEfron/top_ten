@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 
 
 router.post("/register", async (req, res) => {
-  debugger
+  
   let user = await userAPI.get(req.body.email)
     .catch(err => {
       if (err) { throw err }
@@ -38,14 +38,14 @@ router.post("/login", async (req, res) => {
 
   userAPI.loginUser(req.body)
     .then(token => {
-      debugger
+      
       res.json({
         success: token.success,
         token: token.token
       })
     })
     .catch(err => {
-      debugger
+      
       console.log(err)})
 });
 

@@ -1,34 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import userContext from '../contexts/userContext';
 
 const apiUtil = require('../util/apiUtil')
 
-function Login(props) {
-  
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const context = useContext(userContext);
 
   function handleSubmit(e) {
-    debugger
+    
     e.preventDefault();
     localStorage.removeItem("jwtToken");
     const user = {
         email,
         password
     }
-    debugger
+    
     apiUtil.post('/user/login', user, handleSucces, handleError)
   }
 
   function handleSucces(token) {
-    localStorage.setItem("jwtToken", token.token);
-    props.value.setContext();
+    if (token.token) {
+      localStorage.setItem("jwtToken", token.token);
+      context.setContext();
+    }
   }
 
   function handleError(err) {
-      debugger
+      
       console.log(err)
   }
-  debugger
+  
   return (
     <>
       <form>
