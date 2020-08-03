@@ -4,6 +4,8 @@ const userContext = createContext({
   user: {},
   isAuthenticated: false,
   isAdmin: false,
-  setContext: () => {}
+  currentUrl: '/',
+  setUrl: () => {},
+  setAuthContext: () => {}
 });
 export default userContext;

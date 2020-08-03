@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import Login from './LoginForm'
 import Form from './Form'
-import userContext from '../contexts/userContext'
+import userContext from '../contexts/context'
 
 function Navbar() {
   let user = useContext(userContext)

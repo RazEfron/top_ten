@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Page from "./components/Page";
-import userContext from "./contexts/userContext";
+import userContext from "./contexts/context";
 
 const jwt_decode = require("jwt-decode");
 
@@ -8,6 +8,7 @@ function Console() {
     const [user, setUser] = useState({});
     const [auth, setAuth] = useState(false);
     const [admin, setAdmin] = useState(false);
+    const [currentUrl, setUrlState] = useState('/');
 
     function setUserAndAuth() {
       const decodedUser = jwt_decode(localStorage.jwtToken);
@@ -23,20 +24,28 @@ function Console() {
       }
     }
 
+    function setUrl(url) {
+      setUrlState(url);
+    }
+
     if (!auth && localStorage.jwtToken) {
       setUserAndAuth()
     };
     return (
+      <>
       <userContext.Provider
         value={{
           user,
           auth,
           admin,
-          setContext: setUserAndAuth,
+          currentUrl,
+          setUrl,
+          setAuthContext: setUserAndAuth,
         }}
       >
-      <Page />
+      <Page />        
       </userContext.Provider>
+      </>
     );
 }
 

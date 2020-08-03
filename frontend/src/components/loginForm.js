@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import userContext from '../contexts/userContext';
+import userContext from '../contexts/context';
 
 const apiUtil = require('../util/apiUtil')
 
@@ -24,7 +24,7 @@ function Login() {
   function handleSucces(token) {
     if (token.token) {
       localStorage.setItem("jwtToken", token.token);
-      context.setContext();
+      context.setAuthContext();
     }
   }
 
