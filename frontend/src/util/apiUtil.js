@@ -12,7 +12,7 @@ function setHeaders(headers) {
   }
 }
 
-function genericRequest(type, endpoint, data = {}, onSuccess, onError) {
+function genericPostPutRequest(type, endpoint, data = {}, onSuccess, onError) {
     
     fetch(endpoint, {
       method: type,
@@ -32,10 +32,26 @@ function genericRequest(type, endpoint, data = {}, onSuccess, onError) {
       });
 }
 
+function genericRequest(type, endpoint, onSuccess, onError) {
+  fetch(endpoint, {
+    method: type,
+    headers: setHeaders({
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }),
+  })
+    .then((res) => {
+      res.json().then((data) => onSuccess(data));
+    })
+    .catch((err) => {
+      onError(err);
+    });
+}
+
 
 module.exports = {
-    get: genericRequest.bind(null, 'GET'),
-    post: genericRequest.bind(null, 'POST'),
-    put: genericRequest.bind(null, 'PUT'),
-    delete: genericRequest.bind(null, 'DELETE')
-}
+  get: genericRequest.bind(null, "GET"),
+  post: genericPostPutRequest.bind(null, "POST"),
+  put: genericPostPutRequest.bind(null, "PUT"),
+  delete: genericRequest.bind(null, "DELETE"),
+};

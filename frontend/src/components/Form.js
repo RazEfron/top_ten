@@ -6,8 +6,11 @@ function Form(props) {
     
     const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
 
+    function handleSubmit(e) {
+      
+    }
+
     function setInitialState(newState, fields) {
-        
         _.forEach(fields, (field) => {
             if (field.type === "TextString") {
             newState[field.name] = {
@@ -31,9 +34,7 @@ function Form(props) {
     }
 
     function update(field) {
-        
         if (field === "hebrew" || field === "english") {
-            
             return (e) => {
               e.persist();
                 
@@ -49,12 +50,11 @@ function Form(props) {
               e.persist()
               setFormField((oldState) => ({
                 ...oldState,
-                [field]: URL.createObjectURL(e.target.files[0]),
+                [field]: e.target.files,
               }));
             };
         } else {
             return (e) => {
-                
                 e.persist()
               if (e.target.type === "checkbox") {
                 setFormField((oldState) => ({
@@ -126,7 +126,6 @@ function Form(props) {
                 name={field.type}
                 // key={}
                 onChange={update(field.name)}
-                placeholder={field.name}
               />
             );
           case "Number":
@@ -144,8 +143,8 @@ function Form(props) {
             <>
               <input
                 type="file"
-                value={formState.name}
                 // key={}
+                name="myImage"
                 onChange={update(field.name)}
                 accept="image/*"
               />
@@ -158,8 +157,11 @@ function Form(props) {
     }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             {createForm()}
+            <button>
+              submit form
+            </button>
         </form>
     )
 }

@@ -29,6 +29,7 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(body) {
+  debugger
   let { name, description, businessId, image, price, isHidden } = body;
 
   name = await textAPI.create(name).catch((err) => {

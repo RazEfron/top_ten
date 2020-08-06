@@ -24,6 +24,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+  debugger
   dishAPI.create(req.body)
     .then((dish) => res.json(dish))
     .catch((err) => res.json(err));
