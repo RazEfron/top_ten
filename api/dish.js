@@ -1,6 +1,8 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
 const imageUtil = require("../utils/image")
+const fs = require("fs");
+
 
 function getDish(id) {
   return Dish.findById(id)
@@ -28,29 +30,32 @@ function getManyDishes(condition = {}) {
     });
 }
 
-async function createDish(body) {
+async function createDish(body, file) {
   debugger
-  let { name, description, businessId, image, price, isHidden } = body;
-
-  name = await textAPI.create(name).catch((err) => {
+  var data = fs.readFileSync(file.path);
+  debugger
+  let { name, description, businessId, price, isHidden } = body;
+  debugger
+  name = await textAPI.create(JSON.parse(name)).catch((err) => {
     throw err;
   });
-  description = await textAPI.create(description).catch((err) => {
+  description = await textAPI.create(JSON.parse(description)).catch((err) => {
     throw err;
   });
-
+  debugger
   let dish = new Dish({
     name,
     description,
     businessId,
-    image,
     price,
     isHidden
   });
-
-  if (image) {
-    dish.image = imageUtil.getImageObject(image);
+  debugger
+  if (file) {
+    debugger
+    dish.image = imageUtil.getImageObject(file.path);
   }
+  debugger
   return Dish.create(dish)
 }
 

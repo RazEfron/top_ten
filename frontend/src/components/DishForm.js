@@ -15,19 +15,20 @@ function DishForm() {
         english: "",
         },
         image: {},
-        visible: true,
+        isHidden: true,
+        price: 0
     }));
 
     function handleSubmit(e) {
         e.preventDefault();
-        debugger
         let form = new FormData();
         _.forEach(dishState, function (value, key) {
           debugger
+          if (typeof value === 'object' && key != 'image') {
+            value = JSON.stringify(value)
+          }
           form.append(key, value)
-          console.log(form.get(key))
         });
-        debugger
         apiUtil.post('/dish', form, (res) => console.log(res), (err) => console.log(err))
     }
 
@@ -111,6 +112,11 @@ function DishForm() {
           placeholder={"name"}
         />
         <input
+          type="number"
+          value={dishState["price"]}
+          onChange={update("price")}
+        />
+        <input
           type="file"
           name="myImage"
           onChange={update("image")}
@@ -119,8 +125,8 @@ function DishForm() {
         <img src={imagePreview} alt="" />
         <input
           type="checkbox"
-          checked={dishState.visible}
-          onChange={update("visible")}
+          checked={dishState.isHidden}
+          onChange={update("isHidden")}
         />
         <button>Submit</button>
       </form>

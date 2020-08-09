@@ -25,18 +25,13 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  // debugger
+  debugger
   upload(req, res, (err) => {
     debugger
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(req.file)
-    }
+    dishAPI.create(req.body, req.file)
+    .then((dish) => res.json(dish))
+    .catch((err) => res.json(err));
   })
-//   dishAPI.create(req.body)
-//     .then((dish) => res.json(dish))
-//     .catch((err) => res.json(err));
 });
 
 router.put("/:id", async function (req, res) {
