@@ -6,6 +6,9 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser");
 const passport = require("passport");
 
+const storage = require('./utils/multer').storage;
+storage
+
 const app = express();
 
 // Certificate setup for https for devolepment
@@ -37,8 +40,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Body Parser
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 
 // Routes
 const branches = require("./routes/branch");
@@ -52,6 +55,8 @@ const texts = require("./routes/textString");
 const users = require("./routes/user");
 
 app.use(passport.initialize());
+app.use(express.static('./public'));
+
 require("./config/passport")(passport);
 
 app.use("/branch", branches);

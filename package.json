@@ -22,11 +22,13 @@
     "concurrently": "5.2.0",
     "dotenv": "8.2.0",
     "express": "4.17.1",
+    "express-fileupload": "^1.1.10",
     "fs": "0.0.1-security",
     "https": "1.0.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.19",
     "mongoose": "5.9.22",
+    "multer": "^1.4.2",
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
     "validator": "13.1.1"

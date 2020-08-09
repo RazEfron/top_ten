@@ -1,3 +1,5 @@
+const multer = require('multer')
+
 function getImageObject(imageData) {
   debugger
   return {

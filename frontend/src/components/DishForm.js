@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+const _ = require("lodash");
 
 const apiUtil = require("../util/apiUtil");
 
@@ -20,7 +21,12 @@ function DishForm() {
     function handleSubmit(e) {
         e.preventDefault();
         debugger
-        let form = new FormData(e.target);
+        let form = new FormData();
+        _.forEach(dishState, function (value, key) {
+          debugger
+          form.append(key, value)
+          console.log(form.get(key))
+        });
         debugger
         apiUtil.post('/dish', form, (res) => console.log(res), (err) => console.log(err))
     }

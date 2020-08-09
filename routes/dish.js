@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require('../utils/multer').upload
 
 const dishAPI = require("../api/dish");
 
@@ -24,10 +25,18 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  debugger
-  dishAPI.create(req.body)
-    .then((dish) => res.json(dish))
-    .catch((err) => res.json(err));
+  // debugger
+  upload(req, res, (err) => {
+    debugger
+    if (err) {
+      console.log(err)
+    } else {
+      console.log(req.file)
+    }
+  })
+//   dishAPI.create(req.body)
+//     .then((dish) => res.json(dish))
+//     .catch((err) => res.json(err));
 });
 
 router.put("/:id", async function (req, res) {

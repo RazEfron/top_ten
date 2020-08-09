@@ -13,14 +13,10 @@ function setHeaders(headers) {
 }
 
 function genericPostPutRequest(type, endpoint, data = {}, onSuccess, onError) {
-    
+    debugger
     fetch(endpoint, {
       method: type,
-      headers: setHeaders({
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }),
-      body: JSON.stringify(data),
+      body: data,
     })
       .then((res) => {
         ;
