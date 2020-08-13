@@ -13,15 +13,20 @@ function Login() {
     
     e.preventDefault();
     localStorage.removeItem("jwtToken");
-    const user = {
-        email,
-        password
-    }
+    // const user = {
+    //     email,
+    //     password
+    // }
+
+    let form = new FormData();
+    form.append("email", email);
+    form.append("password", password);
     
-    apiUtil.post('/user/login', user, handleSucces, handleError)
+    apiUtil.post('/user/login', form, handleSucces, handleError)
   }
 
   function handleSucces(token) {
+    
     if (token.token) {
       localStorage.setItem("jwtToken", token.token);
       context.setAuthContext();

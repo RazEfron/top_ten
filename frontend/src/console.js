@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom"
 import Page from "./components/Page";
 import userContext from "./contexts/context";
@@ -6,7 +6,6 @@ import userContext from "./contexts/context";
 const jwt_decode = require("jwt-decode");
 
 function Console(props) {
-  debugger
     const [user, setUser] = useState({});
     const [auth, setAuth] = useState(false);
     const [admin, setAdmin] = useState(false);
@@ -25,11 +24,6 @@ function Console(props) {
         setAdmin(false);
       }
     }
-    debugger
-    
-  //   useEffect(() => {
-  //     history.push(currentUrl)
-  //   },[])
 
     function setUrl(url) {
       setUrlState(url)

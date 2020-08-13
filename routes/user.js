@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const userAPI = require("../api/user");
 const passport = require("passport");
+const upload = require("../utils/multer").upload;
+
 
 router.get("/", async (req, res) => {
   userAPI
@@ -29,7 +31,8 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", upload.single("image"), async (req, res) => {
+  
   let user = await userAPI.get(req.body.email)
 
   if (!user) {

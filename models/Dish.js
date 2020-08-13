@@ -6,7 +6,7 @@ const DishSchema = new Schema(
     name: { type: Schema.Types.ObjectId, ref: "TextString" },
     description: { type: Schema.Types.ObjectId, ref: "TextString" },
     businessId: { type: Schema.Types.ObjectId, ref: "Business" },
-    image: { data: Buffer, contentType: String },
+    image: {},
     price: Number,
     isHidden: { type: Boolean, default: false },
   },

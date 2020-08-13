@@ -40,8 +40,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Body Parser
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Routes
 const branches = require("./routes/branch");

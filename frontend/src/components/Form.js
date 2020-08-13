@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const _ = require('lodash');
 
 function Form(props) {
-    
+    debugger
     const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
 
     function handleSubmit(e) {
@@ -34,6 +34,7 @@ function Form(props) {
     }
 
     function update(field) {
+      debugger
         if (field === "hebrew" || field === "english") {
             return (e) => {
               e.persist();
@@ -46,26 +47,33 @@ function Form(props) {
                 })
             }
         } else if (field === "image") {
+          debugger
             return (e) => {
               e.persist()
               setFormField((oldState) => ({
                 ...oldState,
-                [field]: e.target.files,
+                [field]: e.target.files[0],
               }));
             };
         } else {
+          debugger
             return (e) => {
                 e.persist()
               if (e.target.type === "checkbox") {
+                debugger
                 setFormField((oldState) => ({
                 ...oldState,
                 [field]: e.target.checked,
                     }));
               } else {
-                setFormField((oldState) => ({
+                debugger
+                setFormField((oldState) => {
+                  debugger
+                  return {
                     ...oldState,
                     [field]: e.target.value
-                    }));
+                    }
+                  });
                 };
             }
         }
@@ -77,79 +85,101 @@ function Form(props) {
           case "TextString":
             
             return (
-              <>
+              <div>
+                <label>{field.name}
+                  <input
+                    type="text"
+                    value={formState[field.name]["hebrew"]}
+                    name={field.type}
+                    id={field.name}
+                    //   key={}
+                    onChange={update("hebrew")}
+                    placeholder={field.name}
+                  />
+                  <input
+                    type="text"
+                    value={formState[field.name]["english"]}
+                    name={field.type}
+                    id={field.name}
+                    //   key={}
+                    onChange={update("english")}
+                    placeholder={field.name}
+                  />
+                </label>
+              </div>
+            );
+          case "string":
+            return (
+              <div>
+                <label>
+                  {field.name}
+                  <input
+                    type="text"
+                    value={formState[field.name]}
+                    // key={}
+                    onChange={update(field.name)}
+                    placeholder={field.name}
+                  />
+                </label>
+              </div>
+            );
+          case "date":
+            return (
+              <div>
+                <label>
+                  {field.name}
+                  <input
+                    type="date"
+                    value={formState[field.name]}
+                    // key={}
+                    onChange={update(field.name)}
+                  />
+                </label>
+              </div>
+            );
+          case "boolean":
+            return (
+              <div>
+                <label>
+                  {field.name}
+                  <input
+                    type="checkbox"
+                    checked={formState[field.name]}
+                    name={field.type}
+                    // key={}
+                    onChange={update(field.name)}
+                  />
+                </label>
+              </div>
+            );
+          case "number":
+            return (
+              <div>
+                <label>
+                  {field.name}
+                  <input
+                    type="number"
+                    value={formState[field.name]}
+                    // key={}
+                    onChange={update(field.name)}
+                    placeholder={field.name}
+                  />
+                </label>
+              </div>
+            );
+          case "image":
+            return (
+              <div>
+                <label>{field.name}
                 <input
-                  type="text"
-                  value={formState[field.name]["hebrew"]}
-                  name={field.type}
-                  id={field.name}
-                //   key={}
-                  onChange={update("hebrew")}
-                  placeholder={field.name}
+                  type="file"
+                  name="myImage"
+                  onChange={update("image")}
+                  accept="image/*"
                 />
-                <input
-                  type="text"
-                  value={formState[field.name]["english"]}
-                  name={field.type}
-                  id={field.name}
-                //   key={}
-                  onChange={update("english")}
-                  placeholder={field.name}
-                />
-              </>
-            );
-          case "String":
-            return (
-              <input
-                type="text"
-                value={formState.name}
-                // key={}
-                onChange={update(field.name)}
-                placeholder={field.name}
-              />
-            );
-          case "Date":
-            return (
-              <input
-                type="date"
-                value={formState.name}
-                // key={}
-                onChange={update(field.name)}
-                placeholder={field.name}
-              />
-            );
-          case "Boolean":
-            return (
-              <input
-                type="checkbox"
-                checked={formState.name}
-                name={field.type}
-                // key={}
-                onChange={update(field.name)}
-              />
-            );
-          case "Number":
-            return (
-              <input
-                type="number"
-                value={formState.name}
-                // key={}
-                onChange={update(field.name)}
-                placeholder={field.name}
-              />
-            );
-          case "Image":
-            return (
-            <>
-              <input
-                type="file"
-                // key={}
-                name="myImage"
-                onChange={update(field.name)}
-                accept="image/*"
-              />
-              <img src={formState.image} alt=""/>
-            </>
+                <img src={formState["image"]["fileLink"]} alt="" />
+                </label>
+              </div>
             );
           default:
             break;

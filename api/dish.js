@@ -1,7 +1,6 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
 const imageUtil = require("../utils/image")
-const fs = require("fs");
 
 
 function getDish(id) {
@@ -30,19 +29,19 @@ function getManyDishes(condition = {}) {
     });
 }
 
-async function createDish(body, file) {
-  debugger
-  var data = fs.readFileSync(file.path);
-  debugger
-  let { name, description, businessId, price, isHidden } = body;
-  debugger
+async function createDish(req) {
+
+  let { name, description, businessId, price, isHidden } = req.body;
+  let { file } = req;
+
   name = await textAPI.create(JSON.parse(name)).catch((err) => {
     throw err;
   });
+
   description = await textAPI.create(JSON.parse(description)).catch((err) => {
     throw err;
   });
-  debugger
+
   let dish = new Dish({
     name,
     description,
@@ -50,29 +49,33 @@ async function createDish(body, file) {
     price,
     isHidden
   });
-  debugger
+
   if (file) {
-    debugger
-    dish.image = imageUtil.getImageObject(file.path);
+    dish.image = await imageUtil.upload(file)
   }
-  debugger
-  return Dish.create(dish)
+  
+  return Dish.create(dish);
 }
 
 async function deleteDish(id) {
+
   let dish = await Dish.findById(id);
 
-  textAPI
+  await textAPI
     .deleteMany([dish.name, dish.description])
     .catch((err) => {
       throw err;
     });
 
+    await imageUtil.destroy(dish.image.s3_key);
+
     return Dish.deleteOne({ _id: id });
 }
 
-async function updateDish(id, body) {
-  let { name, description, businessId, image, price, isHidden } = body;
+async function updateDish(id, req) {
+  
+  let { name, description, businessId, image, price, isHidden } = req.body;
+  let { file } = req;
 
   let dish = await Dish.findById(id);
 
@@ -95,9 +98,9 @@ async function updateDish(id, body) {
       async (err, dish) => {
         if (err) { throw err }
 
-        if (image) {
-          dish.image = imageUtil.getImageObject(image);
-          await dish.save();
+        if (file) {
+          await imageUtil.destroy(dish.image.s3_key);
+          dish.image = await imageUtil.upload(file)
         }
       }
     )

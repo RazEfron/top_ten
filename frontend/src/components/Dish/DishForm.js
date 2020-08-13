@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
+import userContext from "../../contexts/context";
 const _ = require("lodash");
 
-const apiUtil = require("../util/apiUtil");
-
+const apiUtil = require("../../util/apiUtil");
 function DishForm() {
     const [imagePreview, setImagePreview] = useState(() => ({}))
     const [dishState, setDish] = useState(() => ({
@@ -23,17 +23,19 @@ function DishForm() {
         e.preventDefault();
         let form = new FormData();
         _.forEach(dishState, function (value, key) {
-          debugger
-          if (typeof value === 'object' && key != 'image') {
+          if (typeof value === 'object' && key !== 'image') {
             value = JSON.stringify(value)
           }
           form.append(key, value)
         });
-        apiUtil.post('/dish', form, (res) => console.log(res), (err) => console.log(err))
+        apiUtil.post('/dish', form, (res) => {
+          
+          setImagePreview(res.image.fileLink);
+          console.log(res)
+        }, (err) => console.log(err))
     }
 
     function update(field) {
-        debugger
         if (field === "hebrew" || field === "english") {
             return (e) => {
               e.persist();
@@ -47,7 +49,7 @@ function DishForm() {
             }
         } else if (field === "image") {
             return (e) => {
-                debugger
+                
               e.persist()
               setImagePreview(URL.createObjectURL(e.target.files[0]));
               setDish((oldState) => ({
@@ -72,10 +74,7 @@ function DishForm() {
             }
         }
     }
-
-
-  debugger;
-
+    
   return (
     <>
       <form onSubmit={handleSubmit}>

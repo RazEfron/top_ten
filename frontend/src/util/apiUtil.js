@@ -13,7 +13,7 @@ function setHeaders(headers) {
 }
 
 function genericPostPutRequest(type, endpoint, data = {}, onSuccess, onError) {
-    debugger
+    
     fetch(endpoint, {
       method: type,
       body: data,
@@ -28,7 +28,8 @@ function genericPostPutRequest(type, endpoint, data = {}, onSuccess, onError) {
       });
 }
 
-function genericRequest(type, endpoint, onSuccess, onError) {
+function genericGetRequest(type, endpoint, onSuccess, onError) {
+  
   fetch(endpoint, {
     method: type,
     headers: setHeaders({
@@ -37,17 +38,19 @@ function genericRequest(type, endpoint, onSuccess, onError) {
     }),
   })
     .then((res) => {
+      
       res.json().then((data) => onSuccess(data));
     })
     .catch((err) => {
+      
       onError(err);
     });
 }
 
 
 module.exports = {
-  get: genericRequest.bind(null, "GET"),
+  get: genericGetRequest.bind(null, "GET"),
   post: genericPostPutRequest.bind(null, "POST"),
   put: genericPostPutRequest.bind(null, "PUT"),
-  delete: genericRequest.bind(null, "DELETE"),
+  delete: genericGetRequest.bind(null, "DELETE"),
 };

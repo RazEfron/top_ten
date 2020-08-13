@@ -1,7 +1,7 @@
 const List = require("../models/List");
 const textAPI = require("./textString");
 const versionAPI = require("./listVersion");
-
+const imageUtil = require("../utils/image");
 
 function getList(id) {
   return List.findById(id)
@@ -17,17 +17,18 @@ function getManyLists(condition = {}) {
     .populate("currentVersionId");
 }
 
-async function createList(body) {
-  let { name, description, currentVersionId, image, isHidden } = body;
-  
+async function createList(req) {
+  let { name, description, currentVersionId, isHidden } = req.body;
+  let { file } = req;
+
   name = await textAPI.create(name).catch((err) => {
     throw err;
   });
+
   description = await textAPI.create(description).catch((err) => {
     throw err;
   });
 
-  
   currentVersionId = await versionAPI.create(currentVersionId).catch(err => {
     throw err;
   })
@@ -36,7 +37,6 @@ async function createList(body) {
     name,
     description,
     currentVersionId,
-    image,
     isHidden
   });
 
@@ -45,10 +45,10 @@ async function createList(body) {
     throw err;
   })
 
-  if (image) {
-        dish.image = imageUtil.getImageObject(image);
-
+  if (file) {
+    dish.image = await imageUtil.upload(file);
   }
+
   return List.create(list);
 }
 
@@ -64,11 +64,14 @@ async function deleteList(id) {
     throw err;
   });
 
+  await imageUtil.destroy(list.image.s3_key);
+
   return List.deleteOne({ _id: id });
 }
 
-async function updateList(id, body) {
-  let { name, description, currentVersionId, image, isHidden } = body;
+async function updateList(id, req) {
+  let { name, description, currentVersionId, isHidden } = req.body;
+  let { file } = req;
 
   let list = await List.findById(id);
 
@@ -91,10 +94,9 @@ async function updateList(id, body) {
     async (err, list) => {
       if (err) { throw err }
 
-      if (image) {
-        list.image.data = image;
-        list.image.contentType = "image/png";
-        await list.save();
+      if (file) {
+        await imageUtil.destroy(list.image.s3_key);
+        await imageUtil.upload(file);
       }
     }
   )

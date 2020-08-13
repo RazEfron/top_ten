@@ -9,7 +9,6 @@ function getManyTextStrings(condition = {}) {
 }
 
 function createTextString(body) {
-    debugger
     const { hebrew, english } = body
     return TextString.create({
         hebrew,

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../utils/multer").upload;
 
 const listAPI = require("../api/list");
 
@@ -23,14 +24,14 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
-router.post("/", (req, res) => {
-  listAPI.create(req.body)
+router.post("/", upload.single("image"), (req, res) => {
+  listAPI.create(req)
     .then((list) => res.json(list))
     .catch((err) => res.json(err));
 });
 
-router.put("/:id", function (req, res) {
-  listAPI.update(req.params.id, req.body)
+router.put("/:id", upload.single("image"), (req, res) => {
+  listAPI.update(req.params.id, req)
       .then((list) => res.json(list))
       .catch((err) => res.json(err));
 });
