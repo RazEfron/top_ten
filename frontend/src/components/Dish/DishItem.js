@@ -22,8 +22,7 @@ function DishItem(props) {
       },
       price: 0,
       businessId: "",
-      visible: false,
-      date: new Date()
+      isHidden: true,
     }));
     
     const { formType, dish, setFormInfo, isAdmin, setFormCallback } = props;
@@ -32,10 +31,10 @@ function DishItem(props) {
     useEffect(() => {
       if (formType === "edit") {
         setDish(() => {
-          const { description, name, image, visible, price, businessId } = dish;
+          const { description, name, image, isHidden, price, businessId } = dish;
           
           return {
-            description, name,  image, price, businessId, visible
+            description, name,  image, price, businessId, isHidden
           };
         })
       }
@@ -74,7 +73,7 @@ function DishItem(props) {
       setFormInfo(fields)
       setFormCallback(() => {
         if (formType === "edit") {
-          return sendEditForm
+          return sendEditForm.bind(null, dish._id)
         } else {
           return sendNewForm
         }
@@ -82,26 +81,38 @@ function DishItem(props) {
       setUrl("/form")
     }
 
-    function sendNewForm(e) {
-      e.preventDefault();
+    function sendNewForm(formState) {
+      debugger
         let form = new FormData();
-        _.forEach(dishState, function (value, key) {
-          if (typeof value === 'object' && key !== 'image') {
-            value = JSON.stringify(value)
+        _.forEach(formState, function (value, key) {
+          if (typeof value === "object" && key !== "image") {
+            debugger
+            value = JSON.stringify(value);
           }
-          form.append(key, value)
+          form.append(key, value);
         });
-        apiUtil.post('/dish', form)
-        .then(res => {
+        apiUtil.post('/dish', form, res => {
+          debugger
+        }, err => {
           debugger
         })
-        .catch(err => {
-          debugger
-        })
+
     }
 
-    function sendEditForm(e) {
-
+    function sendEditForm(id, formState) {
+      let form = new FormData();
+        _.forEach(formState, function (value, key) {
+          if (typeof value === "object" && key !== "image") {
+            debugger
+            value = JSON.stringify(value);
+          }
+          form.append(key, value);
+        });
+        apiUtil.put(`/dish/${id}`, form, res => {
+          debugger
+        }, err => {
+          debugger
+        })
     }
 
     const imagestyle = {

@@ -29,7 +29,7 @@ async function createUser(body) {
 }
 
 async function loginUser(body) {
-  
+  debugger
   let user = await User.findOne({ email: body.email })
 
   const { password } = body;

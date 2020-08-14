@@ -23,9 +23,8 @@ function DishIndex(props) {
   }
 
   useEffect(() => {
-    ;
-    apiUtil.get("/dish/", getDishesSucces, (err) => {
-      ;
+    debugger
+    apiUtil.get("/dish/", {}, getDishesSucces, (err) => {
       console.log(err);
     });
   }, []);

@@ -5,9 +5,17 @@ const _ = require('lodash');
 function Form(props) {
     debugger
     const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
+    const [imagePreview, setPreview] = useState(() => formState["image"]? formState["image"]["fileLink"] : "")
+
+    const imagestyle = {
+      height: "90px",
+      width: "90px",
+    };
 
     function handleSubmit(e) {
-      
+      debugger
+      e.preventDefault();
+      props.callback(formState)
     }
 
     function setInitialState(newState, fields) {
@@ -54,6 +62,7 @@ function Form(props) {
                 ...oldState,
                 [field]: e.target.files[0],
               }));
+              setPreview(URL.createObjectURL(e.target.files[0]));
             };
         } else {
           debugger
@@ -80,10 +89,8 @@ function Form(props) {
     }
 
     function inputMaker(field) {
-        
         switch (field.type) {
           case "TextString":
-            
             return (
               <div>
                 <label>{field.name}
@@ -177,7 +184,7 @@ function Form(props) {
                   onChange={update("image")}
                   accept="image/*"
                 />
-                <img src={formState["image"]["fileLink"]} alt="" />
+                <img src={imagePreview} alt="" style={imagestyle}/>
                 </label>
               </div>
             );
@@ -187,13 +194,11 @@ function Form(props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            {createForm()}
-            <button>
-              submit form
-            </button>
-        </form>
-    )
+      <form>
+        {createForm()}
+        <button onClick={(e) => handleSubmit(e)}>submit form</button>
+      </form>
+    );
 }
 
 export default Form
