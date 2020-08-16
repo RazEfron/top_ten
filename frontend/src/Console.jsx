@@ -13,15 +13,16 @@ function Console(props) {
 
     function setUserAndAuth() {
       const decodedUser = jwt_decode(localStorage.jwtToken);
-      setUser(decodedUser);
-      setAuth(true);
-      setAdmin(decodedUser.isAdmin);
       const currentTime = Date.now() / 1000;
       if (decodedUser.exp < currentTime) {
         localStorage.removeItem("jwtToken");
         setUser({});
         setAuth(false);
         setAdmin(false);
+      } else {
+        setUser(decodedUser);
+        setAuth(true);
+        setAdmin(decodedUser.isAdmin);
       }
     }
 

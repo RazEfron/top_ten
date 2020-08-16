@@ -9,7 +9,7 @@ const s3bucket = new AWS.S3({
 });
 
 async function upload(file) {
-  debugger
+  
   let params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: file.originalname,
@@ -29,12 +29,12 @@ async function upload(file) {
 }
 
 function destroy(key) {
-  debugger
+  
   let params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: key
   }
-  debugger
+  
   s3bucket.deleteObject(params).promise()
   .catch((err) => {
     throw err;

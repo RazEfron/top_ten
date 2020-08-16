@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const _ = require('lodash');
 
 function Form(props) {
-    debugger
+    
     const [formState, setFormField] = useState(() => setInitialState({}, props.fields));
     const [imagePreview, setPreview] = useState(() => formState["image"]? formState["image"]["fileLink"] : "")
 
@@ -13,7 +13,7 @@ function Form(props) {
     };
 
     function handleSubmit(e) {
-      debugger
+      
       e.preventDefault();
       props.callback(formState)
     }
@@ -42,7 +42,7 @@ function Form(props) {
     }
 
     function update(field) {
-      debugger
+      
         if (field === "hebrew" || field === "english") {
             return (e) => {
               e.persist();
@@ -55,7 +55,7 @@ function Form(props) {
                 })
             }
         } else if (field === "image") {
-          debugger
+          
             return (e) => {
               e.persist()
               setFormField((oldState) => ({
@@ -65,19 +65,19 @@ function Form(props) {
               setPreview(URL.createObjectURL(e.target.files[0]));
             };
         } else {
-          debugger
+          
             return (e) => {
                 e.persist()
               if (e.target.type === "checkbox") {
-                debugger
+                
                 setFormField((oldState) => ({
                 ...oldState,
                 [field]: e.target.checked,
                     }));
               } else {
-                debugger
+                
                 setFormField((oldState) => {
-                  debugger
+                  
                   return {
                     ...oldState,
                     [field]: e.target.value

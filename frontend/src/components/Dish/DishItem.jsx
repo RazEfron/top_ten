@@ -46,19 +46,19 @@ function DishItem(props) {
       ]
 
       _.forEach(dishState, (value, key) => {
-        debugger
+        
 
         let type
         if (value === undefined) {
           type = "string"
         } else if (value.hebrew !== undefined) {
-          debugger
+          
           type = "TextString";
         } else if (key === "image" || key === "date") {
-          debugger
+          
           type = key
         } else {
-          debugger
+          
           type = typeof value
         }
 
@@ -69,7 +69,7 @@ function DishItem(props) {
         });
          
       })
-      debugger
+      
       setFormInfo(fields)
       setFormCallback(() => {
         if (formType === "edit") {
@@ -82,19 +82,19 @@ function DishItem(props) {
     }
 
     function sendNewForm(formState) {
-      debugger
+      
         let form = new FormData();
         _.forEach(formState, function (value, key) {
           if (typeof value === "object" && key !== "image") {
-            debugger
+            
             value = JSON.stringify(value);
           }
           form.append(key, value);
         });
         apiUtil.post('/dish', form, res => {
-          debugger
+          
         }, err => {
-          debugger
+          
         })
 
     }
@@ -103,15 +103,15 @@ function DishItem(props) {
       let form = new FormData();
         _.forEach(formState, function (value, key) {
           if (typeof value === "object" && key !== "image") {
-            debugger
+            
             value = JSON.stringify(value);
           }
           form.append(key, value);
         });
         apiUtil.put(`/dish/${id}`, form, res => {
-          debugger
+          
         }, err => {
-          debugger
+          
         })
     }
 

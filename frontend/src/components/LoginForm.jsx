@@ -18,19 +18,18 @@ function Login() {
         password
     }
     
-    apiUtil.post('/user/login', user, handleSucces, handleError)
+    apiUtil.post('/user/login', user, onLoginSuccess, onLoginError)
   }
 
-  function handleSucces(token) {
-    debugger
+  function onLoginSuccess(token) {
+    
     if (token.token) {
       localStorage.setItem("jwtToken", token.token);
       context.setAuthContext();
     }
   }
 
-  function handleError(err) {
-      
+  function onLoginError(err) {
       console.log(err)
   }
   

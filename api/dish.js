@@ -22,7 +22,7 @@ function getDish(id) {
 }
 
 function getManyDishes(condition = {}) {
-  debugger
+  
   return Dish.find(condition)
     .populate("name")
     .populate("description")
@@ -41,7 +41,7 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(req) {
-  debugger
+  
   let { name, description, businessId, price, isHidden } = req.body;
   let { file } = req;
 
@@ -89,19 +89,19 @@ async function deleteDish(id) {
 }
 
 async function updateDish(id, req) {
-  // debugger
+  // 
   let { name, description, price, isHidden } = req.body;
-  // debugger
+  // 
   let { file } = req;
-  // debugger
+  // 
   let dish = await Dish.findById(id);
-  // debugger
+  // 
   if (name) {
     await textAPI.update(dish.name, JSON.parse(name)).catch((err) => {
       throw err;
     });
   }
-  // debugger
+  // 
   if (description) {
     await textAPI
       .update(dish.description, JSON.parse(description))
@@ -109,11 +109,11 @@ async function updateDish(id, req) {
         throw err;
       });
   }
-  debugger;
+  ;
 
-  debugger;
+  ;
   // if (file) {
-  //   debugger;
+  //   ;
   //   dish.image = await imageUtil.upload(file);
   // }
   // dish.price = price;
@@ -130,17 +130,17 @@ async function updateDish(id, req) {
   // })
   let image = dish.image
   if (file) {
-    debugger;
+    ;
     image = await imageUtil.upload(file);
   }
   
-  debugger;
+  ;
   return Dish.findOneAndUpdate(
     { _id: id },
     { price, isHidden, image },
     { new: true, useFindAndModify: false },
     async (err, dish) => {
-      debugger;
+      ;
       if (err) {
         throw err;
       }

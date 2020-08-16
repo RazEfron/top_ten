@@ -5,7 +5,6 @@ import Navbar from "./Navbar"
 import Footer from "./Footer";
 import userContext from "../contexts/context";
 import Form from "./Form";
-import DishForm from "./Dish/DishForm";
 import DishIndex from "./Dish/DishIndex";
 
 function Page() {

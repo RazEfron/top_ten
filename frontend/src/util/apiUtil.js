@@ -11,7 +11,7 @@ function setHeaders(headers) {
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
-  debugger
+  
     let params = {
       method: type,
       headers: setHeaders({
@@ -19,28 +19,20 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
         "Content-Type": "application/json",
       }),
       body: data,
-    };
+    }
 
     if (type === "GET") {
-      debugger
       delete params.body
     } else if ((type === "POST" || type === "PUT") && (data.isHidden || data.email)) {
-      debugger
+      
       params.body = JSON.stringify(data)
     } else {
-      debugger
       params.headers = setHeaders({});
     }
 
     return fetch(endpoint, params)
-      .then((res) => {
-        ;
-        res.json().then((data) => onSuccess(data));
-      })
-      .catch((err) => {
-        ;
-        onError(err);
-      });
+      .then((res) => res.json().then((data) => onSuccess(data)))
+      .catch((err) => onError(err))
 }
 
 module.exports = {

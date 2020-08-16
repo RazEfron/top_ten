@@ -32,7 +32,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  debugger
+  
   let user = await userAPI.get(req.body.email)
 
   if (!user) {

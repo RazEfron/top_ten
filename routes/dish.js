@@ -17,7 +17,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  debugger
+  
   dishAPI.getMany()
     .then((dishes) => {
       res.json(dishes);
@@ -26,20 +26,20 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("image"), (req, res) => {
-  debugger
+  
     dishAPI.create(req)
     .then((dish) => res.json(dish))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", upload.single("image"), (req, res) => {
-  debugger
+  
   dishAPI.update(req.params.id, req)
       .then((dish) => {
-        debugger
+        
         res.json(dish)})
       .catch((err) => {
-        debugger
+        
         res.json(err)});
 });
 
