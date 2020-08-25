@@ -60,11 +60,18 @@ function getManyReviews(condition = {}) {
 }
 
 async function createReview(body) {
-  let { versionId, description, rating, businessId, dishId, isHidden } = req.body;
+  let {
+    versionId,
+    description,
+    rating,
+    businessId,
+    dishId,
+    isHidden,
+  } = req.body;
 
-  description = await textAPI.create(description).catch((err) =>
-    { throw err }
-  );
+  description = await textAPI.create(description).catch((err) => {
+    throw err;
+  });
 
   let review = await Review.create({
     versionId,
@@ -72,14 +79,16 @@ async function createReview(body) {
     rating,
     businessId,
     dishId,
-    isHidden
+    isHidden,
   });
 
   let listVersion = await ListVersion.findOne({ _id: review.versionId });
   listVersion.reviews.push(review);
-  await listVersion.save().catch((err) => { throw err });
+  await listVersion.save().catch((err) => {
+    throw err;
+  });
 
-  return review
+  return review;
 }
 
 async function deleteReview(id) {
@@ -135,41 +144,41 @@ async function updateReview(id, body) {
 }
 
 function deleteReviews(array) {
-    return Review.deleteMany({ _id: { $in: array } });
+  return Review.deleteMany({ _id: { $in: array } });
 }
 
 function updateRating(id, body) {
-    const { overratedCount, underratedCount } = body;
+  const { overratedCount, underratedCount } = body;
 
-    return Review.findOneAndUpdate(
-      { _id: id },
-      { overratedCount, underratedCount }
-    )
-      .populate("description")
-      .populate({
-        path: "businessId",
-        populate: {
-          path: "displayName",
-          path: "description",
-        },
-      })
-      .populate({
-        path: "dishId",
+  return Review.findOneAndUpdate(
+    { _id: id },
+    { overratedCount, underratedCount }
+  )
+    .populate("description")
+    .populate({
+      path: "businessId",
+      populate: {
+        path: "displayName",
+        path: "description",
+      },
+    })
+    .populate({
+      path: "dishId",
+      populate: {
+        path: "name",
+        path: "description",
+      },
+    })
+    .populate({
+      path: "versionId",
+      populate: {
+        path: "listId",
         populate: {
           path: "name",
           path: "description",
         },
-      })
-      .populate({
-        path: "versionId",
-        populate: {
-          path: "listId",
-          populate: {
-            path: "name",
-            path: "description",
-          },
-        },
-      });
+      },
+    });
 }
 
 module.exports = {
@@ -179,5 +188,5 @@ module.exports = {
   update: updateReview,
   delete: deleteReview,
   deleteMany: deleteReviews,
-  updateRating
+  updateRating,
 };

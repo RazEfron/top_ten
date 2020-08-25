@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 
-import userContext from '../contexts/context';
+import userContext from "../contexts/context";
 
-const apiUtil = require('../util/apiUtil')
+const apiUtil = require("../util/apiUtil");
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,19 +10,17 @@ function Login() {
   const context = useContext(userContext);
 
   function handleSubmit(e) {
-    
     e.preventDefault();
     localStorage.removeItem("jwtToken");
     const user = {
-        email,
-        password
-    }
-    
-    apiUtil.post('/user/login', user, onLoginSuccess, onLoginError)
+      email,
+      password,
+    };
+
+    apiUtil.post("/user/login", user, onLoginSuccess, onLoginError);
   }
 
   function onLoginSuccess(token) {
-    
     if (token.token) {
       localStorage.setItem("jwtToken", token.token);
       context.setAuthContext();
@@ -30,31 +28,31 @@ function Login() {
   }
 
   function onLoginError(err) {
-      console.log(err)
+    console.log(err);
   }
-  
+
   return (
     <>
       <form>
-        <label>Email
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        </label>
-        <label>Password
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+        <label>
+          Email
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
           />
-          </label>
-          <button onClick={handleSubmit}>
-              LOGIN
-          </button>
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+        </label>
+        <button onClick={handleSubmit}>LOGIN</button>
       </form>
     </>
   );

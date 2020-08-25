@@ -17,7 +17,10 @@ function deleteBranch(id) {
 }
 
 function updateBranch(id, body) {
-  return Branch.findOneAndUpdate({ _id: id }, body, { new: true, useFindAndModify: false });
+  return Branch.findOneAndUpdate({ _id: id }, body, {
+    new: true,
+    useFindAndModify: false,
+  });
 }
 
 function deleteBranches(businessId) {

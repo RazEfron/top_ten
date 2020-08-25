@@ -4,7 +4,8 @@ const router = express.Router();
 const textAPI = require("../api/textString");
 
 router.get("/:id", (req, res) => {
-  textAPI.get(req.params.id)
+  textAPI
+    .get(req.params.id)
     .then((text) => {
       if (text) {
         res.json(text);
@@ -16,7 +17,8 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  textAPI.getMany()
+  textAPI
+    .getMany()
     .then((text) => {
       if (text) {
         res.json(text);
@@ -28,17 +30,17 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    textAPI.create(req.body)
-      .then((text) => {
-        if (text) {
-          res.json(text);
-        } else {
-          res.status(404).json("No Such Text");
-        }
-      })
-      .catch((err) => res.status(404).json(err));
-  }
-);
+  textAPI
+    .create(req.body)
+    .then((text) => {
+      if (text) {
+        res.json(text);
+      } else {
+        res.status(404).json("No Such Text");
+      }
+    })
+    .catch((err) => res.status(404).json(err));
+});
 
 router.put("/:id", function (req, res) {
   textAPI
@@ -51,12 +53,13 @@ router.put("/:id", function (req, res) {
       }
     })
     .catch((err) => res.status(404).json(err));
-})
+});
 
 router.delete("/:id", function (req, res) {
-    textAPI.delete(req.params.id)
-      .then(() => res.json("Business Deleted successfully"))
-      .catch((err) => res.status(404).json(err));
+  textAPI
+    .delete(req.params.id)
+    .then(() => res.json("Business Deleted successfully"))
+    .catch((err) => res.status(404).json(err));
 });
 
 module.exports = router;

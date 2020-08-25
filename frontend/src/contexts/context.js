@@ -1,11 +1,12 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 const userContext = createContext({
   user: {},
   isAuthenticated: false,
   isAdmin: false,
-  currentUrl: '/',
+  currentUrl: "/",
   setUrl: () => {},
-  setAuthContext: () => {}
+  setAuthContext: () => {},
+  setModal: () => {}
 });
 export default userContext;

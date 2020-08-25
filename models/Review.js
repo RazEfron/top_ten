@@ -3,7 +3,11 @@ const Schema = mongoose.Schema;
 
 const ReviewSchema = new Schema(
   {
-    versionId: { type: Schema.Types.ObjectId, ref: "ListVersion", required: true },
+    versionId: {
+      type: Schema.Types.ObjectId,
+      ref: "ListVersion",
+      required: true,
+    },
     description: { type: Schema.Types.ObjectId, ref: "TextString" },
     rating: Number,
     overratedCount: { type: Number, default: 0 },

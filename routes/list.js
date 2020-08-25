@@ -5,7 +5,8 @@ const upload = require("../utils/multer").upload;
 const listAPI = require("../api/list");
 
 router.get("/:id", (req, res) => {
-  listAPI.get(req.params.id)
+  listAPI
+    .get(req.params.id)
     .then((dish) => {
       if (dish) {
         res.json(dish);
@@ -17,7 +18,8 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  listAPI.getMany()
+  listAPI
+    .getMany()
     .then((lists) => {
       res.json(lists);
     })
@@ -25,19 +27,22 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("image"), (req, res) => {
-  listAPI.create(req)
+  listAPI
+    .create(req)
     .then((list) => res.json(list))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", upload.single("image"), (req, res) => {
-  listAPI.update(req.params.id, req)
-      .then((list) => res.json(list))
-      .catch((err) => res.json(err));
+  listAPI
+    .update(req.params.id, req)
+    .then((list) => res.json(list))
+    .catch((err) => res.json(err));
 });
 
 router.delete("/:id", function (req, res) {
-  listAPI.delete(req.params.id)
+  listAPI
+    .delete(req.params.id)
     .then(() => res.json("List Deleted successfully"))
     .catch((err) => res.status(404).json(err));
 });

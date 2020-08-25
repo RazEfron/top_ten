@@ -1,7 +1,6 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
-const imageUtil = require("../utils/image")
-
+const imageUtil = require("../utils/image");
 
 function getDish(id) {
   return Dish.findById(id)
@@ -22,7 +21,6 @@ function getDish(id) {
 }
 
 function getManyDishes(condition = {}) {
-  
   return Dish.find(condition)
     .populate("name")
     .populate("description")
@@ -41,7 +39,6 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(req) {
-  
   let { name, description, businessId, price, isHidden } = req.body;
   let { file } = req;
 
@@ -58,89 +55,63 @@ async function createDish(req) {
     description,
     businessId,
     price,
-    isHidden
+    isHidden,
   });
 
   if (file) {
-    dish.image = await imageUtil.upload(file)
+    dish.image = await imageUtil.upload(file);
   } else {
     dish.image = {
-      fileLink: "https://top-ten-images.s3.amazonaws.com/falafel-89098_1280.jpg",
-      s3_key: "falafel-89098_1280.jpg"
+      fileLink:
+        "https://top-ten-images.s3.amazonaws.com/falafel-89098_1280.jpg",
+      s3_key: "falafel-89098_1280.jpg",
     };
   }
-  
+
   return Dish.create(dish);
 }
 
 async function deleteDish(id) {
-
   let dish = await Dish.findById(id);
 
-  await textAPI
-    .deleteMany([dish.name, dish.description])
-    .catch((err) => {
-      throw err;
-    });
+  await textAPI.deleteMany([dish.name, dish.description]).catch((err) => {
+    throw err;
+  });
 
-    await imageUtil.destroy(dish.image.s3_key);
+  await imageUtil.destroy(dish.image.s3_key);
 
-    return Dish.deleteOne({ _id: id });
+  return Dish.deleteOne({ _id: id });
 }
 
 async function updateDish(id, req) {
-  // 
+  debugger;
   let { name, description, price, isHidden } = req.body;
-  // 
   let { file } = req;
-  // 
   let dish = await Dish.findById(id);
-  // 
   if (name) {
-    await textAPI.update(dish.name, JSON.parse(name)).catch((err) => {
+    debugger
+    await textAPI.update(dish.name, name).catch((err) => {
       throw err;
     });
   }
-  // 
   if (description) {
-    await textAPI
-      .update(dish.description, JSON.parse(description))
-      .catch((err) => {
-        throw err;
-      });
+    debugger
+    await textAPI.update(dish.description, description).catch((err) => {
+      throw err;
+    });
   }
-  ;
-
-  ;
-  // if (file) {
-  //   ;
-  //   dish.image = await imageUtil.upload(file);
-  // }
-  // dish.price = price;
-  // dish.isHidden = isHidden;
-  // dish.save()
-  // .populate("name")
-  // .populate("description")
-  // .populate({
-  //   path: "businessId",
-  //   populate: {
-  //     path: "displayName",
-  //     path: "description",
-  //   },
-  // })
-  let image = dish.image
+  debugger
+  let image = dish.image;
   if (file) {
-    ;
     image = await imageUtil.upload(file);
   }
-  
-  ;
+
   return Dish.findOneAndUpdate(
     { _id: id },
     { price, isHidden, image },
     { new: true, useFindAndModify: false },
     async (err, dish) => {
-      ;
+      debugger
       if (err) {
         throw err;
       }

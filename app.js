@@ -2,12 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 const https = require("https");
 const fs = require("fs");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 
-const storage = require('./utils/multer').storage;
-storage
+const storage = require("./utils/multer").storage;
+storage;
 
 const app = express();
 
@@ -16,7 +16,7 @@ const key = fs.readFileSync("./config/certkey/privateKey.key");
 const cert = fs.readFileSync("./config/certkey/certificate.crt");
 
 //  Load env file
-dotenv.config({path: './config.env'});
+dotenv.config({ path: "./config.env" });
 
 //  Load Database Connection
 const db = require("./config/keys").MongoURI;
@@ -31,12 +31,12 @@ mongoose
   .catch((err) => console.log(err));
 
 //  Server Ports
-let Server
+let Server;
 
-if (process.env.NODE_ENV === 'development') {
-    Server = https.createServer({key: key, cert: cert}, app);
+if (process.env.NODE_ENV === "development") {
+  Server = https.createServer({ key: key, cert: cert }, app);
 } else {
-    Server = app
+  Server = app;
 }
 
 // Body Parser
@@ -55,7 +55,7 @@ const texts = require("./routes/textString");
 const users = require("./routes/user");
 
 app.use(passport.initialize());
-app.use(express.static('./public'));
+app.use(express.static("./public"));
 
 require("./config/passport")(passport);
 
@@ -72,4 +72,4 @@ app.use("/user", users);
 const port = process.env.PORT || 5000;
 
 app.get("/", (req, res) => res.send("Hello World"));
-Server.listen(port, () => console.log(`Server is running on port ${port}`))
+Server.listen(port, () => console.log(`Server is running on port ${port}`));

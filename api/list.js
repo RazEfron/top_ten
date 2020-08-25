@@ -29,21 +29,21 @@ async function createList(req) {
     throw err;
   });
 
-  currentVersionId = await versionAPI.create(currentVersionId).catch(err => {
+  currentVersionId = await versionAPI.create(currentVersionId).catch((err) => {
     throw err;
-  })
+  });
 
   let list = new List({
     name,
     description,
     currentVersionId,
-    isHidden
+    isHidden,
   });
 
-  currentVersionId.listId = list._id
-  currentVersionId.save().catch(err => {
+  currentVersionId.listId = list._id;
+  currentVersionId.save().catch((err) => {
     throw err;
-  })
+  });
 
   if (file) {
     dish.image = await imageUtil.upload(file);
@@ -92,7 +92,9 @@ async function updateList(id, req) {
     { currentVersionId, image, isHidden },
     { new: true, useFindAndModify: false },
     async (err, list) => {
-      if (err) { throw err }
+      if (err) {
+        throw err;
+      }
 
       if (file) {
         await imageUtil.destroy(list.image.s3_key);

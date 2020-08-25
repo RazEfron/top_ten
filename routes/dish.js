@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../utils/multer').upload
+const upload = require("../utils/multer").upload;
 
 const dishAPI = require("../api/dish");
 
 router.get("/:id", (req, res) => {
-  dishAPI.get(req.params.id)
+  dishAPI
+    .get(req.params.id)
     .then((dish) => {
       if (dish) {
         res.json(dish);
@@ -17,8 +18,8 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  
-  dishAPI.getMany()
+  dishAPI
+    .getMany()
     .then((dishes) => {
       res.json(dishes);
     })
@@ -26,25 +27,28 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("image"), (req, res) => {
-  
-    dishAPI.create(req)
+  dishAPI
+    .create(req)
     .then((dish) => res.json(dish))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", upload.single("image"), (req, res) => {
-  
-  dishAPI.update(req.params.id, req)
-      .then((dish) => {
-        
-        res.json(dish)})
-      .catch((err) => {
-        
-        res.json(err)});
+  dishAPI
+    .update(req.params.id, req)
+    .then((dish) => {
+      debugger;
+      res.json(dish);
+    })
+    .catch((err) => {
+      debugger;
+      res.json(err);
+    });
 });
 
 router.delete("/:id", function (req, res) {
-  dishAPI.delete(req.params.id)
+  dishAPI
+    .delete(req.params.id)
     .then(() => res.json("Dish Deleted successfully"))
     .catch((err) => res.status(404).json(err));
 });

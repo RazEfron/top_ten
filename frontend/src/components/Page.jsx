@@ -1,42 +1,77 @@
 import React, { useContext, useState } from "react";
-import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 
-import Navbar from "./Navbar"
-import Footer from "./Footer";
+import Navbar from "./Navbar";
 import userContext from "../contexts/context";
 import Form from "./Form";
 import DishIndex from "./Dish/DishIndex";
 
+const fields = require("../fields/index");
+const apiUtil = require("../util/apiUtil");
+
 function Page() {
-    const { currentUrl, setUrl } = useContext(userContext)
-    const [formInfo, setFormInfo] = useState({});
-    const [formCallback, setFormCallback] = useState("");
+  const { currentUrl, setUrl, toggleModal, isModalOpen } = useContext(
+    userContext
+  );
+  const [formInfo, setFormInfo] = useState({
+    entityName: "dish",
+    entity: "",
+    postOrPut: "post",
+  });
 
-    function dish() {
-      setUrl("/dish");
+  function dish() {
+    debugger;
+    setUrl("/dish");
+  }
+
+  function sendForm(formDetails) {
+    debugger
+    if (formInfo.postOrPut === "post") {
+      apiUtil[formInfo.postOrPut](
+        `/${formInfo.entityName}`,
+        formDetails,
+        (data) => {
+          debugger
+          console.log(data);
+        },
+        (err) => {
+          debugger
+          console.log(err);
+        }
+      );
+    } else {
+      apiUtil[formInfo.postOrPut](
+        `/${formInfo.entityName}/${formInfo.entity._id}`,
+        formDetails,
+        (data) => {
+          debugger
+          console.log(data);
+        },
+        (err) => {
+          debugger
+          console.log(err);
+        }
+      );
     }
+  }
 
-    return (
-      <>
-        <Navbar />
-        <button onClick={dish}>Click dish</button>
-        <BrowserRouter>
-          <Redirect to={currentUrl} />
-          <Switch>
-            <Route exact path="/form">
-              <Form fields={formInfo} callback={formCallback} />
-            </Route>
-            <Route exact path="/dish">
-              <DishIndex
-                setFormInfo={setFormInfo}
-                setFormCallback={setFormCallback}
-              />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-        <Footer />
-      </>
-    );
+  return (
+    <div>
+      <Navbar />
+      <button onClick={dish}>Click dish</button>
+      {currentUrl === "/dish" && <DishIndex setFormInfo={setFormInfo} />}
+      {isModalOpen ? (
+        <Form
+          fields={fields[formInfo.entityName].fields(formInfo.entity)}
+          title={formInfo.entityName}
+          callback={sendForm}
+          isOpen={isModalOpen}
+          toggleModal={toggleModal}
+        />
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
 
 export default Page;

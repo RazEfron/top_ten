@@ -5,22 +5,23 @@ const s3FileURL = process.env.AWS_UPLOADED_FILE_URL_LINK;
 const s3bucket = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
+  region: process.env.AWS_REGION,
 });
 
 async function upload(file) {
-  
   let params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: file.originalname,
     Body: file.buffer,
     ContentType: file.mimetype,
-    ACL: "public-read"
+    ACL: "public-read",
   };
-  await s3bucket.upload(params).promise()
-  .catch((err) => {
-    throw err;
-  });
+  await s3bucket
+    .upload(params)
+    .promise()
+    .catch((err) => {
+      throw err;
+    });
 
   return {
     fileLink: s3FileURL + file.originalname,
@@ -29,19 +30,20 @@ async function upload(file) {
 }
 
 function destroy(key) {
-  
   let params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: key
-  }
-  
-  s3bucket.deleteObject(params).promise()
-  .catch((err) => {
-    throw err;
-  });
+    Key: key,
+  };
+
+  s3bucket
+    .deleteObject(params)
+    .promise()
+    .catch((err) => {
+      throw err;
+    });
 }
 
 module.exports = {
   upload,
-  destroy
-}
+  destroy,
+};

@@ -1,36 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react";
 
-import Login from './LoginForm'
-import userContext from '../contexts/context'
+import Login from "./LoginForm";
+import userContext from "../contexts/context";
+import { divide } from "lodash";
 
 function Navbar() {
-  let user = useContext(userContext)
-    
-    // if (user.admin) {
-    //   return(
-    //     <>
-    //       <Login/>
-    //       <div>Youre The admin</div>
-    //     </>
-    //   )} else {
-    //   return(
-    //     <>
-    //     <Login/>
-    //     </>
-    //     )
-    //   }
+  let user = useContext(userContext);
 
-      return(
-        {user.isAdmin && 
-          <>
-          <Login/>
+  return (
+    <div>
+      {user.admin ? (
+        <div>
           <div>Youre The admin</div>
-        </> || 
-          <>
-        <Login/>
-        </>
-        }
-      )
+        </div>
+      ) : (
+        <Login />
+      )}
+    </div>
+  );
 }
 
-export default Navbar
+export default Navbar;

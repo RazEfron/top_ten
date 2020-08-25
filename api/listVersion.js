@@ -32,14 +32,17 @@ async function createListVersion(body) {
   let { listId, text, date, reviews, isHidden } = body;
 
   if (text) {
-
     text = await textAPI.create(text).catch((err) => {
       throw err;
     });
   }
 
   return ListVersion.create({
-      listId, text, date, reviews, isHidden
+    listId,
+    text,
+    date,
+    reviews,
+    isHidden,
   });
 }
 
@@ -68,7 +71,10 @@ async function updateListVersion(id, body) {
     });
   }
 
-  return ListVersion.findOneAndUpdate({ _id: id }, { listId, date, reviews, isHidden })
+  return ListVersion.findOneAndUpdate(
+    { _id: id },
+    { listId, date, reviews, isHidden }
+  )
     .populate("text")
     .populate("reviews")
     .populate({
@@ -81,10 +87,10 @@ async function updateListVersion(id, body) {
 }
 
 function deleteVersions(listId) {
-  return ListVersion.deleteMany({ listId }, function(err, result) {
+  return ListVersion.deleteMany({ listId }, function (err, result) {
     if (err) {
-      throw err
-    } 
+      throw err;
+    }
   });
 }
 
@@ -94,5 +100,5 @@ module.exports = {
   create: createListVersion,
   update: updateListVersion,
   delete: deleteListVersion,
-  deleteMany: deleteVersions
+  deleteMany: deleteVersions,
 };

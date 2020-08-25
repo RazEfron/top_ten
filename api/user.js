@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
 function getUser(email) {
-  
   return User.findOne({ email });
 }
 
@@ -13,47 +12,47 @@ function getManyUsers(condition = {}) {
 }
 
 async function createUser(body) {
-  
-    const newUser = new User({
-      name: body.name,
-      email: body.email,
-      password: body.password,
-    });
+  const newUser = new User({
+    name: body.name,
+    email: body.email,
+    password: body.password,
+  });
 
-    const salt = await bcrypt.genSaltSync(10);
-    const hash = await bcrypt.hashSync(newUser.password, salt);
+  const salt = await bcrypt.genSaltSync(10);
+  const hash = await bcrypt.hashSync(newUser.password, salt);
 
-    newUser.password = hash;
+  newUser.password = hash;
 
-    return User.create(newUser)
+  return User.create(newUser);
 }
 
 async function loginUser(body) {
-  
-  let user = await User.findOne({ email: body.email })
+  let user = await User.findOne({ email: body.email });
 
   const { password } = body;
   return new Promise((resolve, reject) => {
-    
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         const { id, email, isAdmin } = user;
         const payload = { id, email, isAdmin };
-        jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-          
-          resolve({
-            success: true,
-            token: "Bearer " + token,
-          });
-        }
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            resolve({
+              success: true,
+              token: "Bearer " + token,
+            });
+          }
         );
       } else {
-         reject("Incorrect password")
+        reject("Incorrect password");
       }
     });
-  })
+  });
 }
-  
+
 // function authCurrent(id, body) {
 //   return TextString.findOneAndUpdate({ _id: id }, body, {
 //     new: true,

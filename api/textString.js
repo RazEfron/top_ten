@@ -1,38 +1,45 @@
 const TextString = require("../models/TextString");
 
 function getTextString(id) {
-    return TextString.findById(id);
+  return TextString.findById(id);
 }
 
 function getManyTextStrings(condition = {}) {
-    return TextString.find(condition)
+  return TextString.find(condition);
 }
 
-function createTextString(body) {
-    const { hebrew, english } = body
-    return TextString.create({
-        hebrew,
-        english
-    })
+function createTextString(hebrew) {
+  return TextString.create({
+    hebrew,
+    english: "",
+  });
 }
 
 function deleteTextString(id) {
-    return TextString.deleteOne({ _id: id });
+  return TextString.deleteOne({ _id: id });
 }
 
-function updateTextString(id, body) {
-    return TextString.findOneAndUpdate({ _id: id }, body, { new: true, useFindAndModify: false });
+function updateTextString(id, hebrew) {
+  debugger;
+  return TextString.findOneAndUpdate(
+    { _id: id },
+    { hebrew },
+    {
+      new: true,
+      useFindAndModify: false,
+    }
+  );
 }
 
 function deleteManyTextString(array) {
-    return TextString.deleteMany({ _id: { $in: array }})
+  return TextString.deleteMany({ _id: { $in: array } });
 }
 
 module.exports = {
-    get: getTextString,
-    getMany: getManyTextStrings,
-    create: createTextString,
-    update: updateTextString,
-    delete: deleteTextString,
-    deleteMany: deleteManyTextString
-}
+  get: getTextString,
+  getMany: getManyTextStrings,
+  create: createTextString,
+  update: updateTextString,
+  delete: deleteTextString,
+  deleteMany: deleteManyTextString,
+};

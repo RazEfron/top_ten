@@ -15,6 +15,4 @@ const ListVersionSchema = new Schema(
   }
 );
 
-
-
 module.exports = ListVersion = mongoose.model("ListVersion", ListVersionSchema);

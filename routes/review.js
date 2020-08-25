@@ -4,7 +4,8 @@ const router = express.Router();
 const reviewAPI = require("../api/review");
 
 router.get("/:id", (req, res) => {
-  reviewAPI.get(req.params.id)
+  reviewAPI
+    .get(req.params.id)
     .then((review) => {
       if (review) {
         res.json(review);
@@ -16,23 +17,26 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  reviewAPI.getMany()
+  reviewAPI
+    .getMany()
     .then((reviews) => {
       res.json(reviews);
     })
     .catch((err) => res.status(404).json(err));
 });
 
-router.post("/",  (req, res) => {
-  reviewAPI.create(req.body)
+router.post("/", (req, res) => {
+  reviewAPI
+    .create(req.body)
     .then((review) => res.json(review))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", function (req, res) {
-  reviewAPI.update(req.params.id, req.body)
-      .then((review) => res.json(review))
-      .catch((err) => res.json(err));
+  reviewAPI
+    .update(req.params.id, req.body)
+    .then((review) => res.json(review))
+    .catch((err) => res.json(err));
 });
 
 router.delete("/:id", function (req, res) {
@@ -43,6 +47,5 @@ router.delete("/:id", function (req, res) {
     .then(() => res.json("Review Deleted successfully"))
     .catch((err) => res.status(404).json(err));
 });
-
 
 module.exports = router;

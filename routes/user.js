@@ -4,52 +4,50 @@ const userAPI = require("../api/user");
 const passport = require("passport");
 const upload = require("../utils/multer").upload;
 
-
 router.get("/", async (req, res) => {
   userAPI
     .get(req.body.email)
     .then((user) => res.json(user))
     .catch((err) => res.json(err));
-})
-
+});
 
 router.post("/register", async (req, res) => {
-  
-  let user = await userAPI.get(req.body.email)
-    .catch(err => {
-      if (err) { throw err }
-    })
+  let user = await userAPI.get(req.body.email).catch((err) => {
+    if (err) {
+      throw err;
+    }
+  });
 
   if (user) {
-      res
-        .status(400)
-        .json({ email: "A user has already registered with this address" });
-    } else {
-      userAPI.register(req.body)
-        .then((user) => res.json(user))
-        .catch((err) => console.log(err));
-    }
+    res
+      .status(400)
+      .json({ email: "A user has already registered with this address" });
+  } else {
+    userAPI
+      .register(req.body)
+      .then((user) => res.json(user))
+      .catch((err) => console.log(err));
+  }
 });
 
 router.post("/login", async (req, res) => {
-  
-  let user = await userAPI.get(req.body.email)
+  let user = await userAPI.get(req.body.email);
 
   if (!user) {
     return res.status(400).json("This user does not exist");
   }
 
-  userAPI.loginUser(req.body)
-    .then(token => {
-      
+  userAPI
+    .loginUser(req.body)
+    .then((token) => {
       res.json({
         success: token.success,
-        token: token.token
-      })
+        token: token.token,
+      });
     })
-    .catch(err => {
-      
-      console.log(err)})
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 router.get(
@@ -60,11 +58,9 @@ router.get(
       id: req.user.id,
       name: req.user.name,
       email: req.user.email,
-      admin: req.user.admin
+      admin: req.user.admin,
     });
   }
 );
 
 module.exports = router;
-
-

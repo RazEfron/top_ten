@@ -6,125 +6,133 @@ const _ = require("lodash");
 const apiUtil = require("../../util/apiUtil");
 
 function DishItem(props) {
-  
-    const [dishState, setDish] = useState(() => ({
-      description: {
-        hebrew: "",
-        english: "",
-      },
-      name: {
-        hebrew: "",
-        english: "",
-      },
-      image: {
-        fileLink: "",
-        s3_key: ""
-      },
-      price: 0,
-      businessId: "",
-      isHidden: true,
-    }));
-    
-    const { formType, dish, setFormInfo, isAdmin, setFormCallback } = props;
-    const setUrl = useContext(userContext).setUrl;
-    
-    useEffect(() => {
-      if (formType === "edit") {
-        setDish(() => {
-          const { description, name, image, isHidden, price, businessId } = dish;
-          
-          return {
-            description, name,  image, price, businessId, isHidden
-          };
-        })
+  ;
+  const [dishState, setDish] = useState(() => ({
+    description: {
+      hebrew: "",
+      english: "",
+    },
+    name: {
+      hebrew: "",
+      english: "",
+    },
+    image: {
+      fileLink: "",
+      s3_key: "",
+    },
+    price: 0,
+    businessId: "",
+    _id: "",
+    isHidden: true,
+  }));
+
+  const { formType, dish, setFormInfo, isAdmin, setFormCallback } = props;
+  const { setUrl, toggleModal } = useContext(userContext);
+
+  useEffect(() => {
+    if (formType === "edit") {
+      setDish(() => {
+        const { description, name, image, isHidden, price, businessId, _id } = dish;
+
+        return {
+          description,
+          name,
+          image,
+          price,
+          businessId,
+          isHidden,
+          _id: _id ? _id : ""
+        };
+      });
+    }
+  }, []);
+
+  function createFormFields() {
+    let fields = [];
+
+    _.forEach(dishState, (value, key) => {
+      let type;
+      if (value === undefined) {
+        type = "string";
+      } else if (value.hebrew !== undefined) {
+        type = "TextString";
+      } else if (key === "image" || key === "date") {
+        type = key;
+      } else {
+        type = typeof value;
       }
-    }, []);
-  
-    function createFormFields() {
-      let fields = [
 
-      ]
+      fields.push({
+        type,
+        name: key,
+        info: value,
+      });
+    });
 
-      _.forEach(dishState, (value, key) => {
-        
+    setFormInfo(fields);
+    setFormCallback(() => {
+      if (formType === "edit") {
+        return sendEditForm.bind(null, dish._id);
+      } else {
+        return sendNewForm;
+      }
+    });
+    setUrl("/form");
+  }
 
-        let type
-        if (value === undefined) {
-          type = "string"
-        } else if (value.hebrew !== undefined) {
-          
-          type = "TextString";
-        } else if (key === "image" || key === "date") {
-          
-          type = key
-        } else {
-          
-          type = typeof value
-        }
+  function sendNewForm(formState) {
+    let form = new FormData();
+    _.forEach(formState, function (value, key) {
+      if (typeof value === "object" && key !== "image") {
+        value = JSON.stringify(value);
+      }
+      form.append(key, value);
+    });
+    apiUtil.post(
+      "/dish",
+      form,
+      (res) => {},
+      (err) => {}
+    );
+  }
 
-        fields.push({
-          type,
-          name: key,
-          info: value,
-        });
-         
-      })
-      
-      setFormInfo(fields)
-      setFormCallback(() => {
-        if (formType === "edit") {
-          return sendEditForm.bind(null, dish._id)
-        } else {
-          return sendNewForm
-        }
-      })
-      setUrl("/form")
-    }
+  function sendEditForm(id, formState) {
+    let form = new FormData();
+    _.forEach(formState, function (value, key) {
+      if (typeof value === "object" && key !== "image") {
+        value = JSON.stringify(value);
+      }
+      form.append(key, value);
+    });
+    apiUtil.put(
+      `/dish/${id}`,
+      form,
+      (res) => {},
+      (err) => {}
+    );
+  }
 
-    function sendNewForm(formState) {
-      
-        let form = new FormData();
-        _.forEach(formState, function (value, key) {
-          if (typeof value === "object" && key !== "image") {
-            
-            value = JSON.stringify(value);
-          }
-          form.append(key, value);
-        });
-        apiUtil.post('/dish', form, res => {
-          
-        }, err => {
-          
-        })
+  function preperForm() {
+    ;
+    setFormInfo({
+      entityName: "dish",
+      entity: dishState,
+      postOrPut: formType === "edit" ? "put" : "post",
+    });
+    ;
+    toggleModal()
+  }
 
-    }
+  const imagestyle = {
+    height: "90px",
+    width: "90px",
+  };
 
-    function sendEditForm(id, formState) {
-      let form = new FormData();
-        _.forEach(formState, function (value, key) {
-          if (typeof value === "object" && key !== "image") {
-            
-            value = JSON.stringify(value);
-          }
-          form.append(key, value);
-        });
-        apiUtil.put(`/dish/${id}`, form, res => {
-          
-        }, err => {
-          
-        })
-    }
-
-    const imagestyle = {
-      height: '90px',
-      width: '90px'
-    }
-
-    const listStyle = {
-      margin: '10px',
-      border: '1px black solid',
-      width: '150px'
-    }
+  const listStyle = {
+    margin: "10px",
+    border: "1px black solid",
+    width: "150px",
+  };
 
   return (
     <ul style={listStyle}>
@@ -143,9 +151,7 @@ function DishItem(props) {
       <li>
         {isAdmin ? (
           <div>
-            <button onClick={createFormFields}>
-              {`${formType} Dish`}
-            </button>
+            <button onClick={preperForm}>{`${formType} Dish`}</button>
           </div>
         ) : (
           ""

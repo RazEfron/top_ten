@@ -4,7 +4,8 @@ const router = express.Router();
 const listVersionAPI = require("../api/listVersion");
 
 router.get("/:id", (req, res) => {
-  listVersionAPI.get(req.params.id)
+  listVersionAPI
+    .get(req.params.id)
     .then((ListVersion) => {
       if (ListVersion) {
         res.json(ListVersion);
@@ -16,29 +17,34 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  listVersionAPI.getMany()
+  listVersionAPI
+    .getMany()
     .then((ListVersions) => {
       res.json(ListVersions);
     })
     .catch((err) => {
-      console.log(err)
-      res.status(404).json(err)});
+      console.log(err);
+      res.status(404).json(err);
+    });
 });
 
 router.post("/", (req, res) => {
-  listVersionAPI.create(req.body)
+  listVersionAPI
+    .create(req.body)
     .then((listVersion) => res.json(listVersion))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", function (req, res) {
-  listVersionAPI.update(req.params.id, req.body)
-      .then((listVersion) => res.json(listVersion))
-      .catch((err) => res.json(err));
+  listVersionAPI
+    .update(req.params.id, req.body)
+    .then((listVersion) => res.json(listVersion))
+    .catch((err) => res.json(err));
 });
 
 router.delete("/:id", function (req, res) {
-  listVersionAPI.delete(req.params.id)
+  listVersionAPI
+    .delete(req.params.id)
     .then(() => res.json("Version Deleted successfully"))
     .catch((err) => res.status(404).json(err));
 });
