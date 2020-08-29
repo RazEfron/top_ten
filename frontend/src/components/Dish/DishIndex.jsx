@@ -6,44 +6,21 @@ const _ = require("lodash");
 
 const apiUtil = require("../../util/apiUtil");
 
-function DishIndex(props) {
-  const [dishesState, setDishes] = useState(() => []);
+function DishIndex({ setFormInfo, setFormCallback, dishesState, setDishes }) {
   const isAdmin = useContext(userContext).admin;
 
-  function getDishesSucces(dishes) {
-    let array = [];
-    array.push(
-      <DishItem
-        isAdmin={isAdmin}
-        formType={"new"}
-        setFormInfo={props.setFormInfo}
-        setFormCallback={props.setFormCallback}
-      />
-    );
-    _.forEach(dishes, (dish) => {
-      array.push(
+  return (
+    <div>
+      {_.map(dishesState, (dish) => (
         <DishItem
           dish={dish}
           isAdmin={isAdmin}
           formType={"edit"}
-          setFormInfo={props.setFormInfo}
-          setFormCallback={props.setFormCallback}
+          setFormInfo={setFormInfo}
+          setFormCallback={setFormCallback}
         />
-      );
-    });
-    setDishes(array);
-  }
-
-  useEffect(() => {
-    apiUtil.get("/dish/", {}, getDishesSucces, (err) => {
-      console.log(err);
-    });
-  }, []);
-
-  return (
-    <>
-      <ul>{dishesState}</ul>
-    </>
+      ))}
+    </div>
   );
 }
 

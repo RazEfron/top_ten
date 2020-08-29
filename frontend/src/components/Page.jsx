@@ -8,57 +8,36 @@ import DishIndex from "./Dish/DishIndex";
 const fields = require("../fields/index");
 const apiUtil = require("../util/apiUtil");
 
-function Page() {
+function Page({ dishesState, setDishes, formInfo, setFormInfo, sendForm }) {
   const { currentUrl, setUrl, toggleModal, isModalOpen } = useContext(
     userContext
   );
-  const [formInfo, setFormInfo] = useState({
-    entityName: "dish",
-    entity: "",
-    postOrPut: "post",
-  });
 
   function dish() {
-    debugger;
-    setUrl("/dish");
-  }
-
-  function sendForm(formDetails) {
-    debugger
-    if (formInfo.postOrPut === "post") {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}`,
-        formDetails,
-        (data) => {
-          debugger
-          console.log(data);
-        },
-        (err) => {
-          debugger
-          console.log(err);
-        }
-      );
-    } else {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}/${formInfo.entity._id}`,
-        formDetails,
-        (data) => {
-          debugger
-          console.log(data);
-        },
-        (err) => {
-          debugger
-          console.log(err);
-        }
-      );
-    }
+    apiUtil.get(
+      "/dish/",
+      {},
+      (dishes) => {
+        setDishes(dishes);
+        setUrl("/dish");
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   return (
     <div>
       <Navbar />
       <button onClick={dish}>Click dish</button>
-      {currentUrl === "/dish" && <DishIndex setFormInfo={setFormInfo} />}
+      {currentUrl === "/dish" && (
+        <DishIndex
+          setFormInfo={setFormInfo}
+          dishesState={dishesState}
+          setDishes={setDishes}
+        />
+      )}
       {isModalOpen ? (
         <Form
           fields={fields[formInfo.entityName].fields(formInfo.entity)}

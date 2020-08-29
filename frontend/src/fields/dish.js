@@ -1,7 +1,6 @@
 import TextInput from "../components/inputs/TextInput";
 
 export function fields(dish) {
-  
   return [
     {
       key: "name",

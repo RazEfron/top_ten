@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 
 function TextInput({ label, onChange, value }) {
-  
   return (
     <div>
       <label>
@@ -9,9 +8,9 @@ function TextInput({ label, onChange, value }) {
         <input
           type="text"
           value={value}
-          onChange={e => {
-            debugger
-            onChange(label, e.target.value)}}
+          onChange={(e) => {
+            onChange(label, e.target.value);
+          }}
           placeholder={label}
         />
       </label>

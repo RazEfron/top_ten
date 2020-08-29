@@ -1,5 +1,5 @@
-const dish = require('./dish');
+const dish = require("./dish");
 
 module.exports = {
-    dish
-}
+  dish,
+};

@@ -84,23 +84,21 @@ async function deleteDish(id) {
 }
 
 async function updateDish(id, req) {
-  debugger;
+  debugger
   let { name, description, price, isHidden } = req.body;
   let { file } = req;
   let dish = await Dish.findById(id);
   if (name) {
-    debugger
     await textAPI.update(dish.name, name).catch((err) => {
       throw err;
     });
   }
   if (description) {
-    debugger
     await textAPI.update(dish.description, description).catch((err) => {
       throw err;
     });
   }
-  debugger
+
   let image = dish.image;
   if (file) {
     image = await imageUtil.upload(file);
@@ -111,7 +109,6 @@ async function updateDish(id, req) {
     { price, isHidden, image },
     { new: true, useFindAndModify: false },
     async (err, dish) => {
-      debugger
       if (err) {
         throw err;
       }

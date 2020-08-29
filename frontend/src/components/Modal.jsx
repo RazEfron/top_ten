@@ -1,9 +1,7 @@
 import React from "react";
 
 function Modal({ isOpen, toggleModal, children }) {
-  
   if (!isOpen) {
-    
     return null;
   }
 

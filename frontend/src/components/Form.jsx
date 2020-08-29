@@ -5,20 +5,13 @@ import Modal from "./Modal";
 
 function Form({ fields, title, callback, isOpen, toggleModal }) {
   const [fieldsState, setFields] = useState(fields);
-  debugger;
   function onSave() {
-    debugger;
     let editedFields = _.difference(fieldsState, fields);
-    debugger;
     let editedByKey = _.groupBy(editedFields, "key");
-    debugger;
     editedByKey = _.transform(editedByKey, function (res, field, key) {
-      debugger;
       res[key] = _.head(field).value;
     });
-    debugger;
     if (title === "dish") {
-      debugger;
       let form = new FormData();
       _.forEach(editedByKey, (value, key) => form.append(key, value));
       callback(form);
@@ -28,13 +21,9 @@ function Form({ fields, title, callback, isOpen, toggleModal }) {
   }
 
   function setField(key, value) {
-    debugger;
     const currentField = _.find(fields, { key });
-    debugger;
     const newField = _.assign({}, currentField, { value });
-    debugger;
     const newFieldsState = _.map(fieldsState, (field) => {
-      debugger;
       return field.key === key ? newField : field;
     });
     setFields(newFieldsState);

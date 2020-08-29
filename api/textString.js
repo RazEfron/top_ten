@@ -20,7 +20,6 @@ function deleteTextString(id) {
 }
 
 function updateTextString(id, hebrew) {
-  debugger;
   return TextString.findOneAndUpdate(
     { _id: id },
     { hebrew },
