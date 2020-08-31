@@ -8,7 +8,7 @@ const DishSchema = new Schema(
     businessId: { type: Schema.Types.ObjectId, ref: "Business" },
     image: {
       fileLink: String,
-      s3_key: String
+      s3_key: String,
     },
     price: Number,
     isHidden: { type: Boolean, default: false },

@@ -4,7 +4,6 @@ import FileInput from "../components/inputs/FileInput";
 import BooleanInput from "../components/inputs/BooleanInput";
 
 export function fields(dish, language) {
-  debugger
   return [
     {
       key: "name",

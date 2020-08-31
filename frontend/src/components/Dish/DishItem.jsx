@@ -1,7 +1,6 @@
 import React from "react";
 
 function DishItem({ dish, isAdmin, preperForm, language }) {
-
   const imagestyle = {
     height: "90px",
     width: "90px",
@@ -34,7 +33,9 @@ function DishItem({ dish, isAdmin, preperForm, language }) {
       <li>
         {isAdmin ? (
           <div>
-            <button onClick={() => preperForm("put", dish)}>{`Edit Dish`}</button>
+            <button
+              onClick={() => preperForm("put", dish)}
+            >{`Edit Dish`}</button>
           </div>
         ) : (
           ""

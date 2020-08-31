@@ -5,7 +5,7 @@ import Modal from "./Modal";
 
 function Form({ fields, title, callback, isOpen, toggleModal, language }) {
   const [fieldsState, setFields] = useState(fields);
-  
+
   function onSave() {
     let editedFields = _.difference(fieldsState, fields);
     let editedByKey = _.groupBy(editedFields, "key");
@@ -23,7 +23,6 @@ function Form({ fields, title, callback, isOpen, toggleModal, language }) {
   }
 
   function setField(key, value) {
-    debugger
     const currentField = _.find(fields, { key });
     const newField = _.assign({}, currentField, { value });
     const newFieldsState = _.map(fieldsState, (field) => {
@@ -35,7 +34,6 @@ function Form({ fields, title, callback, isOpen, toggleModal, language }) {
   return (
     <Modal title={title} isOpen={isOpen} toggleModal={toggleModal}>
       {_.map(fieldsState, (field) => {
-        
         let fieldKey = field.key;
         let onChange = (fieldKey, value) => setField(fieldKey, value);
         let fieldProps = {

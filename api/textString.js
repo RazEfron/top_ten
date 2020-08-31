@@ -9,12 +9,14 @@ function getManyTextStrings(condition = {}) {
 }
 
 function createTextString(body, language) {
-  debugger
-  let string = language === "hebrew" ? {
-    hebrew: body
-  } : {
-    english: body
-  }
+  let string =
+    language === "hebrew"
+      ? {
+          hebrew: body,
+        }
+      : {
+          english: body,
+        };
   return TextString.create(string);
 }
 

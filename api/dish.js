@@ -39,7 +39,6 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(req) {
-  debugger;
   let { name, description, businessId, price, isHidden, language } = req.body;
   let { file } = req;
 
@@ -102,12 +101,10 @@ async function updateDish(id, req) {
         throw err;
       });
   }
-  debugger;
   let image = dish.image;
   if (file) {
     image = await imageUtil.upload(file);
   }
-  debugger;
   price = price ? price : dish.price;
   isHidden =
     isHidden === undefined || isHidden === null ? dish.isHidden : isHidden;
