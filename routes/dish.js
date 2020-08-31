@@ -27,9 +27,13 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("image"), (req, res) => {
+  debugger
   dishAPI
     .create(req)
-    .then((dish) => res.json(dish))
+    .then((dish) => {
+      debugger;
+      res.json(dish);
+    })
     .catch((err) => res.json(err));
 });
 

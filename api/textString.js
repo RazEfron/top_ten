@@ -9,6 +9,7 @@ function getManyTextStrings(condition = {}) {
 }
 
 function createTextString(body, language) {
+  debugger
   let string = language === "hebrew" ? {
     hebrew: body
   } : {
@@ -22,7 +23,6 @@ function deleteTextString(id) {
 }
 
 function updateTextString(id, body, language) {
-  
   let string =
     language === "hebrew"
       ? {

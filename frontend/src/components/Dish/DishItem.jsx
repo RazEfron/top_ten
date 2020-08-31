@@ -1,18 +1,6 @@
-import React, { useContext } from "react";
-import userContext from "../../contexts/context";
+import React from "react";
 
-function DishItem({ formType, dish, isAdmin, setFormInfo }) {
-  const { toggleModal, language } = useContext(userContext);
-
-  function preperForm() {
-    ;
-    setFormInfo({
-      entityName: "dish",
-      entity: dish,
-      postOrPut: formType === "edit" ? "put" : "post",
-    });
-    toggleModal();
-  }
+function DishItem({ dish, isAdmin, preperForm, language }) {
 
   const imagestyle = {
     height: "90px",
@@ -46,7 +34,7 @@ function DishItem({ formType, dish, isAdmin, setFormInfo }) {
       <li>
         {isAdmin ? (
           <div>
-            <button onClick={preperForm}>{`${formType} Dish`}</button>
+            <button onClick={() => preperForm("put", dish)}>{`Edit Dish`}</button>
           </div>
         ) : (
           ""

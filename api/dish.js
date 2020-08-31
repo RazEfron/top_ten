@@ -39,14 +39,15 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(req) {
-  let { name, description, businessId, price, isHidden } = req.body;
+  debugger;
+  let { name, description, businessId, price, isHidden, language } = req.body;
   let { file } = req;
 
-  name = await textAPI.create(JSON.parse(name)).catch((err) => {
+  name = await textAPI.create(name, language).catch((err) => {
     throw err;
   });
 
-  description = await textAPI.create(JSON.parse(description)).catch((err) => {
+  description = await textAPI.create(description, language).catch((err) => {
     throw err;
   });
 
@@ -93,6 +94,7 @@ async function updateDish(id, req) {
       throw err;
     });
   }
+
   if (description) {
     await textAPI
       .update(dish.description, description, language)
@@ -105,9 +107,10 @@ async function updateDish(id, req) {
   if (file) {
     image = await imageUtil.upload(file);
   }
-  debugger
+  debugger;
   price = price ? price : dish.price;
-  isHidden = isHidden === undefined || isHidden === null ? dish.isHidden : isHidden;
+  isHidden =
+    isHidden === undefined || isHidden === null ? dish.isHidden : isHidden;
 
   return Dish.findOneAndUpdate(
     { _id: id },

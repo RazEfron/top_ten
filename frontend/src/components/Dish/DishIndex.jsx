@@ -4,18 +4,35 @@ import userContext from "../../contexts/context";
 
 const _ = require("lodash");
 
-function DishIndex({ setFormInfo, setFormCallback, dishesState, setDishes }) {
-  const isAdmin = useContext(userContext).admin;
+function DishIndex({ setFormInfo, dishesState }) {
+  const { toggleModal, language, isAdmin } = useContext(userContext);
+
+  function preperForm(formType, dish) {
+    setFormInfo({
+      entityName: "dish",
+      entity: dish,
+      postOrPut: formType,
+    });
+    toggleModal();
+  }
 
   return (
     <div>
+      {isAdmin ? (
+        <div>
+          <button
+            onClick={() => preperForm("post", {})}
+          >{`Create Dish`}</button>
+        </div>
+      ) : (
+        ""
+      )}
       {_.map(dishesState, (dish) => (
         <DishItem
           dish={dish}
           isAdmin={isAdmin}
-          formType={"edit"}
-          setFormInfo={setFormInfo}
-          setFormCallback={setFormCallback}
+          preperForm={preperForm}
+          language={language}
         />
       ))}
     </div>

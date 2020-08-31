@@ -8,7 +8,7 @@ const apiUtil = require("./util/apiUtil");
 function Console() {
   const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
-  const [admin, setAdmin] = useState(false);
+  const [isAdmin, setAdmin] = useState(false);
   const [language, setLanguage] = useState(localStorage.language);
   const [currentUrl, setUrlState] = useState(() => "/");
   const [modalState, setModal] = useState({ isOpen: false });
@@ -93,7 +93,7 @@ function Console() {
         value={{
           user,
           auth,
-          admin,
+          isAdmin,
           currentUrl,
           setUrl,
           setAuthContext: setUserAndAuth,
