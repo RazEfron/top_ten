@@ -8,5 +8,7 @@ const userContext = createContext({
   setUrl: () => {},
   setAuthContext: () => {},
   setModal: () => {},
+  language: "",
+  toggleLanguage: () => {}
 });
 export default userContext;

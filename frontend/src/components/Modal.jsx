@@ -32,7 +32,6 @@ function Modal({ isOpen, toggleModal, children }) {
     overflow: "visible",
     zIndex: "900",
     borderRadius: "5px",
-    border: "none",
   };
 
   return (

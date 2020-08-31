@@ -37,6 +37,7 @@ router.put("/:id", upload.single("image"), (req, res) => {
   dishAPI
     .update(req.params.id, req)
     .then((dish) => {
+      debugger
       res.json(dish);
     })
     .catch((err) => {

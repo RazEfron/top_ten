@@ -84,25 +84,30 @@ async function deleteDish(id) {
 }
 
 async function updateDish(id, req) {
-  debugger
-  let { name, description, price, isHidden } = req.body;
+  let { name, description, price, isHidden, language } = req.body;
   let { file } = req;
   let dish = await Dish.findById(id);
+
   if (name) {
-    await textAPI.update(dish.name, name).catch((err) => {
+    await textAPI.update(dish.name, name, language).catch((err) => {
       throw err;
     });
   }
   if (description) {
-    await textAPI.update(dish.description, description).catch((err) => {
-      throw err;
-    });
+    await textAPI
+      .update(dish.description, description, language)
+      .catch((err) => {
+        throw err;
+      });
   }
-
+  debugger;
   let image = dish.image;
   if (file) {
     image = await imageUtil.upload(file);
   }
+  debugger
+  price = price ? price : dish.price;
+  isHidden = isHidden === undefined || isHidden === null ? dish.isHidden : isHidden;
 
   return Dish.findOneAndUpdate(
     { _id: id },

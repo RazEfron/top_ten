@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import DishItem from "./DishItem";
 import userContext from "../../contexts/context";
 
 const _ = require("lodash");
-
-const apiUtil = require("../../util/apiUtil");
 
 function DishIndex({ setFormInfo, setFormCallback, dishesState, setDishes }) {
   const isAdmin = useContext(userContext).admin;

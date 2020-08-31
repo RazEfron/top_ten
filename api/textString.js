@@ -8,26 +8,33 @@ function getManyTextStrings(condition = {}) {
   return TextString.find(condition);
 }
 
-function createTextString(hebrew) {
-  return TextString.create({
-    hebrew,
-    english: "",
-  });
+function createTextString(body, language) {
+  let string = language === "hebrew" ? {
+    hebrew: body
+  } : {
+    english: body
+  }
+  return TextString.create(string);
 }
 
 function deleteTextString(id) {
   return TextString.deleteOne({ _id: id });
 }
 
-function updateTextString(id, hebrew) {
-  return TextString.findOneAndUpdate(
-    { _id: id },
-    { hebrew },
-    {
-      new: true,
-      useFindAndModify: false,
-    }
-  );
+function updateTextString(id, body, language) {
+  
+  let string =
+    language === "hebrew"
+      ? {
+          hebrew: body,
+        }
+      : {
+          english: body,
+        };
+  return TextString.findOneAndUpdate({ _id: id }, string, {
+    new: true,
+    useFindAndModify: false,
+  });
 }
 
 function deleteManyTextString(array) {

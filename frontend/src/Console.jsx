@@ -9,6 +9,7 @@ function Console() {
   const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
   const [admin, setAdmin] = useState(false);
+  const [language, setLanguage] = useState(localStorage.language);
   const [currentUrl, setUrlState] = useState(() => "/");
   const [modalState, setModal] = useState({ isOpen: false });
   const [dishesState, setDishes] = useState(() => []);
@@ -23,10 +24,14 @@ function Console() {
     const currentTime = Date.now() / 1000;
     if (decodedUser.exp < currentTime) {
       localStorage.removeItem("jwtToken");
+      localStorage.setItem("language", "hebrew");
+      setLanguage(localStorage.language);
       setUser({});
       setAuth(false);
       setAdmin(false);
     } else {
+      localStorage.setItem("language", decodedUser.language);
+      setLanguage(localStorage.language);
       setUser(decodedUser);
       setAuth(true);
       setAdmin(decodedUser.isAdmin);
@@ -47,11 +52,11 @@ function Console() {
 
   function sendForm(formDetails) {
     if (formInfo.postOrPut === "post") {
-      debugger;
       apiUtil[formInfo.postOrPut](
         `/${formInfo.entityName}`,
         formDetails,
         (data) => {
+          setDishes([data]);
           console.log(data);
         },
         (err) => {
@@ -59,11 +64,11 @@ function Console() {
         }
       );
     } else {
-      debugger;
       apiUtil[formInfo.postOrPut](
         `/${formInfo.entityName}/${formInfo.entity._id}`,
         formDetails,
         (data) => {
+          setDishes([data]);
           console.log(data);
         },
         (err) => {
@@ -71,6 +76,15 @@ function Console() {
         }
       );
     }
+  }
+
+  function toggleLanguage() {
+    if (language === "hebrew") {
+      localStorage.setItem("language", "english");
+    } else {
+      localStorage.setItem("language", "hebrew");
+    }
+    setLanguage(localStorage.language);
   }
 
   return (
@@ -84,7 +98,9 @@ function Console() {
           setUrl,
           setAuthContext: setUserAndAuth,
           isModalOpen: modalState.isOpen,
-          toggleModal: toggleModal,
+          toggleModal,
+          language,
+          toggleLanguage,
         }}
       >
         <Page

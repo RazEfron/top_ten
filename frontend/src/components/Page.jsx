@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import Navbar from "./Navbar";
 import userContext from "../contexts/context";
@@ -9,7 +9,7 @@ const fields = require("../fields/index");
 const apiUtil = require("../util/apiUtil");
 
 function Page({ dishesState, setDishes, formInfo, setFormInfo, sendForm }) {
-  const { currentUrl, setUrl, toggleModal, isModalOpen } = useContext(
+  const { currentUrl, setUrl, toggleModal, isModalOpen, language } = useContext(
     userContext
   );
 
@@ -40,11 +40,12 @@ function Page({ dishesState, setDishes, formInfo, setFormInfo, sendForm }) {
       )}
       {isModalOpen ? (
         <Form
-          fields={fields[formInfo.entityName].fields(formInfo.entity)}
+          fields={fields[formInfo.entityName].fields(formInfo.entity, language)}
           title={formInfo.entityName}
           callback={sendForm}
           isOpen={isModalOpen}
           toggleModal={toggleModal}
+          language={language}
         />
       ) : (
         ""

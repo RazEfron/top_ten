@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import userContext from "../../contexts/context";
 
-const _ = require("lodash");
-
-const apiUtil = require("../../util/apiUtil");
-
 function DishItem({ formType, dish, isAdmin, setFormInfo }) {
-  const { setUrl, toggleModal } = useContext(userContext);
+  const { toggleModal, language } = useContext(userContext);
 
   function preperForm() {
-    debugger;
+    ;
     setFormInfo({
       entityName: "dish",
       entity: dish,
@@ -32,10 +28,10 @@ function DishItem({ formType, dish, isAdmin, setFormInfo }) {
   return (
     <ul style={listStyle}>
       <li>
-        <p>{dish.description.english}</p>
+        <p>{dish.description[language]}</p>
       </li>
       <li>
-        <p>{dish.name.english}</p>
+        <p>{dish.name[language]}</p>
       </li>
       <li>
         <p>{dish.price}</p>

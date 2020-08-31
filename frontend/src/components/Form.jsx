@@ -3,14 +3,16 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import Modal from "./Modal";
 
-function Form({ fields, title, callback, isOpen, toggleModal }) {
+function Form({ fields, title, callback, isOpen, toggleModal, language }) {
   const [fieldsState, setFields] = useState(fields);
+  
   function onSave() {
     let editedFields = _.difference(fieldsState, fields);
     let editedByKey = _.groupBy(editedFields, "key");
     editedByKey = _.transform(editedByKey, function (res, field, key) {
       res[key] = _.head(field).value;
     });
+    editedByKey.language = language;
     if (title === "dish") {
       let form = new FormData();
       _.forEach(editedByKey, (value, key) => form.append(key, value));
@@ -21,6 +23,7 @@ function Form({ fields, title, callback, isOpen, toggleModal }) {
   }
 
   function setField(key, value) {
+    debugger
     const currentField = _.find(fields, { key });
     const newField = _.assign({}, currentField, { value });
     const newFieldsState = _.map(fieldsState, (field) => {
@@ -32,6 +35,7 @@ function Form({ fields, title, callback, isOpen, toggleModal }) {
   return (
     <Modal title={title} isOpen={isOpen} toggleModal={toggleModal}>
       {_.map(fieldsState, (field) => {
+        
         let fieldKey = field.key;
         let onChange = (fieldKey, value) => setField(fieldKey, value);
         let fieldProps = {

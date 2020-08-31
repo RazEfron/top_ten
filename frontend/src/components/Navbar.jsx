@@ -2,14 +2,15 @@ import React, { useContext } from "react";
 
 import Login from "./LoginForm";
 import userContext from "../contexts/context";
-import { divide } from "lodash";
 
 function Navbar() {
-  let user = useContext(userContext);
-
+  let { admin, language, toggleLanguage } = useContext(userContext);
+  
   return (
     <div>
-      {user.admin ? (
+      {language === "hebrew" && <button onClick={toggleLanguage}>English</button>}
+      {language === "english" && <button onClick={toggleLanguage}>Hebrew</button>}
+      {admin ? (
         <div>
           <div>Youre The admin</div>
         </div>

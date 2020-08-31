@@ -1,32 +1,35 @@
 import TextInput from "../components/inputs/TextInput";
+import NumberInput from "../components/inputs/NumberInput";
+import FileInput from "../components/inputs/FileInput";
+import BooleanInput from "../components/inputs/BooleanInput";
 
-export function fields(dish) {
+export function fields(dish, language) {
+  debugger
   return [
     {
       key: "name",
       type: TextInput,
-      value: dish.name ? dish.name.hebrew : "",
+      value: dish.name ? dish.name[language] : "",
     },
     {
       key: "description",
       type: TextInput,
-      value: dish.description ? dish.description.hebrew : "",
+      value: dish.description ? dish.description[language] : "",
     },
-    // ,
-    // {
-    //   key: image,
-    //   type: File,
-    //   value: dish.image,
-    // },
-    // {
-    //   key: price,
-    //   type: Number,
-    //   value: dish.price,
-    // },
-    // {
-    //   key: isHidden,
-    //   type: Boolean,
-    //   value: dish.isHidden,
-    // },
+    {
+      key: "image",
+      type: FileInput,
+      value: dish.image ? dish.image.fileLink : "",
+    },
+    {
+      key: "price",
+      type: NumberInput,
+      value: dish.price,
+    },
+    {
+      key: "isHidden",
+      type: BooleanInput,
+      value: dish.isHidden,
+    },
   ];
 }

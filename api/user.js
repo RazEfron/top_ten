@@ -32,9 +32,10 @@ async function loginUser(body) {
   const { password } = body;
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, user.password).then((isMatch) => {
+      debugger
       if (isMatch) {
-        const { id, email, isAdmin } = user;
-        const payload = { id, email, isAdmin };
+        const { id, email, isAdmin, language } = user;
+        const payload = { id, email, isAdmin, language };
         jwt.sign(
           payload,
           keys.secretOrKey,
