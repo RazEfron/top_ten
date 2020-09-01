@@ -1,6 +1,7 @@
 import React from "react";
 
 function DishItem({ dish, isAdmin, prepareForm, language }) {
+  debugger
   const imagestyle = {
     height: "90px",
     width: "90px",

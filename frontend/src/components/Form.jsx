@@ -10,7 +10,7 @@ function Form({
   isOpen,
   toggleModal,
   title,
-  onSucces
+  setEntities
 }) {
   const [fieldsState, setFields] = useState(fields);
 
@@ -22,7 +22,7 @@ function Form({
       res[key] = _.head(field).value;
     });
       debugger;
-      callback(editedByKey, formInfo, onSucces);
+      callback(editedByKey, formInfo, setEntities);
   }
 
   function setField(key, value) {

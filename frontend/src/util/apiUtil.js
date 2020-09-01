@@ -3,6 +3,7 @@ function setHeaders(headers) {
     return {
       ...headers,
       Authorization: localStorage.jwtToken,
+      language: localStorage.language,
     };
   } else {
     return { ...headers, language: localStorage.language };

@@ -33,6 +33,7 @@ router.post(
   upload.single("image"),
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    debugger
     dishAPI
       .create(req, req.headers.language)
       .then((dish) => {
@@ -47,12 +48,15 @@ router.put(
   upload.single("image"),
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    debugger
     dishAPI
       .update(req.params.id, req, req.headers.language)
       .then((dish) => {
+        debugger
         res.json(dish);
       })
       .catch((err) => {
+        debugger
         res.json(err);
       });
   }

@@ -17,9 +17,10 @@ function Page({
   prepareForm,
   currentUrl,
   entitiesState,
+  setEntities,
   setCurrentUrl,
 }) {
-  
+
   const { toggleModal, isModalOpen, language } = useContext(
     userContext
   );
@@ -89,10 +90,10 @@ function Page({
           fields={fields[formInfo.entityName].fields(formInfo.entity, language)}
           formInfo={formInfo}
           title={formInfo.entityName}
-          onSucces={[`set${_.capitalize(formInfo.entityName)}`]}
           callback={sendForm}
           isOpen={isModalOpen}
           toggleModal={toggleModal}
+          setEntities={setEntities}
         />
       ) : (
         ""

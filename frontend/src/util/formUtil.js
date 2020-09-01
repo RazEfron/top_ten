@@ -1,18 +1,22 @@
 const apiUtil = require("./apiUtil");
 const _ = require("lodash");
+const validator = require("./validations");
 
-function sendForm(params, formInfo, onSucces) {
+function sendForm(params, formInfo, setEntities) {
   debugger;
-  if (_.some(params, (param) => param.key === "image")) {
+  if (validator.paramsValidator(formInfo.entityName)) {
     debugger;
-    params = new FormData();
-    _.forEach(params, (value, key) => params.append(key, value));
+    let newParams = new FormData();
+    _.forEach(params, (value, key) => {
+        debugger
+        newParams.append(key, value);});
+        params = newParams
   }
   if (formInfo.httpMethod === "post") {
     apiUtil[formInfo.httpMethod](
       `/${formInfo.entityName}`,
       params,
-      onSucces,
+      (entity) => setEntities({ [formInfo.entityName]: [entity] }),
       (err) => {
         debugger;
         console.log(err);
@@ -22,7 +26,10 @@ function sendForm(params, formInfo, onSucces) {
     apiUtil[formInfo.httpMethod](
       `/${formInfo.entityName}/${formInfo.entity._id}`,
       params,
-      onSucces,
+      (entity) => {
+        debugger;
+        setEntities({ [formInfo.entityName]: [entity] });
+      },
       (err) => {
         debugger;
         console.log(err);

@@ -1,6 +1,7 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
 const imageUtil = require("../utils/image");
+const _ = require("lodash")
 
 function getDish(id) {
   return Dish.findById(id)
@@ -39,6 +40,7 @@ function getManyDishes(condition = {}) {
 }
 
 async function createDish(req, language) {
+  debugger
   let { name, description, businessId, price, isHidden } = req.body;
   let { file } = req;
 
@@ -84,10 +86,11 @@ async function deleteDish(id) {
 }
 
 async function updateDish(id, req, language) {
+  debugger
   let { name, description, price, isHidden } = req.body;
   let { file } = req;
   let dish = await Dish.findById(id);
-
+  debugger;
   if (name) {
     await textAPI.update(dish.name, name, language).catch((err) => {
       throw err;
