@@ -3,6 +3,7 @@ import Page from "./components/Page";
 import userContext from "./contexts/context";
 
 const jwt_decode = require("jwt-decode");
+
 const apiUtil = require("./util/apiUtil");
 const languageUtil = require("./util/language");
 const sendForm = require("./util/formUtil").sendForm;
@@ -15,9 +16,11 @@ function Console() {
   const [currentUrl, setUrlState] = useState(() => "");
   const [modalState, setModal] = useState({ isOpen: false });
 
-  const [dishesState, setDish] = useState(() => []);
-  const [branchesState, setBranch] = useState(() => []);
-  const [businessState, setBusiness] = useState(() => []);
+  const [entitiesState, setEntities] = useState(() => ({
+    dish: [],
+    business: [],
+    branch: [],
+  }));
 
   const [formInfo, setFormInfo] = useState({
     entityName: currentUrl,
@@ -60,7 +63,7 @@ function Console() {
     if (languageUtil.languageValidator(language)) {
       localStorage.setItem("language", language);
       setLanguage(localStorage.language);
-    } 
+    }
   }
 
   function prepareForm(formType, dish) {
@@ -70,6 +73,22 @@ function Console() {
       httpMethod: formType,
     });
     toggleModal();
+  }
+
+  function setCurrentUrl(url) {
+    apiUtil.get(
+      `/${url}/`,
+      {},
+      (entities) => {
+        debugger;
+        setEntities({ [url]: entities });
+        setUrl(url);
+        debugger;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   return (
@@ -92,15 +111,11 @@ function Console() {
           formInfo={formInfo}
           setFormInfo={setFormInfo}
           sendForm={sendForm}
-          dishesState={dishesState}
-          setDish={setDish}
-          branchesState={branchesState}
-          setBranch={setBranch}
-          businessState={businessState}
-          setBusiness={setBusiness}
           isAdmin={isAdmin}
           prepareForm={prepareForm}
           currentUrl={currentUrl}
+          entitiesState={entitiesState}
+          setCurrentUrl={setCurrentUrl}
         />
       </userContext.Provider>
     </>

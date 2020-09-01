@@ -7,71 +7,33 @@ import DishItem from "./Dish/DishItem";
 import BranchItem from "./Branch/BranchItem";
 import BusinessItem from "./Business/BusinessItem";
 
-const _ = require("lodash")
+const _ = require("lodash");
 const fields = require("../fields/index");
-const apiUtil = require("../util/apiUtil");
 
 function Page({
-  dishesState,
-  setDish,
   formInfo,
   sendForm,
-  setBranch,
-  branchesState,
-  businessState,
-  setBusiness,
   isAdmin,
   prepareForm,
-  currentUrl
+  currentUrl,
+  entitiesState,
+  setCurrentUrl,
 }) {
-  const { setUrl, toggleModal, isModalOpen, language } = useContext(
+  
+  const { toggleModal, isModalOpen, language } = useContext(
     userContext
   );
 
   function dish() {
-    apiUtil.get(
-      "/dish/",
-      {},
-      (dishes) => {
-        debugger
-        setDish(dishes);
-        setUrl("dish");
-        debugger
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    setCurrentUrl("dish")
   }
 
   function branch() {
-    apiUtil.get(
-      "/branch/",
-      {},
-      (branches) => {
-        debugger
-        setBranch(branches);
-        setUrl("branch");
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    setCurrentUrl("branch")
   }
 
   function business() {
-    apiUtil.get(
-      "/business/",
-      {},
-      (businesses) => {
-        debugger;
-        setBusiness(businesses);
-        setUrl("business");
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    setCurrentUrl("business")
   }
 
   return (
@@ -90,17 +52,19 @@ function Page({
         ""
       )}
       {currentUrl === "dish" &&
-        _.map(dishesState, (dish) => {
-          debugger
-          return <DishItem
-            dish={dish}
-            isAdmin={isAdmin}
-            prepareForm={prepareForm}
-            language={language}
-          />
-      })}
+        _.map(entitiesState.dish, (dish) => {
+          debugger;
+          return (
+            <DishItem
+              dish={dish}
+              isAdmin={isAdmin}
+              prepareForm={prepareForm}
+              language={language}
+            />
+          );
+        })}
       {currentUrl === "branch" &&
-        _.map(branchesState, (branch) => {
+        _.map(entitiesState.branch, (branch) => {
           return (
             <BranchItem
               branch={branch}
@@ -110,7 +74,7 @@ function Page({
           );
         })}
       {currentUrl === "business" &&
-        _.map(businessState, (business) => {
+        _.map(entitiesState.business, (business) => {
           return (
             <BusinessItem
               business={business}
