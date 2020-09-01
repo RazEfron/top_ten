@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../utils/multer").upload;
+const passport = require("passport");
 
 const dishAPI = require("../api/dish");
 
@@ -18,6 +19,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
+  debugger
   dishAPI
     .getMany()
     .then((dishes) => {
@@ -26,25 +28,35 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(404).json(err));
 });
 
-router.post("/", upload.single("image"), (req, res) => {
-  dishAPI
-    .create(req)
-    .then((dish) => {
-      res.json(dish);
-    })
-    .catch((err) => res.json(err));
-});
+router.post(
+  "/",
+  upload.single("image"),
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    dishAPI
+      .create(req, req.headers.language)
+      .then((dish) => {
+        res.json(dish);
+      })
+      .catch((err) => res.json(err));
+  }
+);
 
-router.put("/:id", upload.single("image"), (req, res) => {
-  dishAPI
-    .update(req.params.id, req)
-    .then((dish) => {
-      res.json(dish);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
+router.put(
+  "/:id",
+  upload.single("image"),
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    dishAPI
+      .update(req.params.id, req, req.headers.language)
+      .then((dish) => {
+        res.json(dish);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  }
+);
 
 router.delete("/:id", function (req, res) {
   dishAPI

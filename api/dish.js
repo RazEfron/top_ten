@@ -38,8 +38,8 @@ function getManyDishes(condition = {}) {
     });
 }
 
-async function createDish(req) {
-  let { name, description, businessId, price, isHidden, language } = req.body;
+async function createDish(req, language) {
+  let { name, description, businessId, price, isHidden } = req.body;
   let { file } = req;
 
   name = await textAPI.create(name, language).catch((err) => {
@@ -83,8 +83,8 @@ async function deleteDish(id) {
   return Dish.deleteOne({ _id: id });
 }
 
-async function updateDish(id, req) {
-  let { name, description, price, isHidden, language } = req.body;
+async function updateDish(id, req, language) {
+  let { name, description, price, isHidden } = req.body;
   let { file } = req;
   let dish = await Dish.findById(id);
 
@@ -106,8 +106,7 @@ async function updateDish(id, req) {
     image = await imageUtil.upload(file);
   }
   price = price ? price : dish.price;
-  isHidden =
-    isHidden === undefined || isHidden === null ? dish.isHidden : isHidden;
+  isHidden = _.isNil(isHidden) ? dish.isHidden : isHidden;
 
   return Dish.findOneAndUpdate(
     { _id: id },

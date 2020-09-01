@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const userAPI = require("../api/user");
 const passport = require("passport");
-const upload = require("../utils/multer").upload;
 
 router.get("/", async (req, res) => {
   userAPI

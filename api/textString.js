@@ -1,4 +1,5 @@
 const TextString = require("../models/TextString");
+const validator = require("../validators/TextStringValidator");
 
 function getTextString(id) {
   return TextString.findById(id);
@@ -9,15 +10,12 @@ function getManyTextStrings(condition = {}) {
 }
 
 function createTextString(body, language) {
-  let string =
-    language === "hebrew"
-      ? {
-          hebrew: body,
-        }
-      : {
-          english: body,
-        };
-  return TextString.create(string);
+  if (validator.languageValidator(language)) {
+    let string = (string = { [language]: body });
+    return TextString.create(string);
+  } else {
+    throw "Language is not supported";
+  }
 }
 
 function deleteTextString(id) {
@@ -25,18 +23,15 @@ function deleteTextString(id) {
 }
 
 function updateTextString(id, body, language) {
-  let string =
-    language === "hebrew"
-      ? {
-          hebrew: body,
-        }
-      : {
-          english: body,
-        };
-  return TextString.findOneAndUpdate({ _id: id }, string, {
-    new: true,
-    useFindAndModify: false,
-  });
+  if (validator.languageValidator(language)) {
+    let string = (string = { [language]: body });
+    return TextString.findOneAndUpdate({ _id: id }, string, {
+      new: true,
+      useFindAndModify: false,
+    });
+  } else {
+    throw "Language is not supported";
+  }
 }
 
 function deleteManyTextString(array) {

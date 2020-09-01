@@ -4,19 +4,25 @@ import userContext from "./contexts/context";
 
 const jwt_decode = require("jwt-decode");
 const apiUtil = require("./util/apiUtil");
+const languageUtil = require("./util/language");
+const sendForm = require("./util/formUtil").sendForm;
 
 function Console() {
   const [user, setUser] = useState({});
   const [auth, setAuth] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
   const [language, setLanguage] = useState(localStorage.language);
-  const [currentUrl, setUrlState] = useState(() => "/");
+  const [currentUrl, setUrlState] = useState(() => "");
   const [modalState, setModal] = useState({ isOpen: false });
-  const [dishesState, setDishes] = useState(() => []);
+
+  const [dishesState, setDish] = useState(() => []);
+  const [branchesState, setBranch] = useState(() => []);
+  const [businessState, setBusiness] = useState(() => []);
+
   const [formInfo, setFormInfo] = useState({
     entityName: currentUrl,
     entity: "",
-    postOrPut: "post",
+    httpMethod: "post",
   });
 
   function setUserAndAuth() {
@@ -50,41 +56,20 @@ function Console() {
     setModal({ isOpen: !modalState.isOpen });
   }
 
-  function sendForm(formDetails) {
-    if (formInfo.postOrPut === "post") {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}`,
-        formDetails,
-        (data) => {
-          setDishes([data]);
-          console.log(data);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    } else {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}/${formInfo.entity._id}`,
-        formDetails,
-        (data) => {
-          setDishes([data]);
-          console.log(data);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }
+  function changeLanguage(language) {
+    if (languageUtil.languageValidator(language)) {
+      localStorage.setItem("language", language);
+      setLanguage(localStorage.language);
+    } 
   }
 
-  function toggleLanguage() {
-    if (language === "hebrew") {
-      localStorage.setItem("language", "english");
-    } else {
-      localStorage.setItem("language", "hebrew");
-    }
-    setLanguage(localStorage.language);
+  function prepareForm(formType, dish) {
+    setFormInfo({
+      entityName: currentUrl,
+      entity: dish,
+      httpMethod: formType,
+    });
+    toggleModal();
   }
 
   return (
@@ -100,7 +85,7 @@ function Console() {
           isModalOpen: modalState.isOpen,
           toggleModal,
           language,
-          toggleLanguage,
+          changeLanguage,
         }}
       >
         <Page
@@ -108,7 +93,14 @@ function Console() {
           setFormInfo={setFormInfo}
           sendForm={sendForm}
           dishesState={dishesState}
-          setDishes={setDishes}
+          setDish={setDish}
+          branchesState={branchesState}
+          setBranch={setBranch}
+          businessState={businessState}
+          setBusiness={setBusiness}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          currentUrl={currentUrl}
         />
       </userContext.Provider>
     </>

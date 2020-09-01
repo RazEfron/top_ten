@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   textAPI
-    .create(req.body)
+    .create(req.body, req.headers.language)
     .then((text) => {
       if (text) {
         res.json(text);
@@ -44,7 +44,7 @@ router.post("/", (req, res) => {
 
 router.put("/:id", function (req, res) {
   textAPI
-    .update(req.params.id, req.body)
+    .update(req.params.id, req.body, req.headers.language)
     .then((text) => {
       if (text) {
         res.json(text);

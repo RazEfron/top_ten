@@ -4,15 +4,21 @@ import Login from "./LoginForm";
 import userContext from "../contexts/context";
 
 function Navbar() {
-  let { isAdmin, language, toggleLanguage } = useContext(userContext);
+  let { isAdmin, language, changeLanguage } = useContext(userContext);
 
   return (
     <div>
       {language === "hebrew" && (
-        <button onClick={toggleLanguage}>English</button>
+        <div>
+          <button onClick={() => changeLanguage("english")}>English</button>
+          <span>Hebrew</span>
+        </div>
       )}
       {language === "english" && (
-        <button onClick={toggleLanguage}>Hebrew</button>
+        <div>
+          <span>English</span>
+          <button onClick={() => changeLanguage("hebrew")}>Hebrew</button>
+        </div>
       )}
       {isAdmin ? (
         <div>

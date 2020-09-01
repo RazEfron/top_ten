@@ -5,11 +5,12 @@ function setHeaders(headers) {
       Authorization: localStorage.jwtToken,
     };
   } else {
-    return headers;
+    return { ...headers, language: localStorage.language };
   }
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
+  debugger;
   let params = {
     method: type,
     headers: setHeaders({
@@ -23,7 +24,7 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
     delete params.body;
   } else if (
     (type === "POST" || type === "PUT") &&
-    (data.isHidden || data.email)
+    !endpoint.startsWith("/dish")
   ) {
     params.body = JSON.stringify(data);
   } else {

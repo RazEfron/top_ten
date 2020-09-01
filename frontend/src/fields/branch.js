@@ -1,0 +1,22 @@
+import TextInput from "../components/inputs/TextInput";
+import BooleanInput from "../components/inputs/BooleanInput";
+
+export function fields(branch) {
+  return [
+    {
+      key: "googlePlaceId",
+      type: TextInput,
+      value: branch.googlePlaceId,
+    },
+    {
+      key: "businessId",
+      type: TextInput,
+      value: branch.businessId
+    },
+    {
+      key: "isHidden",
+      type: BooleanInput,
+      value: branch.isHidden,
+    },
+  ];
+}
