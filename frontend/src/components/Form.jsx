@@ -10,23 +10,20 @@ function Form({
   isOpen,
   toggleModal,
   title,
-  setEntities
+  setEntities,
 }) {
   const [fieldsState, setFields] = useState(fields);
 
   function onSave() {
     let editedFields = _.difference(fieldsState, fields);
     let editedByKey = _.groupBy(editedFields, "key");
-    debugger;
     editedByKey = _.transform(editedByKey, function (res, field, key) {
       res[key] = _.head(field).value;
     });
-      debugger;
-      callback(editedByKey, formInfo, setEntities);
+    callback(editedByKey, formInfo, setEntities);
   }
 
   function setField(key, value) {
-    debugger;
     const currentField = _.find(fields, { key });
     const newField = _.assign({}, currentField, { value });
     const newFieldsState = _.map(fieldsState, (field) => {

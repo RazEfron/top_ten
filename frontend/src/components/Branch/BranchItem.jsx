@@ -16,7 +16,7 @@ function BranchItem({ branch, isAdmin, prepareForm }) {
         {isAdmin ? (
           <div>
             <button
-              onClick={() => prepareForm("put", branch)}
+              onClick={() => prepareForm("put", branch, "branch", {})}
             >{`Edit Branch`}</button>
           </div>
         ) : (

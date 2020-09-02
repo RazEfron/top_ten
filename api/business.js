@@ -13,7 +13,7 @@ function getManyBusinesses(condition = {}) {
 }
 
 async function createBusiness(body, language) {
-  debugger
+  
   let { displayName, description, isHidden } = body;
 
   displayName = await textAPI.create(displayName, language).catch((err) => {
@@ -47,7 +47,7 @@ async function deleteBusiness(id) {
 }
 
 async function updateBusiness(id, body, language) {
-  debugger
+  
   let { displayName, description, isHidden } = body;
 
   let business = await Business.findById(id);

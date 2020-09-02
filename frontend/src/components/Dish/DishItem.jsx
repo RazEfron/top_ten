@@ -1,7 +1,7 @@
 import React from "react";
 
 function DishItem({ dish, isAdmin, prepareForm, language }) {
-  debugger
+  
   const imagestyle = {
     height: "90px",
     width: "90px",
@@ -35,7 +35,7 @@ function DishItem({ dish, isAdmin, prepareForm, language }) {
         {isAdmin ? (
           <div>
             <button
-              onClick={() => prepareForm("put", dish)}
+              onClick={() => prepareForm("put", dish, "dish", {})}
             >{`Edit Dish`}</button>
           </div>
         ) : (

@@ -1,7 +1,7 @@
 import React from "react";
 
 function BusinessItem({ business, isAdmin, prepareForm, language }) {
-  debugger;
+  ;
   const listStyle = {
     margin: "10px",
     border: "1px black solid",
@@ -20,11 +20,11 @@ function BusinessItem({ business, isAdmin, prepareForm, language }) {
         {isAdmin ? (
           <div>
             <button
-              onClick={() => prepareForm("put", business, "business")}
+              onClick={() => prepareForm("put", business, "business", {})}
             >{`Edit business`}</button>
             <button
               onClick={() =>
-                prepareForm("post", { businessId: business._id }, "branch")
+                prepareForm("post", {}, "branch", { businessId: business._id })
               }
             >{`Create Branch`}</button>
           </div>

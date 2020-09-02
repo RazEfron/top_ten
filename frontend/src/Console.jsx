@@ -26,6 +26,7 @@ function Console() {
     entityName: currentUrl,
     entity: "",
     httpMethod: "post",
+    foreignKeys: {}
   });
 
   function setUserAndAuth() {
@@ -66,11 +67,13 @@ function Console() {
     }
   }
 
-  function prepareForm(formType, dish) {
+  function prepareForm(formType, entity, name, foreignKeys) {
+    debugger
     setFormInfo({
-      entityName: currentUrl,
-      entity: dish,
+      entityName: name,
+      entity,
       httpMethod: formType,
+      foreignKeys
     });
     toggleModal();
   }
@@ -80,10 +83,10 @@ function Console() {
       `/${url}/`,
       {},
       (entities) => {
-        debugger;
+        ;
         setEntities({ [url]: entities });
         setUrl(url);
-        debugger;
+        ;
       },
       (err) => {
         console.log(err);

@@ -11,11 +11,11 @@ function getManyTextStrings(condition = {}) {
 
 function createTextString(body, language) {
   if (validator.languageValidator(language)) {
-    debugger
+    
     let string = { [language]: body };
     return TextString.create(string);
   } else {
-    debugger
+    
     throw "Language is not supported";
   }
 }
@@ -26,14 +26,14 @@ function deleteTextString(id) {
 
 function updateTextString(id, body, language) {
   if (validator.languageValidator(language)) {
-    debugger
+    
     let string = { [language]: body };
     return TextString.findOneAndUpdate({ _id: id }, string, {
       new: true,
       useFindAndModify: false,
     });
   } else {
-    debugger
+    
     throw "Language is not supported";
   }
 }

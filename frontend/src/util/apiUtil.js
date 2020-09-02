@@ -11,7 +11,7 @@ function setHeaders(headers) {
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
-  debugger;
+  ;
   let params = {
     method: type,
     headers: setHeaders({

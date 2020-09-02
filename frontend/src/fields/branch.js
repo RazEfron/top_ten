@@ -9,11 +9,6 @@ export function fields(branch) {
       value: branch.googlePlaceId,
     },
     {
-      key: "businessId",
-      type: TextInput,
-      value: branch.businessId
-    },
-    {
       key: "isHidden",
       type: BooleanInput,
       value: branch.isHidden,

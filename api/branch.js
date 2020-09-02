@@ -9,7 +9,6 @@ function getManyBranches(condition = {}) {
 }
 
 function createBranch(body) {
-  debugger
   return Branch.create(body);
 }
 
@@ -18,7 +17,7 @@ function deleteBranch(id) {
 }
 
 function updateBranch(id, body) {
-  debugger
+  
   return Branch.findOneAndUpdate({ _id: id }, body, {
     new: true,
     useFindAndModify: false,

@@ -9,6 +9,7 @@ import BusinessItem from "./Business/BusinessItem";
 
 const _ = require("lodash");
 const fields = require("../fields/index");
+const validator = require("../util/validations");
 
 function Page({
   formInfo,
@@ -43,10 +44,10 @@ function Page({
       <button onClick={dish}>Click dish</button>
       <button onClick={branch}>Click branch</button>
       <button onClick={business}>Click business</button>
-      {isAdmin && currentUrl ? (
+      {isAdmin && !validator.foreignKeysValidator(currentUrl) ? (
         <div>
           <button
-            onClick={() => prepareForm("post", {})}
+            onClick={() => prepareForm("post", {}, currentUrl, {})}
           >{`Create ${_.capitalize(currentUrl)}`}</button>
         </div>
       ) : (
@@ -54,7 +55,7 @@ function Page({
       )}
       {currentUrl === "dish" &&
         _.map(entitiesState.dish, (dish) => {
-          debugger;
+          ;
           return (
             <DishItem
               dish={dish}

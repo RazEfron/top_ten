@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  debugger
+  
   branchAPI
     .create(req.body)
     .then((branch) => res.json(branch))
@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  debugger
+  
   branchAPI
     .update(req.params.id, req.body)
     .then((branch) => {
