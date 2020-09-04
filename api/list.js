@@ -31,7 +31,7 @@ async function createList(req) {
 
   currentVersionId = await versionAPI.create(currentVersionId).catch((err) => {
     throw err;
-  });
+  }); 
 
   let list = new List({
     name,
