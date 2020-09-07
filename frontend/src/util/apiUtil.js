@@ -11,7 +11,6 @@ function setHeaders(headers) {
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
-  ;
   let params = {
     method: type,
     headers: setHeaders({
@@ -33,7 +32,9 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
   }
 
   return fetch(endpoint, params)
-    .then((res) => res.json().then((data) => onSuccess(data)))
+    .then((res) => {
+      debugger
+      res.json().then((data) => onSuccess(data))})
     .catch((err) => onError(err));
 }
 

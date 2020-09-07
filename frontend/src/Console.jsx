@@ -5,7 +5,7 @@ import userContext from "./contexts/context";
 const jwt_decode = require("jwt-decode");
 
 const apiUtil = require("./util/apiUtil");
-const languageUtil = require("./util/validations");
+const languageUtil = require("./util/validators");
 const sendForm = require("./util/formUtil").sendForm;
 
 function Console() {

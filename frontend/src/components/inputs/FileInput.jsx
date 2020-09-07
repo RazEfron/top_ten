@@ -15,11 +15,11 @@ function FileInput({ label, onChange, value }) {
             onChange(label, e.target.files[0]);
           }}
         />
-        <img
+        {label === "image" ? <img
           src={typeof value === "object" ? URL.createObjectURL(value) : value}
           style={imagestyle}
           alt="Raz"
-        />
+        />: ""}
       </label>
     </div>
   );

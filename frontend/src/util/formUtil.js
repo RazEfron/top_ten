@@ -1,6 +1,6 @@
 const apiUtil = require("./apiUtil");
 const _ = require("lodash");
-const validator = require("./validations");
+const validator = require("./validators");
 
 function sendForm(params, formInfo, setEntities) {
     

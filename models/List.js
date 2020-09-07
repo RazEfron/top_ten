@@ -10,6 +10,7 @@ const ListSchema = new Schema(
       fileLink: String,
       s3_key: String,
     },
+    date: { type: Date, default: Date.now },
     isHidden: { type: Boolean, default: false },
   },
   {

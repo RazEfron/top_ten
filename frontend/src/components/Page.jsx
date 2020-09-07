@@ -9,7 +9,7 @@ import BusinessItem from "./Business/BusinessItem";
 
 const _ = require("lodash");
 const fields = require("../fields/index");
-const validator = require("../util/validations");
+const validator = require("../util/validators");
 
 function Page({
   formInfo,

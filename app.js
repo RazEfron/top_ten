@@ -18,6 +18,13 @@ const cert = fs.readFileSync("./config/certkey/certificate.crt");
 //  Load env file
 dotenv.config({ path: "./config.env" });
 
+// Language Headers
+app.use(function (req, res, next) {
+  debugger
+  res.setHeader("suportedLanguages", process.env.SUPPORTED_LANGUAGES);
+  next();
+});
+
 //  Load Database Connection
 const db = require("./config/keys").MongoURI;
 
