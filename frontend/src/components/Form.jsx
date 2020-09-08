@@ -41,6 +41,7 @@ function Form({
           label: fieldKey,
           onChange,
           value: field.value,
+          options: field.options ? field.options : []
         };
         return (
           <div className="form-field">

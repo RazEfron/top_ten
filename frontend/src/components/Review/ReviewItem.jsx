@@ -1,10 +1,6 @@
 import React from "react";
 
-function ListItem({ list, isAdmin, prepareForm, language }) {
-  const imagestyle = {
-    height: "90px",
-    width: "90px",
-  };
+function ReviewItem({ review, isAdmin, prepareForm, language }) {
 
   const listStyle = {
     margin: "10px",
@@ -45,4 +41,4 @@ function ListItem({ list, isAdmin, prepareForm, language }) {
   );
 }
 
-export default ListItem;
+export default ReviewItem;

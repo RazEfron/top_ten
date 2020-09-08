@@ -1,19 +1,21 @@
 const _ = require("lodash");
+const FORM_ENTITIES = ["dish", "list"];
+const ENTITIES_WITHOUT_FOREIGN_KEYS_PARAMS = ["branch", ""];
 
-function languageValidator(language) {
-  return _.includes(["hebrew", "english"], language);
+function languageValidator(languages, language) {
+  return _.includes(languages, language);
 }
 
-function paramsValidator(entitiyName) {
-  return _.includes(["dish", "list"], entitiyName);
+function isForm(entitiyName) {
+  return _.includes(FORM_ENTITIES, entitiyName);
 }
 
-function foreignKeysValidator(entity) {
-  return _.includes(["branch", ""], entity)
+function hasForeignKeys(entity) {
+  return _.includes(ENTITIES_WITHOUT_FOREIGN_KEYS_PARAMS, entity);
 }
 
 module.exports = {
   languageValidator,
-  paramsValidator,
-  foreignKeysValidator
+  isForm,
+  hasForeignKeys
 };

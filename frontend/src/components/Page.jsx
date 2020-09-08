@@ -3,9 +3,10 @@ import React, { useContext } from "react";
 import Navbar from "./Navbar";
 import userContext from "../contexts/context";
 import Form from "./Form";
-import DishItem from "./Dish/DishItem";
-import BranchItem from "./Branch/BranchItem";
-import BusinessItem from "./Business/BusinessItem";
+import Businesses from "./Business/Busineeses";
+import Branches from "./Branch/Branches";
+import Dishes from "./Dish/Dishes";
+import Lists from "./List/Lists";
 
 const _ = require("lodash");
 const fields = require("../fields/index");
@@ -21,21 +22,22 @@ function Page({
   setEntities,
   setCurrentUrl,
 }) {
-
-  const { toggleModal, isModalOpen, language } = useContext(
-    userContext
-  );
+  const { toggleModal, isModalOpen, language, getAll } = useContext(userContext);
 
   function dish() {
-    setCurrentUrl("dish")
+    setCurrentUrl("dish");
   }
 
   function branch() {
-    setCurrentUrl("branch")
+    setCurrentUrl("branch");
   }
 
   function business() {
-    setCurrentUrl("business")
+    setCurrentUrl("business");
+  }
+
+  function list() {
+    setCurrentUrl("list");
   }
 
   return (
@@ -44,7 +46,8 @@ function Page({
       <button onClick={dish}>Click dish</button>
       <button onClick={branch}>Click branch</button>
       <button onClick={business}>Click business</button>
-      {isAdmin && !validator.foreignKeysValidator(currentUrl) ? (
+      <button onClick={list}>Click list</button>
+      {isAdmin && !validator.hasForeignKeys(currentUrl) ? (
         <div>
           <button
             onClick={() => prepareForm("post", {}, currentUrl, {})}
@@ -53,39 +56,38 @@ function Page({
       ) : (
         ""
       )}
-      {currentUrl === "dish" &&
-        _.map(entitiesState.dish, (dish) => {
-          ;
-          return (
-            <DishItem
-              dish={dish}
-              isAdmin={isAdmin}
-              prepareForm={prepareForm}
-              language={language}
-            />
-          );
-        })}
-      {currentUrl === "branch" &&
-        _.map(entitiesState.branch, (branch) => {
-          return (
-            <BranchItem
-              branch={branch}
-              isAdmin={isAdmin}
-              prepareForm={prepareForm}
-            />
-          );
-        })}
-      {currentUrl === "business" &&
-        _.map(entitiesState.business, (business) => {
-          return (
-            <BusinessItem
-              business={business}
-              isAdmin={isAdmin}
-              prepareForm={prepareForm}
-              language={language}
-            />
-          );
-        })}
+      {currentUrl === "dish" && (
+        <Dishes
+          dishes={entitiesState.dish}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "branch" && (
+        <Branches
+          branches={entitiesState.branch}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "business" && (
+        <Businesses
+          businesses={entitiesState.business}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "list" && (
+        <Lists
+          lists={entitiesState.list}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
       {isModalOpen ? (
         <Form
           fields={fields[formInfo.entityName].fields(formInfo.entity, language)}

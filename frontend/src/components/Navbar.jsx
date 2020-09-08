@@ -1,30 +1,26 @@
 import React, { useContext } from "react";
 
 import Login from "./LoginForm";
+import DropDown from "./inputs/DropDownInput"
 import userContext from "../contexts/context";
 
 function Navbar() {
-  let { isAdmin, language, changeLanguage } = useContext(userContext);
-
+  let { isAdmin, auth, language, changeLanguage, supportedLanguages } = useContext(userContext);
+  
   return (
     <div>
-      {language === "hebrew" && (
-        <div>
-          <button onClick={() => changeLanguage("english")}>English</button>
-          <span>Hebrew</span>
-        </div>
-      )}
-      {language === "english" && (
-        <div>
-          <span>English</span>
-          <button onClick={() => changeLanguage("hebrew")}>Hebrew</button>
-        </div>
-      )}
+      {
+        <DropDown
+          options={supportedLanguages}
+          onChange={changeLanguage}
+          value={language}
+        />
+      }
       {isAdmin ? (
         <div>
           <div>Youre The admin</div>
         </div>
-      ) : (
+      ) : (auth ? <div>Youre a user</div> :
         <Login />
       )}
     </div>

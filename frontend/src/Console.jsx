@@ -3,6 +3,7 @@ import Page from "./components/Page";
 import userContext from "./contexts/context";
 
 const jwt_decode = require("jwt-decode");
+const _ = require("lodash");
 
 const apiUtil = require("./util/apiUtil");
 const languageUtil = require("./util/validators");
@@ -13,6 +14,7 @@ function Console() {
   const [auth, setAuth] = useState(false);
   const [isAdmin, setAdmin] = useState(false);
   const [language, setLanguage] = useState(localStorage.language);
+  const [supportedLanguages, setSupportedLanguages] = useState(() => []);
   const [currentUrl, setUrlState] = useState(() => "");
   const [modalState, setModal] = useState({ isOpen: false });
 
@@ -20,21 +22,33 @@ function Console() {
     dish: [],
     business: [],
     branch: [],
+    list: [],
   }));
 
   const [formInfo, setFormInfo] = useState({
     entityName: currentUrl,
     entity: "",
     httpMethod: "post",
-    foreignKeys: {}
+    foreignKeys: {},
   });
+
+  if (_.isEmpty(supportedLanguages)) {
+    apiUtil.get(
+      "/language",
+      {},
+      (languages) => {
+        setSupportedLanguages(_.map(languages, "language"));
+      },
+      (err) => console.log(err)
+    );
+  }
 
   function setUserAndAuth() {
     const decodedUser = jwt_decode(localStorage.jwtToken);
     const currentTime = Date.now() / 1000;
     if (decodedUser.exp < currentTime) {
       localStorage.removeItem("jwtToken");
-      localStorage.setItem("language", "hebrew");
+      localStorage.setItem("language", language);
       setLanguage(localStorage.language);
       setUser({});
       setAuth(false);
@@ -61,33 +75,34 @@ function Console() {
   }
 
   function changeLanguage(language) {
-    if (languageUtil.languageValidator(language)) {
+    if (languageUtil.languageValidator(supportedLanguages, language)) {
       localStorage.setItem("language", language);
       setLanguage(localStorage.language);
     }
   }
 
   function prepareForm(formType, entity, name, foreignKeys) {
-    debugger
     setFormInfo({
       entityName: name,
       entity,
       httpMethod: formType,
-      foreignKeys
+      foreignKeys,
     });
     toggleModal();
   }
 
   function setCurrentUrl(url) {
+    getAll(url, (entities) => {
+      setEntities({ [url]: entities });
+      setUrl(url);
+    });
+  }
+
+  function getAll(path, onSuccess) {
     apiUtil.get(
-      `/${url}/`,
+      `/${path}/`,
       {},
-      (entities) => {
-        ;
-        setEntities({ [url]: entities });
-        setUrl(url);
-        ;
-      },
+      (entities) => onSuccess(entities),
       (err) => {
         console.log(err);
       }
@@ -108,6 +123,8 @@ function Console() {
           toggleModal,
           language,
           changeLanguage,
+          supportedLanguages,
+          getAll
         }}
       >
         <Page

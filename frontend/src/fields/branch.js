@@ -11,7 +11,7 @@ export function fields(branch) {
     {
       key: "isHidden",
       type: BooleanInput,
-      value: branch.isHidden,
+      value: branch.isHidden ? branch.isHidden : false,
     },
   ];
 }

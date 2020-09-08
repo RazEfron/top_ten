@@ -11,6 +11,7 @@ function setHeaders(headers) {
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
+  debugger
   let params = {
     method: type,
     headers: setHeaders({
@@ -24,7 +25,8 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
     delete params.body;
   } else if (
     (type === "POST" || type === "PUT") &&
-    !endpoint.startsWith("/dish")
+    !endpoint.startsWith("/dish") &&
+    !endpoint.startsWith("/list")
   ) {
     params.body = JSON.stringify(data);
   } else {

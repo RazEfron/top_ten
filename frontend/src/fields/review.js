@@ -4,13 +4,8 @@ import BooleanInput from "../components/inputs/BooleanInput";
 import DateInput from "../components/inputs/DateInput";
 
 export function fields(list, language) {
-  debugger
+  debugger;
   return [
-    {
-      key: "name",
-      type: TextInput,
-      value: list.name ? list.name[language] : "",
-    },
     {
       key: "description",
       type: TextInput,
@@ -24,7 +19,7 @@ export function fields(list, language) {
     {
       key: "date",
       type: DateInput,
-      value: list.date
+      value: list.date,
     },
     {
       key: "isHidden",
@@ -33,4 +28,3 @@ export function fields(list, language) {
     },
   ];
 }
-

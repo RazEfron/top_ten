@@ -1,6 +1,7 @@
 import React from "react";
 
 function BooleanInput({ label, onChange, value }) {
+  debugger
   return (
     <div>
       <label>

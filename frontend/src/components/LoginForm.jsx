@@ -7,7 +7,7 @@ const apiUtil = require("../util/apiUtil");
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const context = useContext(userContext);
+  const { setAuthContext } = useContext(userContext);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,7 +23,7 @@ function Login() {
   function onLoginSuccess(token) {
     if (token.token) {
       localStorage.setItem("jwtToken", token.token);
-      context.setAuthContext();
+      setAuthContext();
     }
   }
 

@@ -28,7 +28,7 @@ export function fields(dish, language) {
     {
       key: "isHidden",
       type: BooleanInput,
-      value: dish.isHidden,
+      value: dish.isHidden ? dish.isHidden : false,
     },
   ];
 }

@@ -2,7 +2,6 @@ import TextInput from "../components/inputs/TextInput";
 import BooleanInput from "../components/inputs/BooleanInput";
 
 export function fields(business, language) {
-  debugger
   return [
     {
       key: "displayName",
@@ -17,7 +16,7 @@ export function fields(business, language) {
     {
       key: "isHidden",
       type: BooleanInput,
-      value: business.isHidden,
+      value: business.isHidden ? business.isHidden : false,
     },
   ];
 }
