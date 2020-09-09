@@ -3,38 +3,30 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import Modal from "./Modal";
 
-function Form({ fields, title, callback, isOpen, toggleModal }) {
+function Form({
+  fields,
+  formInfo,
+  callback,
+  isOpen,
+  toggleModal,
+  title,
+  setEntities,
+}) {
   const [fieldsState, setFields] = useState(fields);
-  debugger;
+
   function onSave() {
-    debugger;
     let editedFields = _.difference(fieldsState, fields);
-    debugger;
     let editedByKey = _.groupBy(editedFields, "key");
-    debugger;
     editedByKey = _.transform(editedByKey, function (res, field, key) {
-      debugger;
       res[key] = _.head(field).value;
     });
-    debugger;
-    if (title === "dish") {
-      debugger;
-      let form = new FormData();
-      _.forEach(editedByKey, (value, key) => form.append(key, value));
-      callback(form);
-    } else {
-      callback(editedByKey);
-    }
+    callback(editedByKey, formInfo, setEntities);
   }
 
   function setField(key, value) {
-    debugger;
     const currentField = _.find(fields, { key });
-    debugger;
     const newField = _.assign({}, currentField, { value });
-    debugger;
     const newFieldsState = _.map(fieldsState, (field) => {
-      debugger;
       return field.key === key ? newField : field;
     });
     setFields(newFieldsState);
@@ -49,6 +41,7 @@ function Form({ fields, title, callback, isOpen, toggleModal }) {
           label: fieldKey,
           onChange,
           value: field.value,
+          options: field.options ? field.options : []
         };
         return (
           <div className="form-field">

@@ -3,14 +3,15 @@ function setHeaders(headers) {
     return {
       ...headers,
       Authorization: localStorage.jwtToken,
+      language: localStorage.language,
     };
   } else {
-    return headers;
+    return { ...headers, language: localStorage.language };
   }
 }
 
 function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
-  
+  debugger
   let params = {
     method: type,
     headers: setHeaders({
@@ -24,7 +25,8 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
     delete params.body;
   } else if (
     (type === "POST" || type === "PUT") &&
-    (data.isHidden || data.email)
+    !endpoint.startsWith("/dish") &&
+    !endpoint.startsWith("/list")
   ) {
     params.body = JSON.stringify(data);
   } else {
@@ -32,7 +34,9 @@ function genericFetchRequset(type, endpoint, data = {}, onSuccess, onError) {
   }
 
   return fetch(endpoint, params)
-    .then((res) => res.json().then((data) => onSuccess(data)))
+    .then((res) => {
+      debugger
+      res.json().then((data) => onSuccess(data))})
     .catch((err) => onError(err));
 }
 

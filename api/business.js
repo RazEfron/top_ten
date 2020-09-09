@@ -12,13 +12,14 @@ function getManyBusinesses(condition = {}) {
     .populate("description");
 }
 
-async function createBusiness(body) {
+async function createBusiness(body, language) {
+  
   let { displayName, description, isHidden } = body;
 
-  displayName = await textAPI.create(displayName).catch((err) => {
+  displayName = await textAPI.create(displayName, language).catch((err) => {
     throw err;
   });
-  description = await textAPI.create(description).catch((err) => {
+  description = await textAPI.create(description, language).catch((err) => {
     throw err;
   });
 
@@ -45,19 +46,20 @@ async function deleteBusiness(id) {
   return Business.deleteOne({ _id: id });
 }
 
-async function updateBusiness(id, body) {
+async function updateBusiness(id, body, language) {
+  
   let { displayName, description, isHidden } = body;
 
   let business = await Business.findById(id);
 
   if (displayName) {
-    await textAPI.update(business.displayName, displayName).catch((err) => {
+    await textAPI.update(business.displayName, displayName, language).catch((err) => {
       throw err;
     });
   }
 
   if (description) {
-    await textAPI.update(business.description, description).catch((err) => {
+    await textAPI.update(business.description, description, language).catch((err) => {
       throw err;
     });
   }

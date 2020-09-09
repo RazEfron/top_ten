@@ -1,19 +1,26 @@
 import React, { useContext } from "react";
 
 import Login from "./LoginForm";
+import DropDown from "./inputs/DropDownInput"
 import userContext from "../contexts/context";
-import { divide } from "lodash";
 
 function Navbar() {
-  let user = useContext(userContext);
-
+  let { isAdmin, auth, language, changeLanguage, supportedLanguages } = useContext(userContext);
+  
   return (
     <div>
-      {user.admin ? (
+      {
+        <DropDown
+          options={supportedLanguages}
+          onChange={changeLanguage}
+          value={language}
+        />
+      }
+      {isAdmin ? (
         <div>
           <div>Youre The admin</div>
         </div>
-      ) : (
+      ) : (auth ? <div>Youre a user</div> :
         <Login />
       )}
     </div>

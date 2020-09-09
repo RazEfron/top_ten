@@ -1,9 +1,7 @@
 import React from "react";
 
 function Modal({ isOpen, toggleModal, children }) {
-  
   if (!isOpen) {
-    
     return null;
   }
 
@@ -34,7 +32,6 @@ function Modal({ isOpen, toggleModal, children }) {
     overflow: "visible",
     zIndex: "900",
     borderRadius: "5px",
-    border: "none",
   };
 
   return (

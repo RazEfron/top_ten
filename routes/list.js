@@ -27,15 +27,17 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", upload.single("image"), (req, res) => {
+  debugger
   listAPI
-    .create(req)
+    .create(req, req.headers.language)
     .then((list) => res.json(list))
     .catch((err) => res.json(err));
 });
 
 router.put("/:id", upload.single("image"), (req, res) => {
+  debugger
   listAPI
-    .update(req.params.id, req)
+    .update(req.params.id, req, req.headers.language)
     .then((list) => res.json(list))
     .catch((err) => res.json(err));
 });

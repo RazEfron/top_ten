@@ -53,21 +53,33 @@ const listVersions = require("./routes/listVersion");
 const reviews = require("./routes/review");
 const texts = require("./routes/textString");
 const users = require("./routes/user");
+const languages = require("./routes/language");
 
 app.use(passport.initialize());
-app.use(express.static("./public"));
+
+// Auth Middleware
+function Authenticate(req, res, next) {
+  let { method, baseUrl } = req;
+  ;
+  if (method === "GET" || baseUrl === "/user") {
+    next();
+  } else {
+    passport.authenticate("jwt", { session: false })(req, res, next);
+  }
+}
 
 require("./config/passport")(passport);
 
-app.use("/branch", branches);
-app.use("/business", businesses);
-app.use("/comment", comments);
-app.use("/dish", dishes);
-app.use("/list", lists);
-app.use("/listVersion", listVersions);
-app.use("/review", reviews);
-app.use("/text", texts);
-app.use("/user", users);
+app.use("/branch", Authenticate, branches);
+app.use("/business", Authenticate, businesses);
+app.use("/comment", Authenticate, comments);
+app.use("/dish", Authenticate, dishes);
+app.use("/list", Authenticate, lists);
+app.use("/listVersion", Authenticate, listVersions);
+app.use("/review", Authenticate, reviews);
+app.use("/text", Authenticate, texts);
+app.use("/user", Authenticate, users);
+app.use("/language", Authenticate, languages);
 
 const port = process.env.PORT || 5000;
 

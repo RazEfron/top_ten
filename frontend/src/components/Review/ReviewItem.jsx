@@ -1,11 +1,6 @@
 import React from "react";
 
-function DishItem({ dish, isAdmin, prepareForm, language }) {
-  
-  const imagestyle = {
-    height: "90px",
-    width: "90px",
-  };
+function ReviewItem({ review, isAdmin, prepareForm, language }) {
 
   const listStyle = {
     margin: "10px",
@@ -16,17 +11,17 @@ function DishItem({ dish, isAdmin, prepareForm, language }) {
   return (
     <ul style={listStyle}>
       <li>
-        <p>{dish.description[language]}</p>
+        <p>{list.description[language]}</p>
       </li>
       <li>
-        <p>{dish.name[language]}</p>
+        <p>{list.name[language]}</p>
       </li>
       <li>
-        <p>{dish.price}</p>
+        <p>{list.date}</p>
       </li>
       <li>
         <img
-          src={dish.image ? dish.image.fileLink : ""}
+          src={list.image ? list.image.fileLink : ""}
           alt="Raz"
           style={imagestyle}
         ></img>
@@ -35,8 +30,8 @@ function DishItem({ dish, isAdmin, prepareForm, language }) {
         {isAdmin ? (
           <div>
             <button
-              onClick={() => prepareForm("put", dish, "dish", {})}
-            >{`Edit Dish`}</button>
+              onClick={() => prepareForm("put", list, "list", {})}
+            >{`Edit List`}</button>
           </div>
         ) : (
           ""
@@ -46,4 +41,4 @@ function DishItem({ dish, isAdmin, prepareForm, language }) {
   );
 }
 
-export default DishItem;
+export default ReviewItem;

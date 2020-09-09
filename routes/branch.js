@@ -19,13 +19,14 @@ router.get("/:id", (req, res) => {
 router.get("/", (req, res) => {
   branchAPI
     .getMany()
-    .then((branch) => {
-      res.json(branch);
+    .then((branches) => {
+      res.json(branches);
     })
     .catch((err) => res.status(404).json(err));
 });
 
 router.post("/", (req, res) => {
+  
   branchAPI
     .create(req.body)
     .then((branch) => res.json(branch))
@@ -33,6 +34,7 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
+  
   branchAPI
     .update(req.params.id, req.body)
     .then((branch) => {

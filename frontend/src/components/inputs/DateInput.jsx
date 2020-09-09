@@ -1,13 +1,14 @@
 import React from "react";
+const formUtil = require("../../util/formUtil")
 
-function TextInput({ label, onChange, value }) {
+function DateInput({ label, onChange, value }) {
   return (
     <div>
       <label>
         {label}
         <input
-          type="text"
-          value={value}
+          type="date"
+          value={formUtil.formatDate(value)}
           onChange={(e) => {
             onChange(label, e.target.value);
           }}
@@ -18,4 +19,4 @@ function TextInput({ label, onChange, value }) {
   );
 }
 
-export default TextInput;
+export default DateInput;

@@ -67,7 +67,7 @@ async function createReview(body) {
     businessId,
     dishId,
     isHidden,
-  } = req.body;
+  } = body;
 
   description = await textAPI.create(description).catch((err) => {
     throw err;

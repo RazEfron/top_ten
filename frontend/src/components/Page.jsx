@@ -1,71 +1,102 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import Navbar from "./Navbar";
 import userContext from "../contexts/context";
 import Form from "./Form";
-import DishIndex from "./Dish/DishIndex";
+import Businesses from "./Business/Busineeses";
+import Branches from "./Branch/Branches";
+import Dishes from "./Dish/Dishes";
+import Lists from "./List/Lists";
 
+const _ = require("lodash");
 const fields = require("../fields/index");
-const apiUtil = require("../util/apiUtil");
+const validator = require("../util/validators");
 
-function Page() {
-  const { currentUrl, setUrl, toggleModal, isModalOpen } = useContext(
-    userContext
-  );
-  const [formInfo, setFormInfo] = useState({
-    entityName: "dish",
-    entity: "",
-    postOrPut: "post",
-  });
+function Page({
+  formInfo,
+  sendForm,
+  isAdmin,
+  prepareForm,
+  currentUrl,
+  entitiesState,
+  setEntities,
+  setCurrentUrl,
+}) {
+  const { toggleModal, isModalOpen, language, getAll } = useContext(userContext);
 
   function dish() {
-    debugger;
-    setUrl("/dish");
+    setCurrentUrl("dish");
   }
 
-  function sendForm(formDetails) {
-    debugger
-    if (formInfo.postOrPut === "post") {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}`,
-        formDetails,
-        (data) => {
-          debugger
-          console.log(data);
-        },
-        (err) => {
-          debugger
-          console.log(err);
-        }
-      );
-    } else {
-      apiUtil[formInfo.postOrPut](
-        `/${formInfo.entityName}/${formInfo.entity._id}`,
-        formDetails,
-        (data) => {
-          debugger
-          console.log(data);
-        },
-        (err) => {
-          debugger
-          console.log(err);
-        }
-      );
-    }
+  function branch() {
+    setCurrentUrl("branch");
+  }
+
+  function business() {
+    setCurrentUrl("business");
+  }
+
+  function list() {
+    setCurrentUrl("list");
   }
 
   return (
     <div>
       <Navbar />
       <button onClick={dish}>Click dish</button>
-      {currentUrl === "/dish" && <DishIndex setFormInfo={setFormInfo} />}
+      <button onClick={branch}>Click branch</button>
+      <button onClick={business}>Click business</button>
+      <button onClick={list}>Click list</button>
+      {isAdmin && !validator.hasForeignKeys(currentUrl) ? (
+        <div>
+          <button
+            onClick={() => prepareForm("post", {}, currentUrl, {})}
+          >{`Create ${_.capitalize(currentUrl)}`}</button>
+        </div>
+      ) : (
+        ""
+      )}
+      {currentUrl === "dish" && (
+        <Dishes
+          dishes={entitiesState.dish}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "branch" && (
+        <Branches
+          branches={entitiesState.branch}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "business" && (
+        <Businesses
+          businesses={entitiesState.business}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
+      {currentUrl === "list" && (
+        <Lists
+          lists={entitiesState.list}
+          isAdmin={isAdmin}
+          prepareForm={prepareForm}
+          language={language}
+        />
+      )}
       {isModalOpen ? (
         <Form
-          fields={fields[formInfo.entityName].fields(formInfo.entity)}
+          fields={fields[formInfo.entityName].fields(formInfo.entity, language)}
+          formInfo={formInfo}
           title={formInfo.entityName}
           callback={sendForm}
           isOpen={isModalOpen}
           toggleModal={toggleModal}
+          setEntities={setEntities}
         />
       ) : (
         ""

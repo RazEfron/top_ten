@@ -6,7 +6,10 @@ const DishSchema = new Schema(
     name: { type: Schema.Types.ObjectId, ref: "TextString" },
     description: { type: Schema.Types.ObjectId, ref: "TextString" },
     businessId: { type: Schema.Types.ObjectId, ref: "Business" },
-    image: {},
+    image: {
+      fileLink: String,
+      s3_key: String,
+    },
     price: Number,
     isHidden: { type: Boolean, default: false },
   },

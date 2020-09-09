@@ -2,6 +2,7 @@ const List = require("../models/List");
 const textAPI = require("./textString");
 const versionAPI = require("./listVersion");
 const imageUtil = require("../utils/image");
+const _ = require("lodash");
 
 function getList(id) {
   return List.findById(id)
@@ -17,36 +18,45 @@ function getManyLists(condition = {}) {
     .populate("currentVersionId");
 }
 
-async function createList(req) {
-  let { name, description, currentVersionId, isHidden } = req.body;
+async function createList(req, language) {
+  debugger;
+  let { name, description, date, isHidden } = req.body;
   let { file } = req;
-
-  name = await textAPI.create(name).catch((err) => {
+  debugger;
+  name = await textAPI.create(name, language).catch((err) => {
     throw err;
   });
-
-  description = await textAPI.create(description).catch((err) => {
+  debugger;
+  description = await textAPI.create(description, language).catch((err) => {
     throw err;
   });
-
-  currentVersionId = await versionAPI.create(currentVersionId).catch((err) => {
+  debugger;
+  currentVersionId = await versionAPI.create({}).catch((err) => {
     throw err;
   });
-
+  debugger;
   let list = new List({
     name,
     description,
+    date,
     currentVersionId,
     isHidden,
   });
-
+  debugger;
   currentVersionId.listId = list._id;
   currentVersionId.save().catch((err) => {
+    debugger;
     throw err;
   });
-
+  debugger;
   if (file) {
-    dish.image = await imageUtil.upload(file);
+    list.image = await imageUtil.upload(file);
+  } else {
+    list.image = {
+      fileLink:
+        "https://top-ten-images.s3.amazonaws.com/falafel-89098_1280.jpg",
+      s3_key: "falafel-89098_1280.jpg",
+    };
   }
 
   return List.create(list);
@@ -69,36 +79,42 @@ async function deleteList(id) {
   return List.deleteOne({ _id: id });
 }
 
-async function updateList(id, req) {
-  let { name, description, currentVersionId, isHidden } = req.body;
+async function updateList(id, req, language) {
+  let { name, description, date, isHidden } = req.body;
   let { file } = req;
 
   let list = await List.findById(id);
-
   if (name) {
-    await textAPI.update(list.name, name).catch((err) => {
+    await textAPI.update(list.name, name, language).catch((err) => {
       throw err;
     });
   }
-
   if (description) {
-    await textAPI.update(list.description, description).catch((err) => {
-      throw err;
-    });
+    await textAPI
+      .update(list.description, description, language)
+      .catch((err) => {
+        throw err;
+      });
   }
-
+  debugger;
+  let image = list.image;
+  debugger
+  if (file) {
+    debugger
+    image = await imageUtil.upload(file);
+  }
+  debugger
+  date = date ? date : list.date;
+  debugger
+  isHidden = _.isNil(isHidden) ? list.isHidden : isHidden;
+  debugger;
   return List.findOneAndUpdate(
     { _id: id },
-    { currentVersionId, image, isHidden },
+    { date, image, isHidden },
     { new: true, useFindAndModify: false },
     async (err, list) => {
       if (err) {
         throw err;
-      }
-
-      if (file) {
-        await imageUtil.destroy(list.image.s3_key);
-        await imageUtil.upload(file);
       }
     }
   )

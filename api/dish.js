@@ -1,6 +1,7 @@
 const Dish = require("../models/Dish");
 const textAPI = require("./textString");
 const imageUtil = require("../utils/image");
+const _ = require("lodash");
 
 function getDish(id) {
   return Dish.findById(id)
@@ -38,15 +39,15 @@ function getManyDishes(condition = {}) {
     });
 }
 
-async function createDish(req) {
+async function createDish(req, language) {
   let { name, description, businessId, price, isHidden } = req.body;
   let { file } = req;
 
-  name = await textAPI.create(JSON.parse(name)).catch((err) => {
+  name = await textAPI.create(name, language).catch((err) => {
     throw err;
   });
 
-  description = await textAPI.create(JSON.parse(description)).catch((err) => {
+  description = await textAPI.create(description, language).catch((err) => {
     throw err;
   });
 
@@ -83,35 +84,35 @@ async function deleteDish(id) {
   return Dish.deleteOne({ _id: id });
 }
 
-async function updateDish(id, req) {
-  debugger;
+async function updateDish(id, req, language) {
   let { name, description, price, isHidden } = req.body;
   let { file } = req;
   let dish = await Dish.findById(id);
   if (name) {
-    debugger
-    await textAPI.update(dish.name, name).catch((err) => {
+    await textAPI.update(dish.name, name, language).catch((err) => {
       throw err;
     });
   }
+
   if (description) {
-    debugger
-    await textAPI.update(dish.description, description).catch((err) => {
-      throw err;
-    });
+    await textAPI
+      .update(dish.description, description, language)
+      .catch((err) => {
+        throw err;
+      });
   }
-  debugger
   let image = dish.image;
   if (file) {
     image = await imageUtil.upload(file);
   }
+  price = price ? price : dish.price;
+  isHidden = _.isNil(isHidden) ? dish.isHidden : isHidden;
 
   return Dish.findOneAndUpdate(
     { _id: id },
     { price, isHidden, image },
     { new: true, useFindAndModify: false },
     async (err, dish) => {
-      debugger
       if (err) {
         throw err;
       }

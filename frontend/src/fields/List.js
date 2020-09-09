@@ -1,34 +1,36 @@
 import TextInput from "../components/inputs/TextInput";
-import NumberInput from "../components/inputs/NumberInput";
 import FileInput from "../components/inputs/FileInput";
 import BooleanInput from "../components/inputs/BooleanInput";
+import DateInput from "../components/inputs/DateInput";
 
-export function fields(dish, language) {
+export function fields(list, language) {
+  debugger
   return [
     {
       key: "name",
       type: TextInput,
-      value: dish.name ? dish.name[language] : "",
+      value: list.name ? list.name[language] : "",
     },
     {
       key: "description",
       type: TextInput,
-      value: dish.description ? dish.description[language] : "",
+      value: list.description ? list.description[language] : "",
     },
     {
       key: "image",
       type: FileInput,
-      value: dish.image ? dish.image.fileLink : "",
+      value: list.image ? list.image.fileLink : "",
     },
     {
-      key: "price",
-      type: NumberInput,
-      value: dish.price,
+      key: "date",
+      type: DateInput,
+      value: list.date
     },
     {
       key: "isHidden",
       type: BooleanInput,
-      value: dish.isHidden ? dish.isHidden : false,
+      value: list.isHidden ? list.isHidden : false,
     },
   ];
 }
+

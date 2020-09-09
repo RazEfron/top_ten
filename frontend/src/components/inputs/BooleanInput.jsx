@@ -1,15 +1,16 @@
 import React from "react";
 
-function TextInput({ label, onChange, value }) {
+function BooleanInput({ label, onChange, value }) {
+  debugger
   return (
     <div>
       <label>
         {label}
         <input
-          type="text"
-          value={value}
+          type="checkbox"
+          checked={value}
           onChange={(e) => {
-            onChange(label, e.target.value);
+            onChange(label, e.target.checked);
           }}
           placeholder={label}
         />
@@ -18,4 +19,4 @@ function TextInput({ label, onChange, value }) {
   );
 }
 
-export default TextInput;
+export default BooleanInput;

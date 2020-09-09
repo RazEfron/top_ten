@@ -1,12 +1,12 @@
 import React from "react";
 
-function TextInput({ label, onChange, value }) {
+function NumberInput({ label, onChange, value }) {
   return (
     <div>
       <label>
         {label}
         <input
-          type="text"
+          type="number"
           value={value}
           onChange={(e) => {
             onChange(label, e.target.value);
@@ -18,4 +18,4 @@ function TextInput({ label, onChange, value }) {
   );
 }
 
-export default TextInput;
+export default NumberInput;

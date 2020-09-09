@@ -31,18 +31,22 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     businessAPI
-      .create(req.body)
+      .create(req.body, req.headers.language)
       .then((business) => res.json(business))
       .catch((err) => res.json(err));
   }
 );
 
-router.put("/:id", function (req, res) {
-  businessAPI
-    .update(req.params.id, req.body)
-    .then((business) => res.json(business))
-    .catch((err) => res.json(err));
-});
+router.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    businessAPI
+      .update(req.params.id, req.body, req.headers.language)
+      .then((business) => res.json(business))
+      .catch((err) => res.json(err));
+  }
+);
 
 router.delete("/:id", function (req, res) {
   businessAPI
